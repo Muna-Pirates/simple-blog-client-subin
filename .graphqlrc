@@ -1,0 +1,2 @@
+schema: 'https://pirates.munawiki.dev/graphql'
+documents: 'src/**/*.{ts,tsx,graphql}'
