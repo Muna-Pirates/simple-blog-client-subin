@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button"
 import { gql } from "./lib/graphql/gql"
 import { useQuery } from "@apollo/client"
 
@@ -14,7 +15,11 @@ function App() {
 	const { data } = useQuery(GET_USER)
 	console.log(data?.viewUserProfile?.id)
 
-	return <div></div>
+	return (
+		<div>
+			<Button>Click!</Button>
+		</div>
+	)
 }
 
 export default App
