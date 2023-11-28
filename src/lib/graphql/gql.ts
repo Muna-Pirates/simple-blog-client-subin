@@ -14,6 +14,8 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  */
 const documents = {
     "\nquery ViewUserProfile {\n  viewUserProfile {\n    id\n    email\n  }\n}\n": types.ViewUserProfileDocument,
+    "\n    mutation RegisterUser($createUserInput: CreateUserInput!) {\n      registerUser(createUserInput: $createUserInput) {\n        id\n        email\n        name\n        roleId\n      }\n    }\n  ": types.RegisterUserDocument,
+    "\n\t  mutation LoginUser($credentials: LoginInput!) {\n\t    loginUser(credentials: $credentials) {\n        token\n\t    }\n\t  }\n\t": types.LoginUserDocument,
 };
 
 /**
@@ -34,6 +36,14 @@ export function gql(source: string): unknown;
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(source: "\nquery ViewUserProfile {\n  viewUserProfile {\n    id\n    email\n  }\n}\n"): (typeof documents)["\nquery ViewUserProfile {\n  viewUserProfile {\n    id\n    email\n  }\n}\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n    mutation RegisterUser($createUserInput: CreateUserInput!) {\n      registerUser(createUserInput: $createUserInput) {\n        id\n        email\n        name\n        roleId\n      }\n    }\n  "): (typeof documents)["\n    mutation RegisterUser($createUserInput: CreateUserInput!) {\n      registerUser(createUserInput: $createUserInput) {\n        id\n        email\n        name\n        roleId\n      }\n    }\n  "];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n\t  mutation LoginUser($credentials: LoginInput!) {\n\t    loginUser(credentials: $credentials) {\n        token\n\t    }\n\t  }\n\t"): (typeof documents)["\n\t  mutation LoginUser($credentials: LoginInput!) {\n\t    loginUser(credentials: $credentials) {\n        token\n\t    }\n\t  }\n\t"];
 
 export function gql(source: string) {
   return (documents as any)[source] ?? {};
