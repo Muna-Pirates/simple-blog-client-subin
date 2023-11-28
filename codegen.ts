@@ -1,8 +1,7 @@
 import { CodegenConfig } from '@graphql-codegen/cli';
-import { API_BASE_URL } from './src/config'
 
 const config: CodegenConfig = {
-  schema: API_BASE_URL,
+  schema: 'https://pirates.munawiki.dev/graphql',
   documents: ['src/**/*.{ts,tsx,graphql}'],
   generates: {
     './src/lib/graphql/': {
