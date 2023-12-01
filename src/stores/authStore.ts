@@ -1,11 +1,22 @@
 import { create } from 'zustand'
+import { createJSONStorage, persist } from 'zustand/middleware'
 
-export const useAuthStore = create<{
+interface IAuthState {
   isLogin: boolean
-  login: () => void
-  logout: () => void
-}>((set) => ({
-  isLogin: false,
-  login: () => set(() => ({ isLogin: true })),
-  logout: () => set(() => ({ isLogin: false })),
-}))
+  signIn: () => void
+  signOut: () => void
+}
+type TAuthPersist = [
+  ['zustand/persist', IAuthState],
+]
+export const useAuthStore = create<IAuthState, TAuthPersist>(persist(
+  (set) => ({
+    isLogin: false,
+    signIn: () => set(() => ({ isLogin: true })),
+    signOut: () => set(() => ({ isLogin: false })),
+  }),
+  {
+    name: 'login-storage',
+    storage: createJSONStorage(() => sessionStorage),
+  },
+))
