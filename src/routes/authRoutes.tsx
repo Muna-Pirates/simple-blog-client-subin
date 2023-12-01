@@ -1,6 +1,7 @@
 import { RouteObject } from "react-router-dom"
 import Login from "@/features/auth/pages/login/Login"
 import Register from "@/features/auth/pages/register/Register"
+import RegisterComplete from "@/features/auth/pages/register-complete/RegisterComplete"
 
 const authRoutes: RouteObject[] = [
 	{
@@ -10,6 +11,10 @@ const authRoutes: RouteObject[] = [
 	{
 		path: "register",
 		element: <Register />,
+	},
+	{
+		path: "register-complete",
+		element: <RegisterComplete />,
 	},
 ]
 

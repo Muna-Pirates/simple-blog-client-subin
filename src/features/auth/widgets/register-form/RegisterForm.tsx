@@ -13,15 +13,19 @@ import * as z from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import useAuth from "../../service/useAuth"
+import { useToast } from "@/components/ui/use-toast"
+import { useNavigate } from "react-router-dom"
 
 const formSchema = z.object({
 	email: z.string().email(),
-	password: z.string(),
+	password: z.string().min(8, "Password must be at least 8 characters long"),
 	name: z.string(),
 })
 
 const RegisterForm = () => {
 	const { register, registerResult } = useAuth()
+	const { toast } = useToast()
+	const navigate = useNavigate()
 
 	const isLoading = registerResult.loading
 
@@ -35,7 +39,24 @@ const RegisterForm = () => {
 	})
 
 	const onSubmit = async (values: z.infer<typeof formSchema>) => {
-		console.log(values)
+		register({
+			variables: {
+				createUserInput: {
+					...values,
+					roleId: 1, //user:1, admin:2
+				},
+			},
+			onCompleted: () => {
+				navigate("/register-complete")
+			},
+			onError: (error) => {
+				console.warn(error)
+				toast({
+					variant: "destructive",
+					title: "An Error Occurred",
+				})
+			}, //🚧 임시 에러 핸들링
+		})
 	}
 
 	return (
@@ -52,6 +73,7 @@ const RegisterForm = () => {
 									placeholder="name@example.com"
 									type="email"
 									disabled={isLoading}
+									required
 									{...field}
 								/>
 							</FormControl>
@@ -66,7 +88,12 @@ const RegisterForm = () => {
 						<FormItem>
 							<FormLabel>Password</FormLabel>
 							<FormControl>
-								<Input type="password" disabled={isLoading} {...field} />
+								<Input
+									type="password"
+									required
+									disabled={isLoading}
+									{...field}
+								/>
 							</FormControl>
 							<FormMessage />
 						</FormItem>
@@ -79,7 +106,7 @@ const RegisterForm = () => {
 						<FormItem>
 							<FormLabel>Name</FormLabel>
 							<FormControl>
-								<Input type="text" disabled={isLoading} {...field} />
+								<Input type="text" required disabled={isLoading} {...field} />
 							</FormControl>
 							<FormMessage />
 						</FormItem>

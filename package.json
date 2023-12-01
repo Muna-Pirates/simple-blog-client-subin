@@ -12,6 +12,7 @@
     "watch": "graphql-codegen -w"
   },
   "dependencies": {
+    "@ant-design/icons": "^5.2.6",
     "@apollo/client": "^3.8.7",
     "@hookform/resolvers": "^3.3.2",
     "@radix-ui/react-label": "^2.0.2",
