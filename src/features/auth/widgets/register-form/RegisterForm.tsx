@@ -8,11 +8,11 @@ import {
 	FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { useState } from "react"
 import Spinner from "@/assets/spinner.svg"
 import * as z from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
+import useAuth from "../../service/useAuth"
 
 const formSchema = z.object({
 	email: z.string().email(),
@@ -20,8 +20,10 @@ const formSchema = z.object({
 	name: z.string(),
 })
 
-const LoginFom = () => {
-	const [isLoading, setIsLoading] = useState<boolean>(false)
+const RegisterForm = () => {
+	const { register, registerResult } = useAuth()
+
+	const isLoading = registerResult.loading
 
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
@@ -98,4 +100,4 @@ const LoginFom = () => {
 	)
 }
 
-export default LoginFom
+export default RegisterForm
