@@ -33,6 +33,8 @@
     --ring: 222.2 84% 4.9%;
  
     --radius: 0.5rem;
+
+    height: 100%;
   }
  
   .dark {
@@ -72,5 +74,9 @@
   }
   body {
     @apply bg-background text-foreground;
+    height: inherit;
+  }
+  #root {
+    height: inherit;
   }
 }
