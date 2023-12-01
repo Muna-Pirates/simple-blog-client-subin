@@ -45,8 +45,9 @@ const LoginForm = () => {
 					...values,
 				},
 			},
-			onCompleted: () => {
-				signIn()
+			onCompleted: (data) => {
+				const token = data.loginUser.token
+				signIn(token)
 				navigate("/")
 			},
 			onError: (error) => {

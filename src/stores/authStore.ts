@@ -3,7 +3,8 @@ import { createJSONStorage, persist } from 'zustand/middleware'
 
 interface IAuthState {
   isLogin: boolean
-  signIn: () => void
+  token: string
+  signIn: (token: string) => void
   signOut: () => void
 }
 type TAuthPersist = [
@@ -12,8 +13,12 @@ type TAuthPersist = [
 export const useAuthStore = create<IAuthState, TAuthPersist>(persist(
   (set) => ({
     isLogin: false,
-    signIn: () => set(() => ({ isLogin: true })),
-    signOut: () => set(() => ({ isLogin: false })),
+    token: '',
+    signIn: (token: string) => set(() => ({
+      isLogin: true,
+      token: token
+    })),
+    signOut: () => set(() => ({ isLogin: false, token: '' })),
   }),
   {
     name: 'login-storage',
