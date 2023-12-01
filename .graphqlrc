@@ -1,2 +1,2 @@
-schema: 'https://pirates.munawiki.dev/graphql'
+schema: ['http://localhost:3000/graphql', 'https://pirates.munawiki.dev/graphql']
 documents: 'src/**/*.{ts,tsx,graphql}'
