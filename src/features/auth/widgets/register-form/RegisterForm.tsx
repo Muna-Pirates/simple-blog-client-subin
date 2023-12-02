@@ -38,6 +38,18 @@ const RegisterForm = () => {
 		},
 	})
 
+	const onCompleted = () => {
+		navigate("/register-complete")
+	}
+
+	//🚧 임시 에러 핸들링
+	const onError = () => {
+		toast({
+			variant: "destructive",
+			title: "An Error Occurred",
+		})
+	}
+
 	const onSubmit = async (values: z.infer<typeof formSchema>) => {
 		register({
 			variables: {
@@ -46,16 +58,8 @@ const RegisterForm = () => {
 					roleId: 1, //user:1, admin:2
 				},
 			},
-			onCompleted: () => {
-				navigate("/register-complete")
-			},
-			onError: (error) => {
-				console.warn(error)
-				toast({
-					variant: "destructive",
-					title: "An Error Occurred",
-				})
-			}, //🚧 임시 에러 핸들링
+			onCompleted,
+			onError,
 		})
 	}
 
