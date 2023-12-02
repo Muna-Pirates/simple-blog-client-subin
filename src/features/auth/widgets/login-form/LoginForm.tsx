@@ -12,10 +12,13 @@ import Spinner from "@/assets/spinner.svg"
 import * as z from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
-import useAuth from "../../service/useAuth"
+import useAuth, { isLoginVar } from "../../service/useAuth"
 import { useToast } from "@/components/ui/use-toast"
 import { useNavigate } from "react-router-dom"
-import { useAuthStore } from "@/stores/authStore"
+import sessionStorage from "@/lib/storage/session"
+import { TOKEN } from "../../constants"
+import { LoginUserMutation } from "@/lib/graphql/graphql"
+import { ApolloError } from "@apollo/client"
 
 const formSchema = z.object({
 	email: z.string().email(),
@@ -26,7 +29,6 @@ const LoginForm = () => {
 	const { login, loginResult } = useAuth()
 	const { toast } = useToast()
 	const navigate = useNavigate()
-	const signIn = useAuthStore((state) => state.signIn)
 
 	const isLoading = loginResult.loading
 
@@ -38,6 +40,28 @@ const LoginForm = () => {
 		},
 	})
 
+	const onCompleted = (data: LoginUserMutation) => {
+		const token = data.loginUser.token
+		sessionStorage.setItem(TOKEN, token)
+		isLoginVar(true)
+		navigate("/")
+	}
+
+	//🚧 임시 에러 핸들링
+	const onError = (error: ApolloError) => {
+		if (error.graphQLErrors[0].message) {
+			form.setError("password", {
+				type: "validate",
+				message: error.graphQLErrors[0].message,
+			})
+		} else {
+			toast({
+				variant: "destructive",
+				title: "An Error Occurred",
+			})
+		}
+	}
+
 	const onSubmit = async (values: z.infer<typeof formSchema>) => {
 		login({
 			variables: {
@@ -45,24 +69,8 @@ const LoginForm = () => {
 					...values,
 				},
 			},
-			onCompleted: (data) => {
-				const token = data.loginUser.token
-				signIn(token)
-				navigate("/")
-			},
-			onError: (error) => {
-				if (error.graphQLErrors[0].message) {
-					form.setError("password", {
-						type: "validate",
-						message: error.graphQLErrors[0].message,
-					})
-				} else {
-					toast({
-						variant: "destructive",
-						title: "An Error Occurred",
-					})
-				}
-			}, //🚧 임시 에러 핸들링
+			onCompleted,
+			onError,
 		})
 	}
 

@@ -1,7 +1,13 @@
 import { gql } from "@/lib/graphql/gql"
-import { useMutation } from "@apollo/client"
+import { makeVar, useMutation, useReactiveVar } from "@apollo/client"
+import { TOKEN } from "../constants"
+import sessionStorage from "@/lib/storage/session"
+
+export const isLoginVar = makeVar(Boolean(sessionStorage.getItem(TOKEN)))
 
 const useAuth = () => {
+	const isLogin = useReactiveVar(isLoginVar)
+
 	/**REGISTER START */
 	const REGISTER_USER = gql(`
     mutation RegisterUser($createUserInput: CreateUserInput!) {
@@ -27,7 +33,7 @@ const useAuth = () => {
 	const [login, loginResult] = useMutation(LOGIN_USER)
 	/**LOGIN END */
 
-	return { register, registerResult, login, loginResult }
+	return { register, registerResult, login, loginResult, isLogin }
 }
 
 export default useAuth
