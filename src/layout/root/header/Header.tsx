@@ -8,7 +8,7 @@ const Header = () => {
 	const { isLogin } = useAuth()
 	const navigate = useNavigate()
 
-	const handleClickLogin = () => {
+	const handleClickSignIn = () => {
 		navigate("/login")
 	}
 
@@ -25,8 +25,8 @@ const Header = () => {
 				{
 					/**Login Button */
 					!isLogin && (
-						<Button className="bg-blue-800" onClick={handleClickLogin}>
-							Login
+						<Button className="bg-blue-800" onClick={handleClickSignIn}>
+							Sign in
 						</Button>
 					)
 				}

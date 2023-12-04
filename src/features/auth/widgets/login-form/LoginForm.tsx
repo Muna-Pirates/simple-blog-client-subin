@@ -74,58 +74,71 @@ const LoginForm = () => {
 		})
 	}
 
-	return (
-		<Form {...form}>
-			<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
-				<FormField
-					control={form.control}
-					name="email"
-					render={({ field }) => (
-						<FormItem>
-							<FormLabel>Email</FormLabel>
-							<FormControl>
-								<Input
-									placeholder="name@example.com"
-									type="email"
-									disabled={isLoading}
-									required
-									{...field}
-								/>
-							</FormControl>
-						</FormItem>
-					)}
-				/>
-				<FormField
-					control={form.control}
-					name="password"
-					render={({ field }) => (
-						<FormItem>
-							<FormLabel>Password</FormLabel>
-							<FormControl>
-								<Input
-									type="password"
-									required
-									disabled={isLoading}
-									{...field}
-								/>
-							</FormControl>
-							<FormMessage />
-						</FormItem>
-					)}
-				/>
+	const handleClickSignUp = () => {
+		navigate("/register")
+	}
 
-				<Button type="submit" disabled={isLoading} className="w-full">
-					{isLoading && (
-						<img
-							src={Spinner}
-							className="mr-2 h-4 w-4 animate-spin"
-							alt="spinner"
-						/>
-					)}
-					Sign In
-				</Button>
-			</form>
-		</Form>
+	return (
+		<div>
+			<Form {...form}>
+				<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
+					<FormField
+						control={form.control}
+						name="email"
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel>Email</FormLabel>
+								<FormControl>
+									<Input
+										placeholder="name@example.com"
+										type="email"
+										disabled={isLoading}
+										required
+										{...field}
+									/>
+								</FormControl>
+							</FormItem>
+						)}
+					/>
+					<FormField
+						control={form.control}
+						name="password"
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel>Password</FormLabel>
+								<FormControl>
+									<Input
+										type="password"
+										required
+										disabled={isLoading}
+										{...field}
+									/>
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
+
+					<Button type="submit" disabled={isLoading} className="w-full">
+						{isLoading && (
+							<img
+								src={Spinner}
+								className="mr-2 h-4 w-4 animate-spin"
+								alt="spinner"
+							/>
+						)}
+						Sign In
+					</Button>
+				</form>
+			</Form>
+
+			<div className="mt-8 flex justify-end gap-1">
+				<span className="text-sm text-gray-500">Don't have an account?</span>
+				<button className="text-sm font-semibold" onClick={handleClickSignUp}>
+					Sign Up
+				</button>
+			</div>
+		</div>
 	)
 }
 
