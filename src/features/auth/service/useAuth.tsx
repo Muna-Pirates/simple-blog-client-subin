@@ -4,7 +4,6 @@ import { TOKEN } from "../constants"
 import sessionStorage from "@/lib/storage/session"
 
 export const isLoginVar = makeVar(Boolean(sessionStorage.getItem(TOKEN)))
-export const authTokenVar = makeVar(sessionStorage.getItem(TOKEN))
 
 const useAuth = () => {
 	const isLogin = useReactiveVar(isLoginVar)

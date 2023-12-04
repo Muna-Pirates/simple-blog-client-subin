@@ -7,7 +7,8 @@ import {
 import { setContext } from "@apollo/client/link/context";
 import { API_BASE_URL } from '../../config';
 import { onError } from '@apollo/client/link/error';
-import { authTokenVar } from "@/features/auth/service/useAuth";
+import sessionStorage from "../storage/session";
+import { TOKEN } from "@/features/auth/constants";
 
 const httpLink = createHttpLink({
   uri: API_BASE_URL
@@ -25,7 +26,7 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 
 
 const authLink = setContext((_, { headers }) => {
-  const token = authTokenVar()
+  const token = sessionStorage.getItem(TOKEN)
 
   return {
     headers: {
