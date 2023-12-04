@@ -1,5 +1,5 @@
 import { RouteObject } from "react-router-dom"
-import Profile from "@/pages/user/profile/Profile"
+import Profile from "@/features/user/pages/profile/Profile"
 
 const userRoutes: RouteObject[] = [
 	{

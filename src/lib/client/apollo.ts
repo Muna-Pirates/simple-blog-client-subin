@@ -1,19 +1,31 @@
 import {
   ApolloClient,
+  ApolloLink,
   createHttpLink,
   InMemoryCache,
 } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 import { API_BASE_URL } from '../../config';
-import sessionStorage from "../storage/session";
-import { TOKEN } from "@/features/auth/constants";
+import { onError } from '@apollo/client/link/error';
+import { authTokenVar } from "@/features/auth/service/useAuth";
 
 const httpLink = createHttpLink({
   uri: API_BASE_URL
 });
 
+const errorLink = onError(({ graphQLErrors, networkError }) => {
+  if (graphQLErrors) {
+    const unauthorized = graphQLErrors.find(error => error.extensions?.statusCode === 401)
+
+    if (unauthorized) location.replace('/login')
+  }
+
+  if (networkError) console.log(`[Network error]: ${networkError}`);
+});
+
+
 const authLink = setContext((_, { headers }) => {
-  const token = sessionStorage.getItem(TOKEN)
+  const token = authTokenVar()
 
   return {
     headers: {
@@ -23,8 +35,14 @@ const authLink = setContext((_, { headers }) => {
   }
 });
 
+const link = ApolloLink.from([
+  errorLink,
+  authLink,
+  httpLink
+])
+
 const client = new ApolloClient({
-  link: authLink.concat(httpLink),
+  link: link,
   cache: new InMemoryCache(),
 });
 

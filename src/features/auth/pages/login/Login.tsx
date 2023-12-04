@@ -1,6 +1,7 @@
 import Center from "@/layout/center/Center"
 import LoginForm from "../../widgets/login-form/LoginForm"
-const Register = () => {
+
+const Login = () => {
 	return (
 		<Center>
 			<h1 className="text-4xl font-bold mb-8">Login</h1>
@@ -11,4 +12,4 @@ const Register = () => {
 	)
 }
 
-export default Register
+export default Login

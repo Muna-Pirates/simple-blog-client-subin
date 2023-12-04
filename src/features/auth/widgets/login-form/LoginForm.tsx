@@ -12,7 +12,7 @@ import Spinner from "@/assets/spinner.svg"
 import * as z from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
-import useAuth, { isLoginVar } from "../../service/useAuth"
+import useAuth, { authTokenVar, isLoginVar } from "../../service/useAuth"
 import { useToast } from "@/components/ui/use-toast"
 import { useNavigate } from "react-router-dom"
 import sessionStorage from "@/lib/storage/session"
@@ -44,6 +44,7 @@ const LoginForm = () => {
 		const token = data.loginUser.token
 		sessionStorage.setItem(TOKEN, token)
 		isLoginVar(true)
+		authTokenVar(token)
 		navigate("/")
 	}
 

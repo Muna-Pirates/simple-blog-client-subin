@@ -1,6 +1,6 @@
 import { RouteObject } from "react-router-dom"
-import Home from "@/pages/post/posts/Posts"
-import Post from "@/pages/post/post/Post"
+import Home from "@/features/post/pages/posts/Posts"
+import Post from "@/features/post/pages/post/Post"
 
 const blogRoutes: RouteObject[] = [
 	{
