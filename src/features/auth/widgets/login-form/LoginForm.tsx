@@ -25,6 +25,8 @@ const formSchema = z.object({
 	password: z.string(),
 })
 
+type LoginFormValues = z.infer<typeof formSchema>
+
 const LoginForm = () => {
 	const { login, loginResult } = useAuth()
 	const { toast } = useToast()
@@ -32,7 +34,7 @@ const LoginForm = () => {
 
 	const isLoading = loginResult.loading
 
-	const form = useForm<z.infer<typeof formSchema>>({
+	const form = useForm<LoginFormValues>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
 			email: "",
@@ -62,7 +64,7 @@ const LoginForm = () => {
 		}
 	}
 
-	const onSubmit = async (values: z.infer<typeof formSchema>) => {
+	const onSubmit = async (values: LoginFormValues) => {
 		login({
 			variables: {
 				credentials: {

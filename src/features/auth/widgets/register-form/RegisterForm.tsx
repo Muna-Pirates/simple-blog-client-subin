@@ -22,6 +22,8 @@ const formSchema = z.object({
 	name: z.string(),
 })
 
+type RegisterFormValues = z.infer<typeof formSchema>
+
 const RegisterForm = () => {
 	const { register, registerResult } = useAuth()
 	const { toast } = useToast()
@@ -29,7 +31,7 @@ const RegisterForm = () => {
 
 	const isLoading = registerResult.loading
 
-	const form = useForm<z.infer<typeof formSchema>>({
+	const form = useForm<RegisterFormValues>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
 			email: "",
@@ -50,7 +52,7 @@ const RegisterForm = () => {
 		})
 	}
 
-	const onSubmit = async (values: z.infer<typeof formSchema>) => {
+	const onSubmit = async (values: RegisterFormValues) => {
 		register({
 			variables: {
 				createUserInput: {
@@ -74,11 +76,11 @@ const RegisterForm = () => {
 							<FormLabel>Email</FormLabel>
 							<FormControl>
 								<Input
+									{...field}
 									placeholder="name@example.com"
 									type="email"
 									disabled={isLoading}
 									required
-									{...field}
 								/>
 							</FormControl>
 							<FormMessage />
@@ -93,10 +95,10 @@ const RegisterForm = () => {
 							<FormLabel>Password</FormLabel>
 							<FormControl>
 								<Input
+									{...field}
 									type="password"
 									required
 									disabled={isLoading}
-									{...field}
 								/>
 							</FormControl>
 							<FormMessage />
@@ -110,7 +112,7 @@ const RegisterForm = () => {
 						<FormItem>
 							<FormLabel>Name</FormLabel>
 							<FormControl>
-								<Input type="text" required disabled={isLoading} {...field} />
+								<Input {...field} type="text" required disabled={isLoading} />
 							</FormControl>
 							<FormMessage />
 						</FormItem>
