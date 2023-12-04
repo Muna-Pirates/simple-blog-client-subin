@@ -1,20 +1,15 @@
-import { gql } from "@/lib/graphql/gql"
-import { useQuery } from "@apollo/client"
+import Center from "@/layout/center/Center"
+import ProfileForm from "../../widgets/profile-form/ProfileForm"
 
-const GET_USER = gql(`
-query ViewUserProfile {
-  viewUserProfile {
-    id
-    email
-  }
-}
-`)
 const Profile = () => {
-	const { data } = useQuery(GET_USER)
-
-	if (!data?.viewUserProfile) return
-
-	return <div>Profile : {data?.viewUserProfile?.id}</div>
+	return (
+		<Center>
+			<h1 className="text-4xl font-bold mb-8">Profile</h1>
+			<div className="w-80">
+				<ProfileForm />
+			</div>
+		</Center>
+	)
 }
 
 export default Profile
