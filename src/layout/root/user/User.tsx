@@ -7,7 +7,6 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { TOKEN } from "@/features/auth/constants"
 import { isLoginVar } from "@/features/auth/service/useAuth"
-
 import { LogOut as LogOutIcon, User as UserIcon } from "lucide-react"
 import { useNavigate } from "react-router-dom"
 

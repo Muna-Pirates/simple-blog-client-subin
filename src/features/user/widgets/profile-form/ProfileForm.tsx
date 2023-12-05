@@ -9,11 +9,23 @@ import {
 	FormLabel,
 	FormMessage,
 } from "@/components/ui/form"
+import {
+	AlertDialog,
+	AlertDialogAction,
+	AlertDialogCancel,
+	AlertDialogContent,
+	AlertDialogDescription,
+	AlertDialogFooter,
+	AlertDialogHeader,
+	AlertDialogTitle,
+	AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { useEffect } from "react"
 import useUser from "../../service/useUser"
 import { useToast } from "@/components/ui/use-toast"
+import { useNavigate } from "react-router-dom"
 
 const formSchema = z.object({
 	email: z.string().email(),
@@ -23,12 +35,22 @@ const formSchema = z.object({
 type ProfileFormValues = z.infer<typeof formSchema>
 
 const ProfileForm = () => {
-	const { userProfile, userProfileResult, update, updateResult } = useUser()
+	const {
+		userProfile,
+		userProfileResult,
+		updateUserProfile,
+		updateUserProfileResult,
+		deleteAccount,
+		deleteAccountResult,
+	} = useUser()
 	const { toast } = useToast()
+	const navigate = useNavigate()
 
-	const { loading } = userProfileResult
-
-	console.log(updateResult)
+	const id = userProfile?.viewUserProfile?.id
+	const isLoading =
+		userProfileResult.loading ||
+		updateUserProfileResult.loading ||
+		deleteAccountResult.loading
 
 	const form = useForm<ProfileFormValues>({
 		resolver: zodResolver(formSchema),
@@ -47,16 +69,30 @@ const ProfileForm = () => {
 	}
 
 	const onSubmit = async (values: ProfileFormValues) => {
-		const id = userProfile?.viewUserProfile?.id
-
 		if (id) {
-			update({
+			updateUserProfile({
 				variables: {
 					updateData: {
 						...values,
 						id,
 					},
 				},
+				onError,
+			})
+		}
+	}
+
+	const onCompletedDeleteAccount = () => {
+		navigate("/")
+	}
+
+	const handleClickDeleteAccount = () => {
+		if (id) {
+			deleteAccount({
+				variables: {
+					id,
+				},
+				onCompleted: onCompletedDeleteAccount,
 				onError,
 			})
 		}
@@ -74,43 +110,71 @@ const ProfileForm = () => {
 	}, [userProfile, form])
 
 	return (
-		<Form {...form}>
-			<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-				<FormField
-					control={form.control}
-					name="name"
-					render={({ field }) => (
-						<FormItem>
-							<FormLabel>User name</FormLabel>
-							<FormControl>
-								<Input disabled={loading} {...field} />
-							</FormControl>
-							<FormMessage />
-						</FormItem>
-					)}
-				/>
-				<FormField
-					control={form.control}
-					name="email"
-					render={({ field }) => (
-						<FormItem>
-							<FormLabel>Email</FormLabel>
-							<FormControl>
-								<Input
-									placeholder="name@example.com"
-									type="email"
-									disabled={loading}
-									required
-									{...field}
-								/>
-							</FormControl>
-							<FormMessage />
-						</FormItem>
-					)}
-				/>
-				<Button type="submit">Update profile</Button>
-			</form>
-		</Form>
+		<div>
+			<Form {...form}>
+				<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+					<FormField
+						control={form.control}
+						name="name"
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel>User name</FormLabel>
+								<FormControl>
+									<Input disabled={isLoading} {...field} />
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
+					<FormField
+						control={form.control}
+						name="email"
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel>Email</FormLabel>
+								<FormControl>
+									<Input
+										placeholder="name@example.com"
+										type="email"
+										disabled={isLoading}
+										required
+										{...field}
+									/>
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
+					<Button type="submit" disabled={isLoading} className="w-full">
+						Update Profile
+					</Button>
+				</form>
+			</Form>
+			<hr className=" border-1 border-gray-300 my-4" />
+
+			<AlertDialog>
+				<AlertDialogTrigger asChild>
+					<Button variant="destructive" className="w-full">
+						Delete Account
+					</Button>
+				</AlertDialogTrigger>
+				<AlertDialogContent>
+					<AlertDialogHeader>
+						<AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+						<AlertDialogDescription>
+							This action cannot be undone. This will permanently delete your
+							account and remove your data from our servers.
+						</AlertDialogDescription>
+					</AlertDialogHeader>
+					<AlertDialogFooter>
+						<AlertDialogCancel>Cancel</AlertDialogCancel>
+						<AlertDialogAction onClick={handleClickDeleteAccount}>
+							Delete
+						</AlertDialogAction>
+					</AlertDialogFooter>
+				</AlertDialogContent>
+			</AlertDialog>
+		</div>
 	)
 }
 

@@ -28,12 +28,33 @@ const useUser = () => {
       }
     }
   `)
-	const [update, updateResult] = useMutation(UPDATE_USER, {
-		refetchQueries: [USER_PROFILE],
-	})
+	const [updateUserProfile, updateUserProfileResult] = useMutation(
+		UPDATE_USER,
+		{
+			refetchQueries: [USER_PROFILE],
+		}
+	)
 	/**UPDATE END */
 
-	return { userProfile, userProfileResult, update, updateResult }
+	/**DELETE START */
+	const DELETE_USER = gql(`
+	  mutation DeleteUser($id: Int!) {
+	    deleteUser(id: $id) {
+				email
+	    }
+	  }
+	`)
+	const [deleteAccount, deleteAccountResult] = useMutation(DELETE_USER)
+	/**DELETE END */
+
+	return {
+		userProfile,
+		userProfileResult,
+		updateUserProfile,
+		updateUserProfileResult,
+		deleteAccount,
+		deleteAccountResult,
+	}
 }
 
 export default useUser
