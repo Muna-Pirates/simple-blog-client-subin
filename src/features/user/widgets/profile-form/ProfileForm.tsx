@@ -26,6 +26,7 @@ import { useEffect } from "react"
 import useUser from "../../service/useUser"
 import { useToast } from "@/components/ui/use-toast"
 import { useNavigate } from "react-router-dom"
+import useAuth from "@/features/auth/service/useAuth"
 
 const formSchema = z.object({
 	email: z.string().email(),
@@ -45,6 +46,7 @@ const ProfileForm = () => {
 	} = useUser()
 	const { toast } = useToast()
 	const navigate = useNavigate()
+	const { logout } = useAuth()
 
 	const id = userProfile?.viewUserProfile?.id
 	const isLoading =
@@ -83,6 +85,7 @@ const ProfileForm = () => {
 	}
 
 	const onCompletedDeleteAccount = () => {
+		logout()
 		navigate("/")
 	}
 

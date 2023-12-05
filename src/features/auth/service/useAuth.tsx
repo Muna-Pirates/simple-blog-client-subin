@@ -33,7 +33,14 @@ const useAuth = () => {
 	const [login, loginResult] = useMutation(LOGIN_USER)
 	/**LOGIN END */
 
-	return { register, registerResult, login, loginResult, isLogin }
+	/**LOGOUT START */
+	const logout = () => {
+		isLoginVar(false)
+		sessionStorage.removeItem(TOKEN)
+	}
+	/**LOGOUT END */
+
+	return { register, registerResult, login, loginResult, isLogin, logout }
 }
 
 export default useAuth

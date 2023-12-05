@@ -5,20 +5,20 @@ import {
 	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { TOKEN } from "@/features/auth/constants"
-import { isLoginVar } from "@/features/auth/service/useAuth"
+import useAuth from "@/features/auth/service/useAuth"
 import { LogOut as LogOutIcon, User as UserIcon } from "lucide-react"
 import { useNavigate } from "react-router-dom"
 
 const User = () => {
 	const navigate = useNavigate()
+	const { logout } = useAuth()
+
 	const handleClickMenuProfile = () => {
 		navigate("/profile")
 	}
-	const handleClickMenuLogout = () => {
-		isLoginVar(false)
-		sessionStorage.removeItem(TOKEN)
 
+	const handleClickMenuLogout = () => {
+		logout()
 		navigate("/")
 	}
 
