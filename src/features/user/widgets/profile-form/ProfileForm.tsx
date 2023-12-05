@@ -22,7 +22,7 @@ import {
 } from "@/components/ui/alert-dialog"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { useEffect } from "react"
+import { MouseEvent, useEffect, useState } from "react"
 import useUser from "../../service/useUser"
 import { useToast } from "@/components/ui/use-toast"
 import { useNavigate } from "react-router-dom"
@@ -47,6 +47,8 @@ const ProfileForm = () => {
 	const { toast } = useToast()
 	const navigate = useNavigate()
 	const { logout } = useAuth()
+
+	const [editing, setEditing] = useState(false)
 
 	const id = userProfile?.viewUserProfile?.id
 	const isLoading =
@@ -81,7 +83,17 @@ const ProfileForm = () => {
 				},
 				onError,
 			})
+			setEditing(false)
 		}
+	}
+
+	const handleClickUpdate = (e: MouseEvent<HTMLButtonElement>) => {
+		e.preventDefault()
+		setEditing(true)
+	}
+	const handleClickCancel = (e: MouseEvent<HTMLButtonElement>) => {
+		e.preventDefault()
+		setEditing(false)
 	}
 
 	const onCompletedDeleteAccount = () => {
@@ -123,7 +135,7 @@ const ProfileForm = () => {
 							<FormItem>
 								<FormLabel>User name</FormLabel>
 								<FormControl>
-									<Input disabled={isLoading} {...field} />
+									<Input {...field} disabled={isLoading || !editing} />
 								</FormControl>
 								<FormMessage />
 							</FormItem>
@@ -137,22 +149,45 @@ const ProfileForm = () => {
 								<FormLabel>Email</FormLabel>
 								<FormControl>
 									<Input
+										{...field}
 										placeholder="name@example.com"
 										type="email"
-										disabled={isLoading}
+										disabled={isLoading || !editing}
 										required
-										{...field}
 									/>
 								</FormControl>
 								<FormMessage />
 							</FormItem>
 						)}
 					/>
-					<Button type="submit" disabled={isLoading} className="w-full">
-						Update Profile
-					</Button>
+
+					{editing ? (
+						<div className="flex gap-2">
+							<Button
+								type="button"
+								onClick={handleClickCancel}
+								variant="outline"
+								disabled={isLoading}
+								className="w-full"
+							>
+								Cancel
+							</Button>
+							<Button type="submit" disabled={isLoading} className="w-full">
+								Save
+							</Button>
+						</div>
+					) : (
+						<Button
+							onClick={handleClickUpdate}
+							type="button"
+							className="w-full"
+						>
+							Update Profile
+						</Button>
+					)}
 				</form>
 			</Form>
+
 			<hr className=" border-1 border-gray-300 my-4" />
 
 			<AlertDialog>

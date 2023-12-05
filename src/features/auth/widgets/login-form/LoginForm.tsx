@@ -92,11 +92,11 @@ const LoginForm = () => {
 								<FormLabel>Email</FormLabel>
 								<FormControl>
 									<Input
+										{...field}
 										placeholder="name@example.com"
 										type="email"
 										disabled={isLoading}
 										required
-										{...field}
 									/>
 								</FormControl>
 							</FormItem>
@@ -110,10 +110,10 @@ const LoginForm = () => {
 								<FormLabel>Password</FormLabel>
 								<FormControl>
 									<Input
+										{...field}
 										type="password"
 										required
 										disabled={isLoading}
-										{...field}
 									/>
 								</FormControl>
 								<FormMessage />
