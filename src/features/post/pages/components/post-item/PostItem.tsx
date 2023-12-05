@@ -25,7 +25,7 @@ const PostItem = ({
 	authorName,
 }: IPostItemProps) => {
 	return (
-		<Card key={id} className="border-none shadow-md hover:shadow-lg">
+		<Card className="border-none shadow-md hover:shadow-lg">
 			<CardHeader className="border-b-2 border-b-gray-100">
 				<CardTitle>{title}</CardTitle>
 				<CardDescription>
