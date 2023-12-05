@@ -251,7 +251,7 @@ export type User = {
   __typename?: 'User';
   createdAt: Scalars['DateTime']['output'];
   email: Scalars['String']['output'];
-  id: Scalars['ID']['output'];
+  id: Scalars['Int']['output'];
   name?: Maybe<Scalars['String']['output']>;
   roleId: Scalars['Int']['output'];
   updatedAt: Scalars['DateTime']['output'];
@@ -262,7 +262,7 @@ export type RegisterUserMutationVariables = Exact<{
 }>;
 
 
-export type RegisterUserMutation = { __typename?: 'Mutation', registerUser: { __typename?: 'User', id: string, email: string, name?: string | null, roleId: number } };
+export type RegisterUserMutation = { __typename?: 'Mutation', registerUser: { __typename?: 'User', id: number, email: string, name?: string | null, roleId: number } };
 
 export type LoginUserMutationVariables = Exact<{
   credentials: LoginInput;
@@ -274,9 +274,17 @@ export type LoginUserMutation = { __typename?: 'Mutation', loginUser: { __typena
 export type ViewUserProfileQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type ViewUserProfileQuery = { __typename?: 'Query', viewUserProfile?: { __typename?: 'User', id: string, email: string, name?: string | null, roleId: number } | null };
+export type ViewUserProfileQuery = { __typename?: 'Query', viewUserProfile?: { __typename?: 'User', id: number, email: string, name?: string | null, roleId: number } | null };
+
+export type UpdateUserProfileMutationVariables = Exact<{
+  updateData: UpdateUserInput;
+}>;
+
+
+export type UpdateUserProfileMutation = { __typename?: 'Mutation', updateUserProfile: { __typename?: 'User', id: number, email: string, name?: string | null, roleId: number } };
 
 
 export const RegisterUserDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"RegisterUser"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"createUserInput"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"CreateUserInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"registerUser"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"createUserInput"},"value":{"kind":"Variable","name":{"kind":"Name","value":"createUserInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"roleId"}}]}}]}}]} as unknown as DocumentNode<RegisterUserMutation, RegisterUserMutationVariables>;
 export const LoginUserDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"LoginUser"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"credentials"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"LoginInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"loginUser"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"credentials"},"value":{"kind":"Variable","name":{"kind":"Name","value":"credentials"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"token"}}]}}]}}]} as unknown as DocumentNode<LoginUserMutation, LoginUserMutationVariables>;
 export const ViewUserProfileDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"ViewUserProfile"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"viewUserProfile"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"roleId"}}]}}]}}]} as unknown as DocumentNode<ViewUserProfileQuery, ViewUserProfileQueryVariables>;
+export const UpdateUserProfileDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UpdateUserProfile"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"updateData"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UpdateUserInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"updateUserProfile"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"updateData"},"value":{"kind":"Variable","name":{"kind":"Name","value":"updateData"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"roleId"}}]}}]}}]} as unknown as DocumentNode<UpdateUserProfileMutation, UpdateUserProfileMutationVariables>;

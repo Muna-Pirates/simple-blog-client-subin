@@ -15,7 +15,8 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
 const documents = {
     "\n    mutation RegisterUser($createUserInput: CreateUserInput!) {\n      registerUser(createUserInput: $createUserInput) {\n        id\n        email\n        name\n        roleId\n      }\n    }\n  ": types.RegisterUserDocument,
     "\n\t  mutation LoginUser($credentials: LoginInput!) {\n\t    loginUser(credentials: $credentials) {\n        token\n\t    }\n\t  }\n\t": types.LoginUserDocument,
-    "\nquery ViewUserProfile {\n  viewUserProfile {\n    id\n    email\n\t\tname\n\t\troleId\n  }\n}\n": types.ViewUserProfileDocument,
+    "\n\tquery ViewUserProfile {\n\t\tviewUserProfile {\n\t\t\tid\n\t\t\temail\n\t\t\tname\n\t\t\troleId\n\t\t}\n\t}\n\t": types.ViewUserProfileDocument,
+    "\n    mutation UpdateUserProfile($updateData: UpdateUserInput!) {\n      updateUserProfile(updateData: $updateData) {\n        id\n        email\n        name\n        roleId\n      }\n    }\n  ": types.UpdateUserProfileDocument,
 };
 
 /**
@@ -43,7 +44,11 @@ export function gql(source: "\n\t  mutation LoginUser($credentials: LoginInput!)
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function gql(source: "\nquery ViewUserProfile {\n  viewUserProfile {\n    id\n    email\n\t\tname\n\t\troleId\n  }\n}\n"): (typeof documents)["\nquery ViewUserProfile {\n  viewUserProfile {\n    id\n    email\n\t\tname\n\t\troleId\n  }\n}\n"];
+export function gql(source: "\n\tquery ViewUserProfile {\n\t\tviewUserProfile {\n\t\t\tid\n\t\t\temail\n\t\t\tname\n\t\t\troleId\n\t\t}\n\t}\n\t"): (typeof documents)["\n\tquery ViewUserProfile {\n\t\tviewUserProfile {\n\t\t\tid\n\t\t\temail\n\t\t\tname\n\t\t\troleId\n\t\t}\n\t}\n\t"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n    mutation UpdateUserProfile($updateData: UpdateUserInput!) {\n      updateUserProfile(updateData: $updateData) {\n        id\n        email\n        name\n        roleId\n      }\n    }\n  "): (typeof documents)["\n    mutation UpdateUserProfile($updateData: UpdateUserInput!) {\n      updateUserProfile(updateData: $updateData) {\n        id\n        email\n        name\n        roleId\n      }\n    }\n  "];
 
 export function gql(source: string) {
   return (documents as any)[source] ?? {};

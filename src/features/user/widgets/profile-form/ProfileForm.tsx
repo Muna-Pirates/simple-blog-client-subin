@@ -11,20 +11,9 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { gql } from "@/lib/graphql/gql"
-import { useQuery } from "@apollo/client"
 import { useEffect } from "react"
-
-const GET_USER = gql(`
-query ViewUserProfile {
-  viewUserProfile {
-    id
-    email
-		name
-		roleId
-  }
-}
-`)
+import useUser from "../../service/useUser"
+import { useToast } from "@/components/ui/use-toast"
 
 const formSchema = z.object({
 	email: z.string().email(),
@@ -34,7 +23,12 @@ const formSchema = z.object({
 type ProfileFormValues = z.infer<typeof formSchema>
 
 const ProfileForm = () => {
-	const { data, loading } = useQuery(GET_USER)
+	const { userProfile, userProfileResult, update, updateResult } = useUser()
+	const { toast } = useToast()
+
+	const { loading } = userProfileResult
+
+	console.log(updateResult)
 
 	const form = useForm<ProfileFormValues>({
 		resolver: zodResolver(formSchema),
@@ -44,18 +38,40 @@ const ProfileForm = () => {
 		},
 	})
 
-	const onSubmit = async (values: ProfileFormValues) => {}
+	//🚧 임시 에러 핸들링
+	const onError = () => {
+		toast({
+			variant: "destructive",
+			title: "An Error Occurred",
+		})
+	}
+
+	const onSubmit = async (values: ProfileFormValues) => {
+		const id = userProfile?.viewUserProfile?.id
+
+		if (id) {
+			update({
+				variables: {
+					updateData: {
+						...values,
+						id,
+					},
+				},
+				onError,
+			})
+		}
+	}
 
 	useEffect(() => {
-		if (data?.viewUserProfile) {
+		if (userProfile?.viewUserProfile) {
 			const defaultValues = {
-				email: data.viewUserProfile.email,
-				name: data.viewUserProfile.name,
+				email: userProfile.viewUserProfile.email,
+				name: userProfile.viewUserProfile.name,
 			} as ProfileFormValues
 
 			form.reset(defaultValues)
 		}
-	}, [data, form])
+	}, [userProfile, form])
 
 	return (
 		<Form {...form}>
@@ -63,7 +79,6 @@ const ProfileForm = () => {
 				<FormField
 					control={form.control}
 					name="name"
-					defaultValue={data?.viewUserProfile?.name ?? ""}
 					render={({ field }) => (
 						<FormItem>
 							<FormLabel>User name</FormLabel>
