@@ -7,6 +7,8 @@ import { useToast } from "@/components/ui/use-toast"
 import { useNavigate } from "react-router-dom"
 import useAuth from "@/features/auth/service/useAuth"
 import { Textarea } from "@/components/ui/textarea"
+import useComment from "../../service/useComment"
+import Spinner from "@/assets/spinner.svg"
 
 const formSchema = z.object({
 	content: z.string(),
@@ -14,10 +16,17 @@ const formSchema = z.object({
 
 type CommentFormValues = z.infer<typeof formSchema>
 
-const CommentForm = () => {
+interface ICommentFormProps {
+	postId: number
+}
+
+const CommentForm = ({ postId }: ICommentFormProps) => {
 	const { isLogin } = useAuth()
 	const { toast } = useToast()
 	const navigate = useNavigate()
+	const { createComment, createCommentResult, listComments } = useComment()
+
+	const isLoading = createCommentResult.loading
 
 	const form = useForm<CommentFormValues>({
 		resolver: zodResolver(formSchema),
@@ -26,7 +35,13 @@ const CommentForm = () => {
 		},
 	})
 
-	const onCompleted = () => {}
+	const onCompleted = () => {
+		listComments({
+			variables: {
+				postId,
+			},
+		})
+	}
 
 	//🚧 임시 에러 핸들링
 	const onError = () => {
@@ -36,7 +51,21 @@ const CommentForm = () => {
 		})
 	}
 
-	const onSubmit = async (values: CommentFormValues) => {}
+	const onSubmit = async (values: CommentFormValues) => {
+		if (!isLogin) {
+			return navigate("/login")
+		}
+		createComment({
+			variables: {
+				createCommentInput: {
+					postId,
+					content: values.content,
+				},
+			},
+			onCompleted,
+			onError,
+		})
+	}
 
 	return (
 		<div>
@@ -52,23 +81,24 @@ const CommentForm = () => {
 							<FormItem className="w-full">
 								<FormControl>
 									<Textarea
-										className="w-full"
 										{...field}
+										className="w-full"
 										placeholder="write comment"
+										disabled={isLoading}
 									/>
 								</FormControl>
 							</FormItem>
 						)}
 					/>
 
-					<Button type="submit" disabled={false}>
-						{/* {isLoading && (
+					<Button type="submit" disabled={isLoading}>
+						{isLoading && (
 							<img
 								src={Spinner}
 								className="mr-2 h-4 w-4 animate-spin"
 								alt="spinner"
 							/>
-						)} */}
+						)}
 						Post Comment
 					</Button>
 				</form>

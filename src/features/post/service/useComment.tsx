@@ -19,9 +19,22 @@ const useComment = () => {
 	const [listComments, listCommentsResult] = useLazyQuery(LIST_COMMENTS)
 	/**LIST_COMMENTS END */
 
+	/**CREATE_COMMENT START */
+	const CREATE_COMMENT = gql(`
+    mutation AddComment($createCommentInput: CreateCommentInput!) {
+      addComment(createCommentInput: $createCommentInput) {
+        id
+      }
+    }
+  `)
+	const [createComment, createCommentResult] = useMutation(CREATE_COMMENT)
+	/**CREATE_COMMENT END */
+
 	return {
 		listComments,
 		listCommentsResult,
+		createComment,
+		createCommentResult,
 	}
 }
 
