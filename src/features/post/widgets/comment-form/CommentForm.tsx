@@ -9,6 +9,7 @@ import useAuth from "@/features/auth/service/useAuth"
 import { Textarea } from "@/components/ui/textarea"
 import useComment from "../../service/useComment"
 import Spinner from "@/assets/spinner.svg"
+import { LIST_COMMENTS } from "../../operations"
 
 const formSchema = z.object({
 	content: z.string(),
@@ -24,7 +25,7 @@ const CommentForm = ({ postId }: ICommentFormProps) => {
 	const { isLogin } = useAuth()
 	const { toast } = useToast()
 	const navigate = useNavigate()
-	const { createComment, createCommentResult, listComments } = useComment()
+	const { createComment, createCommentResult } = useComment()
 
 	const isLoading = createCommentResult.loading
 
@@ -36,11 +37,7 @@ const CommentForm = ({ postId }: ICommentFormProps) => {
 	})
 
 	const onCompleted = () => {
-		listComments({
-			variables: {
-				postId,
-			},
-		})
+		form.reset()
 	}
 
 	//🚧 임시 에러 핸들링
@@ -62,6 +59,7 @@ const CommentForm = ({ postId }: ICommentFormProps) => {
 					content: values.content,
 				},
 			},
+			refetchQueries: [LIST_COMMENTS],
 			onCompleted,
 			onError,
 		})
