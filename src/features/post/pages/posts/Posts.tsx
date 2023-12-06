@@ -41,8 +41,10 @@ const Posts = () => {
 	if (!posts.length) return
 
 	return (
-		<div className="h-full">
-			<PostList posts={posts} />
+		<div className="h-full w-full">
+			<section className="flex flex-col">
+				<PostList posts={posts} />
+			</section>
 		</div>
 	)
 }

@@ -23,7 +23,7 @@ const PostItem = ({
 
 	return (
 		<Card
-			className="border-none shadow-md hover:shadow-lg"
+			className="flex flex-col flex-grow-0 border-none shadow-md hover:shadow-lg"
 			onClick={() => handleClickPost(id)}
 		>
 			<CardHeader className="border-b-2 border-b-gray-100">
@@ -32,7 +32,7 @@ const PostItem = ({
 					by <strong>{authorName}</strong>
 				</CardDescription>
 			</CardHeader>
-			<CardContent className="pt-6">
+			<CardContent className="pt-6 w-80">
 				<p
 					className="overflow-hidden whitespace-normal text-ellipsis break-words line-clamp-3"
 					style={{ height: 72 }}
