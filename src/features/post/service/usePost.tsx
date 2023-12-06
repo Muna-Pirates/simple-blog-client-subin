@@ -11,7 +11,7 @@ const usePost = () => {
         title
         content
         author {
-          id
+            name
         }
         comments {
           id
