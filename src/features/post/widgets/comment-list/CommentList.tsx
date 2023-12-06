@@ -1,5 +1,5 @@
 import { useEffect } from "react"
-import CommentItem from "../../pages/components/comment-item/CommentItem"
+import CommentItem from "../../components/comment-item/CommentItem"
 import useComment from "../../service/useComment"
 import Spinner from "@/assets/spinner.svg"
 import { formatYYMMDD } from "@/lib/formatDate"

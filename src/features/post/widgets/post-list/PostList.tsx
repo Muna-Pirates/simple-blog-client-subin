@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom"
-import PostItem from "../../pages/components/post-item/PostItem"
+import PostItem from "../../components/post-item/PostItem"
 import { IPostItem } from "../../types"
 
 interface IPostListProps {
