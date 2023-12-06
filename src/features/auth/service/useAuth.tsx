@@ -15,7 +15,9 @@ const useAuth = () => {
         id
         email
         name
-        roleId
+        role {
+					id
+				}
       }
     }
   `)

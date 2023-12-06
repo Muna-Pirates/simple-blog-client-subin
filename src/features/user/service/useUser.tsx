@@ -9,7 +9,9 @@ const useUser = () => {
 			id
 			email
 			name
-			roleId
+			role {
+				id
+			}
 		}
 	}
 	`)
@@ -24,7 +26,9 @@ const useUser = () => {
         id
         email
         name
-        roleId
+				role {
+					id
+				}
       }
     }
   `)
