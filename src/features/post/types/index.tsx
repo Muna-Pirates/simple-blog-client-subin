@@ -7,3 +7,9 @@ export interface IPostItem {
 	createdDate: string
 	onClickPost?: (id: string) => void
 }
+
+export interface ICommentItem {
+	authorName: string
+	content: string
+	createdDate: string
+}

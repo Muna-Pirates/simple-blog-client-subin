@@ -13,8 +13,6 @@ const PostList = ({ posts }: IPostListProps) => {
 		navigate(`/post/${id}`)
 	}
 
-	const temp = Array.from({ length: 30 }, () => posts[0])
-
 	return (
 		<ul className="flex flex-row flex-wrap gap-8">
 			{posts.map((post: IPostItem) => (

@@ -42,6 +42,7 @@ const PostItem = ({
 			</CardContent>
 			<CardFooter className="flex flex-wrap gap-2 text-sm text-gray-400">
 				<p>{createdDate}</p>
+				<p>·</p>
 				<p>{commentsCount}개의 댓글</p>
 			</CardFooter>
 		</Card>

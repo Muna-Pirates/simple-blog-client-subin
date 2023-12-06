@@ -1,5 +1,5 @@
 import { gql } from "@/lib/graphql/gql"
-import { useLazyQuery, useMutation, useQuery } from "@apollo/client"
+import { useLazyQuery, useMutation } from "@apollo/client"
 
 const usePost = () => {
 	/**LIST_POST START */
@@ -32,10 +32,37 @@ const usePost = () => {
       }
     }
   `)
-	const [createPost, postResult] = useMutation(CREATE_POST)
+	const [createPost, createPostResult] = useMutation(CREATE_POST)
 	/**CREATE_POST END */
 
-	return { getPosts, postsResult, createPost, postResult }
+	/**VIEW_POST START */
+	const VIEW_POST = gql(`
+	query ViewPost($id: Int!) {
+		viewPost(id: $id) {
+      id
+      title
+      content
+      author {
+        name
+      }
+      categories {
+        name
+      }
+      createdAt
+		}
+	}
+	`)
+	const [viewPost, viewPostResult] = useLazyQuery(VIEW_POST)
+	/**VIEW_POST END */
+
+	return {
+		getPosts,
+		postsResult,
+		createPost,
+		createPostResult,
+		viewPost,
+		viewPostResult,
+	}
 }
 
 export default usePost
