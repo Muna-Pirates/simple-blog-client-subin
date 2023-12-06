@@ -1,5 +1,5 @@
 import { gql } from "@/lib/graphql/gql"
-import { useLazyQuery, useMutation, useQuery } from "@apollo/client"
+import { useLazyQuery, useMutation } from "@apollo/client"
 
 const useComment = () => {
 	/**LIST_COMMENTS START */
@@ -30,11 +30,37 @@ const useComment = () => {
 	const [createComment, createCommentResult] = useMutation(CREATE_COMMENT)
 	/**CREATE_COMMENT END */
 
+	/**UPDATE_COMMENT START */
+	const UPDATE_COMMENT = gql(`
+    mutation UpdateComment($updateCommentInput: UpdateCommentInput!) {
+      updateComment(updateCommentInput: $updateCommentInput) {
+        id
+      }
+    }
+  `)
+	const [updateComment, updateCommentResult] = useMutation(UPDATE_COMMENT)
+	/**UPDATE_COMMENT END */
+
+	/**DELETE_COMMENT START */
+	const DELETE_COMMENT = gql(`
+    mutation deleteComment($commentId: Int!) {
+      deleteComment(commentId: $commentId) {
+        id
+      }
+    }
+  `)
+	const [deleteComment, deleteCommentResult] = useMutation(DELETE_COMMENT)
+	/**DELETE_COMMENT END */
+
 	return {
 		listComments,
 		listCommentsResult,
 		createComment,
 		createCommentResult,
+		updateComment,
+		updateCommentResult,
+		deleteComment,
+		deleteCommentResult,
 	}
 }
 
