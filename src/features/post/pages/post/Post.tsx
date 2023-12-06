@@ -11,17 +11,18 @@ const Post = () => {
 	const { id } = useParams()
 	const { viewPost, viewPostResult } = usePost()
 
+	const postId = Number(id)
 	const postInfo = viewPostResult.data?.viewPost
 
 	useEffect(() => {
-		if (id) {
+		if (postId) {
 			viewPost({
 				variables: {
-					id: Number(id),
+					id: postId,
 				},
 			})
 		}
-	}, [id, viewPost])
+	}, [postId, viewPost])
 
 	if (viewPostResult.loading)
 		return (
@@ -36,7 +37,7 @@ const Post = () => {
 
 	if (viewPostResult.error?.name || !postInfo) return <div>Error Occurred</div>
 
-	if (!id) return
+	if (!postId) return
 
 	return (
 		<div className="w-full max-w-7xl h-full py-16">
@@ -59,12 +60,13 @@ const Post = () => {
 
 			{/** CONTENT */}
 			<div>{postInfo.content}</div>
+			<hr className="border-y-1 border-gray-200 my-10" />
 
 			{/** COMMENT */}
-			<CommentForm />
+			<CommentForm postId={postId} />
 
 			{/** COMMENT LIST */}
-			<CommentList id={id} />
+			<CommentList postId={postId} />
 		</div>
 	)
 }

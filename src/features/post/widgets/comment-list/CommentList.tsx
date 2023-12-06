@@ -5,21 +5,21 @@ import Spinner from "@/assets/spinner.svg"
 import { formatYYMMDD } from "@/lib/formatDate"
 
 interface ICommentListProps {
-	id?: string
+	postId: number
 }
-const CommentList = ({ id }: ICommentListProps) => {
+const CommentList = ({ postId }: ICommentListProps) => {
 	const { listComments, listCommentsResult } = useComment()
 	const comments = listCommentsResult.data?.listComments
 
 	useEffect(() => {
-		if (id) {
+		if (postId) {
 			listComments({
 				variables: {
-					postId: Number(id),
+					postId,
 				},
 			})
 		}
-	}, [id, listComments])
+	}, [postId, listComments])
 
 	if (listCommentsResult.loading)
 		return (
@@ -32,13 +32,17 @@ const CommentList = ({ id }: ICommentListProps) => {
 			</div>
 		)
 
-	if (!id || !comments?.length) return
+	if (!postId || !comments?.length) return
 
 	return (
 		<div className="mt-8">
+			<strong className="text-xl">{comments.length} comment</strong>
 			<ul>
 				{comments.map((comment) => (
-					<li className="border-b-2 last:border-b-0 border-gray-100 py-4">
+					<li
+						key={comment.id}
+						className="border-b-2 last:border-b-0 border-gray-100 py-4"
+					>
 						<CommentItem
 							authorName={comment.author.name || ""}
 							content={comment.content}
