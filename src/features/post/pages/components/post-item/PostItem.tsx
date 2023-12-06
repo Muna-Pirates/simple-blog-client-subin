@@ -6,26 +6,26 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card"
-
-export interface IPostItemProps {
-	id: number
-	title: string
-	content: string
-	authorName: string
-	commentsCount: number
-	createdDate: string
-}
+import { IPostItem } from "@/features/post/types"
 
 const PostItem = ({
 	id,
 	title,
+	authorName,
 	commentsCount,
 	content,
 	createdDate,
-	authorName,
-}: IPostItemProps) => {
+	onClickPost,
+}: IPostItem) => {
+	const handleClickPost = (id: string) => {
+		onClickPost && id && onClickPost(id)
+	}
+
 	return (
-		<Card className="border-none shadow-md hover:shadow-lg">
+		<Card
+			className="border-none shadow-md hover:shadow-lg"
+			onClick={() => handleClickPost(id)}
+		>
 			<CardHeader className="border-b-2 border-b-gray-100">
 				<CardTitle>{title}</CardTitle>
 				<CardDescription>
@@ -33,7 +33,10 @@ const PostItem = ({
 				</CardDescription>
 			</CardHeader>
 			<CardContent className="pt-6">
-				<p className="h-22 overflow-hidden whitespace-normal text-ellipsis break-words line-clamp-3">
+				<p
+					className="overflow-hidden whitespace-normal text-ellipsis break-words line-clamp-3"
+					style={{ height: 72 }}
+				>
 					{content}
 				</p>
 			</CardContent>
