@@ -45,6 +45,7 @@ const link = ApolloLink.from([
 const client = new ApolloClient({
   link: link,
   cache: new InMemoryCache(),
+  connectToDevTools: import.meta.env.DEV ? true : false
 });
 
 export default client;
