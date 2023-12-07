@@ -9,7 +9,9 @@ export const LIST_POST = gql(`
         title
         content
         author {
-            name
+          id 
+          name
+          email
         }
         comments {
           id
@@ -35,7 +37,9 @@ query ViewPost($id: Int!) {
     title
     content
     author {
+      id
       name
+      email
     }
     categories {
       name
@@ -54,6 +58,7 @@ query ListComments($postId: Int!) {
     author {
       id
       name
+      email
     }
     createdAt
   }

@@ -10,7 +10,6 @@ import {
 	FormMessage,
 } from "@/components/ui/form"
 import {
-	AlertDialog,
 	AlertDialogAction,
 	AlertDialogCancel,
 	AlertDialogContent,
@@ -27,6 +26,7 @@ import useUser from "../../service/useUser"
 import { useToast } from "@/components/ui/use-toast"
 import { useNavigate } from "react-router-dom"
 import useAuth from "@/features/auth/service/useAuth"
+import { USER_PROFILE } from "../../operations"
 
 const formSchema = z.object({
 	email: z.string().email(),
@@ -51,6 +51,7 @@ const ProfileForm = () => {
 	const [editing, setEditing] = useState(false)
 
 	const id = userProfile?.viewUserProfile?.id
+
 	const isLoading =
 		userProfileResult.loading ||
 		updateUserProfileResult.loading ||
@@ -81,6 +82,7 @@ const ProfileForm = () => {
 						id,
 					},
 				},
+				refetchQueries: [USER_PROFILE],
 				onError,
 			})
 			setEditing(false)
@@ -190,28 +192,26 @@ const ProfileForm = () => {
 
 			<hr className=" border-1 border-gray-300 my-4" />
 
-			<AlertDialog>
-				<AlertDialogTrigger asChild>
-					<Button variant="destructive" className="w-full">
-						Delete Account
-					</Button>
-				</AlertDialogTrigger>
-				<AlertDialogContent>
-					<AlertDialogHeader>
-						<AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-						<AlertDialogDescription>
-							This action cannot be undone. This will permanently delete your
-							account and remove your data from our servers.
-						</AlertDialogDescription>
-					</AlertDialogHeader>
-					<AlertDialogFooter>
-						<AlertDialogCancel>Cancel</AlertDialogCancel>
-						<AlertDialogAction onClick={handleClickDeleteAccount}>
-							Delete
-						</AlertDialogAction>
-					</AlertDialogFooter>
-				</AlertDialogContent>
-			</AlertDialog>
+			<AlertDialogTrigger asChild>
+				<Button variant="destructive" className="w-full">
+					Delete Account
+				</Button>
+			</AlertDialogTrigger>
+			<AlertDialogContent>
+				<AlertDialogHeader>
+					<AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+					<AlertDialogDescription>
+						This action cannot be undone. This will permanently delete your
+						account and remove your data from our servers.
+					</AlertDialogDescription>
+				</AlertDialogHeader>
+				<AlertDialogFooter>
+					<AlertDialogCancel>Cancel</AlertDialogCancel>
+					<AlertDialogAction onClick={handleClickDeleteAccount}>
+						Delete
+					</AlertDialogAction>
+				</AlertDialogFooter>
+			</AlertDialogContent>
 		</div>
 	)
 }

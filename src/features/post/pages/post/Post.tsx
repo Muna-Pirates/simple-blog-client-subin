@@ -45,7 +45,9 @@ const Post = () => {
 			<div className="mb-12">
 				<h1 className="text-5xl font-bold mb-8">{postInfo.title}</h1>
 				<h2 className="text-xl flex gap-2">
-					<span className="font-semibold">{postInfo.author.name}</span>
+					<span className="font-semibold">
+						{postInfo.author.name || postInfo.author.email}
+					</span>
 					<span>·</span>
 					<span className="text-lg text-gray-600">
 						{formatYYMMDD(postInfo.createdAt)}

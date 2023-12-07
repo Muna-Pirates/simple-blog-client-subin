@@ -5,12 +5,7 @@ const useUser = () => {
 	const { data: userProfile, ...rest } = useQuery(USER_PROFILE)
 	const userProfileResult = { ...rest }
 
-	const [updateUserProfile, updateUserProfileResult] = useMutation(
-		UPDATE_USER,
-		{
-			refetchQueries: [USER_PROFILE],
-		}
-	)
+	const [updateUserProfile, updateUserProfileResult] = useMutation(UPDATE_USER)
 
 	const [deleteAccount, deleteAccountResult] = useMutation(DELETE_USER)
 

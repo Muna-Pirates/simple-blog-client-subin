@@ -19,7 +19,7 @@ const Posts = () => {
 						id,
 						title,
 						content,
-						authorName: author.name,
+						authorName: author.name || author.email,
 						commentsCount: comments?.length ?? 0,
 						createdDate: formatYYMMDD(createdAt),
 					} as IPostItem)

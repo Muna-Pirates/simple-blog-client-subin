@@ -12,4 +12,5 @@ export interface ICommentItem {
 	authorName: string
 	content: string
 	createdDate: string
+	onClickEdit?: (id: string) => void
 }
