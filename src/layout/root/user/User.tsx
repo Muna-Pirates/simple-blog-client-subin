@@ -6,12 +6,15 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import useAuth from "@/features/auth/service/useAuth"
+import useUser from "@/features/user/service/useUser"
 import { LogOut as LogOutIcon, User as UserIcon } from "lucide-react"
 import { useNavigate } from "react-router-dom"
 
 const User = () => {
 	const navigate = useNavigate()
 	const { logout } = useAuth()
+	const { userProfile } = useUser()
+	const name = userProfile?.viewUserProfile?.name || "user"
 
 	const handleClickMenuProfile = () => {
 		navigate("/profile")
@@ -28,7 +31,7 @@ const User = () => {
 				<button>
 					<Avatar>
 						<AvatarImage src="https://github.com/shadcn.png" />
-						<AvatarFallback>User</AvatarFallback>
+						<AvatarFallback>{name}</AvatarFallback>
 					</Avatar>
 				</button>
 			</DropdownMenuTrigger>

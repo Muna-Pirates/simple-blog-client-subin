@@ -14,7 +14,7 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  */
 const documents = {
     "\nmutation RegisterUser($createUserInput: CreateUserInput!) {\n  registerUser(createUserInput: $createUserInput) {\n    id\n    email\n    name\n    role {\n      id\n    }\n  }\n}\n": types.RegisterUserDocument,
-    "\nmutation LoginUser($credentials: LoginInput!) {\n  loginUser(credentials: $credentials) {\n    token\n  }\n}\n": types.LoginUserDocument,
+    "\nmutation LoginUser($credentials: LoginInput!) {\n  loginUser(credentials: $credentials) {\n    token\n    user {\n      id\n      email\n      name\n      role {\n        id\n      }\n    }\n  }\n}\n": types.LoginUserDocument,
     "\n\tquery ListPosts($pagination: PaginationInput!) {\n\t\tlistPosts(pagination: $pagination) {\n      posts {\n        id\n        title\n        content\n        author {\n          id \n          name\n          email\n        }\n        comments {\n          id\n        }\n        createdAt\n      }\n\t\t}\n\t}\n\t": types.ListPostsDocument,
     "\nmutation CreatePost($createPostInput: CreatePostInput!) {\n  createPost(createPostInput: $createPostInput) {\n    id\n  }\n}\n": types.CreatePostDocument,
     "\nquery ViewPost($id: Int!) {\n  viewPost(id: $id) {\n    id\n    title\n    content\n    author {\n      id\n      name\n      email\n    }\n    categories {\n      name\n    }\n    createdAt\n  }\n}\n": types.ViewPostDocument,
@@ -48,7 +48,7 @@ export function gql(source: "\nmutation RegisterUser($createUserInput: CreateUse
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function gql(source: "\nmutation LoginUser($credentials: LoginInput!) {\n  loginUser(credentials: $credentials) {\n    token\n  }\n}\n"): (typeof documents)["\nmutation LoginUser($credentials: LoginInput!) {\n  loginUser(credentials: $credentials) {\n    token\n  }\n}\n"];
+export function gql(source: "\nmutation LoginUser($credentials: LoginInput!) {\n  loginUser(credentials: $credentials) {\n    token\n    user {\n      id\n      email\n      name\n      role {\n        id\n      }\n    }\n  }\n}\n"): (typeof documents)["\nmutation LoginUser($credentials: LoginInput!) {\n  loginUser(credentials: $credentials) {\n    token\n    user {\n      id\n      email\n      name\n      role {\n        id\n      }\n    }\n  }\n}\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

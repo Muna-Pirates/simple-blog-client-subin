@@ -3,7 +3,6 @@ import CommentItem from "../../components/comment-item/CommentItem"
 import useComment from "../../service/useComment"
 import Spinner from "@/assets/spinner.svg"
 import { formatYYMMDD } from "@/lib/formatDate"
-
 import {
 	AlertDialogAction,
 	AlertDialogCancel,
@@ -13,12 +12,20 @@ import {
 	AlertDialogHeader,
 	AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
+import client from "@/lib/client/apollo"
+import { USER_PROFILE } from "@/features/user/operations"
+
 interface ICommentListProps {
 	postId: number
 }
 const CommentList = ({ postId }: ICommentListProps) => {
 	const { listComments, listCommentsResult } = useComment()
 	const comments = listCommentsResult.data?.listComments
+
+	const profile = client.readQuery({
+		query: USER_PROFILE,
+	})
+	const userID = profile?.viewUserProfile?.id
 
 	const handleClickEdit = () => {}
 	const handleClickDelete = () => {}
@@ -59,6 +66,7 @@ const CommentList = ({ postId }: ICommentListProps) => {
 							authorName={comment.author.name || comment.author.email}
 							content={comment.content}
 							createdDate={formatYYMMDD(comment.createdAt)}
+							isCommentAuthor={userID === comment.author.id}
 							onClickEdit={handleClickEdit}
 						/>
 					</li>
