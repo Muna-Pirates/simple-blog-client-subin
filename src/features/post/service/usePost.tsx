@@ -1,5 +1,11 @@
 import { useLazyQuery, useMutation } from "@apollo/client"
-import { CREATE_POST, LIST_POST, VIEW_POST } from "../operations"
+import {
+	ASSIGN_CATEGORY,
+	CREATE_CATEGORY,
+	CREATE_POST,
+	LIST_POST,
+	VIEW_POST,
+} from "../operations"
 
 const usePost = () => {
 	const [getPosts, postsResult] = useLazyQuery(LIST_POST)
@@ -8,6 +14,10 @@ const usePost = () => {
 
 	const [viewPost, viewPostResult] = useLazyQuery(VIEW_POST)
 
+	const [createCategory, createCategoryResult] = useMutation(CREATE_CATEGORY)
+
+	const [assignCategory, assignCategoryResult] = useMutation(ASSIGN_CATEGORY)
+
 	return {
 		getPosts,
 		postsResult,
@@ -15,6 +25,10 @@ const usePost = () => {
 		createPostResult,
 		viewPost,
 		viewPostResult,
+		createCategory,
+		createCategoryResult,
+		assignCategory,
+		assignCategoryResult,
 	}
 }
 

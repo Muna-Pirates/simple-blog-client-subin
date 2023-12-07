@@ -17,6 +17,10 @@ export const LIST_POST = gql(`
           id
         }
         createdAt
+        categories {
+          id
+          name
+        }
       }
 		}
 	}
@@ -41,10 +45,11 @@ query ViewPost($id: Int!) {
       name
       email
     }
+    createdAt
     categories {
+      id
       name
     }
-    createdAt
   }
 }
 `)
@@ -87,4 +92,21 @@ mutation DeleteComment($commentId: Int!) {
     id
   }
 }
+`)
+
+/** CATEGORY OPERATION */
+export const CREATE_CATEGORY = gql(`
+  mutation CreateCategory($createCategoryInput: CreateCategoryInput!) {
+    createCategory(createCategoryInput: $createCategoryInput) {
+      id
+    }
+  }
+`)
+
+export const ASSIGN_CATEGORY = gql(`
+  mutation AssignCategoryToPost($postId: Int!, $categoryId: Int!) {
+    assignCategoryToPost(postId: $postId,categoryId: $categoryId) {
+      id
+    }
+  }
 `)
