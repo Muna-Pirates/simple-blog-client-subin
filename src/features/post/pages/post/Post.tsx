@@ -14,6 +14,8 @@ const Post = () => {
 	const postId = Number(id)
 	const postInfo = viewPostResult.data?.viewPost
 
+	console.log(postInfo)
+
 	useEffect(() => {
 		if (postId) {
 			viewPost({
@@ -55,7 +57,9 @@ const Post = () => {
 				</h2>
 				{postInfo.categories && (
 					<div>
-						<Badge className="bg-green-700">{postInfo.categories?.name}</Badge>
+						<Badge className="bg-green-700 text-sm">
+							{postInfo.categories?.name}
+						</Badge>
 					</div>
 				)}
 			</div>

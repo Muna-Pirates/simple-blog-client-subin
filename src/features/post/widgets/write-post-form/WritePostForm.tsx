@@ -5,6 +5,7 @@ import {
 	FormField,
 	FormItem,
 	FormLabel,
+	FormMessage,
 } from "@/components/ui/form"
 import * as z from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -14,68 +15,106 @@ import { Textarea } from "@/components/ui/textarea"
 import Spinner from "@/assets/spinner.svg"
 import { Input } from "@/components/ui/input"
 import usePost from "../../service/usePost"
-import { KeyboardEvent, useEffect, useRef, useState } from "react"
-import { Badge } from "@/components/ui/badge"
+import { useEffect, useRef } from "react"
+import { CreatePostMutation } from "@/lib/graphql/graphql"
+import { ApolloError } from "@apollo/client"
+import { LIST_POST } from "../../operations"
+import { useNavigate } from "react-router-dom"
 
 const formSchema = z.object({
-	title: z.string(),
-	content: z.string(),
+	title: z.string().min(3).max(10),
+	category: z.string(),
+	content: z.string().min(10),
 })
 
 type WriteFormValues = z.infer<typeof formSchema>
 
 const WritePostForm = () => {
 	const { toast } = useToast()
-	const { createPost, createPostResult } = usePost()
-	const isLoading = createPostResult.loading
+	const navigate = useNavigate()
 
-	const [categories, setCategories] = useState<string[]>([])
+	const {
+		createPost,
+		createPostResult,
+		createCategory,
+		createCategoryResult,
+		assignCategory,
+		assignCategoryResult,
+	} = usePost()
+	const isLoading = createPostResult.loading
 
 	const form = useForm<WriteFormValues>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
 			title: "",
 			content: "",
+			category: "",
 		},
 	})
 
 	const watchTextarea = form.watch("content")
 
-	const categoryInputRef = useRef<HTMLInputElement>(null)
 	const textareaRef = useRef<HTMLTextAreaElement>(null)
 
-	const handleClickCancel = () => {}
-
-	const onCompleted = () => {
-		form.reset()
+	const handleClickCancel = () => {
+		navigate("/")
 	}
 
 	//🚧 임시 에러 핸들링
-	const onError = () => {
+	const onError = (error: ApolloError) => {
 		toast({
 			variant: "destructive",
 			title: "An Error Occurred",
 		})
 	}
 
-	const onSubmit = async (values: WriteFormValues) => {
-		//createPost
-		//createCategory
-		//assignCategoryToPost
+	const onCompleted = async (
+		data: CreatePostMutation,
+		categoryName: string
+	) => {
+		const postId = data.createPost.id
+
+		const categoryData = await createCategory({
+			variables: {
+				createCategoryInput: {
+					name: categoryName,
+				},
+			},
+		})
+
+		assignCategory({
+			variables: {
+				postId: parseInt(postId),
+				categoryId: parseInt(categoryData.data?.createCategory.id || ""),
+			},
+			onCompleted() {
+				form.reset()
+				navigate("/")
+			},
+			refetchQueries: [LIST_POST],
+		})
 	}
 
-	const handleKeyupCategoryInput = (e: KeyboardEvent<HTMLInputElement>) => {
-		if (
-			categoryInputRef.current &&
-			categoryInputRef.current.value &&
-			e.key === "Enter"
-		) {
-			const inputValue = categoryInputRef.current.value
-			if (!categories.includes(inputValue)) {
-				setCategories((prev) => [...prev, inputValue])
-			}
-			categoryInputRef.current.value = ""
+	const preventEnterKeySubmission = (
+		e: React.KeyboardEvent<HTMLFormElement>
+	) => {
+		const target = e.target
+		if (e.key === "Enter" && target instanceof HTMLInputElement) {
+			e.preventDefault()
 		}
+	}
+
+	const onSubmit = async (values: WriteFormValues) => {
+		createPost({
+			variables: {
+				createPostInput: {
+					title: values.title,
+					content: values.content,
+				},
+			},
+			onCompleted: (data) => onCompleted(data, values.category),
+			onError,
+		})
 	}
 
 	useEffect(() => {
@@ -90,6 +129,7 @@ const WritePostForm = () => {
 		<div>
 			<Form {...form}>
 				<form
+					onKeyDown={preventEnterKeySubmission}
 					onSubmit={form.handleSubmit(onSubmit)}
 					className="flex flex-col items-end w-full gap-4"
 				>
@@ -107,26 +147,29 @@ const WritePostForm = () => {
 										disabled={isLoading}
 									/>
 								</FormControl>
+								<FormMessage />
 							</FormItem>
 						)}
 					/>
 
-					{/** CATEGORY TAG */}
-					<div className="flex gap-2 items-center w-full">
-						{categories.map((item) => (
-							<Badge key={item} className="bg-green-700 text-sm">
-								{item}
-							</Badge>
-						))}
-
-						<Input
-							className="border-0 w-48"
-							placeholder="enter category"
-							disabled={isLoading}
-							onKeyUp={handleKeyupCategoryInput}
-							ref={categoryInputRef}
-						/>
-					</div>
+					<FormField
+						control={form.control}
+						name="category"
+						render={({ field }) => (
+							<FormItem className="w-full">
+								<FormLabel>Category</FormLabel>
+								<FormControl>
+									<Input
+										{...field}
+										className="w-full"
+										placeholder="write category"
+										disabled={isLoading}
+									/>
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
 
 					<FormField
 						control={form.control}
@@ -143,6 +186,7 @@ const WritePostForm = () => {
 										ref={textareaRef}
 									/>
 								</FormControl>
+								<FormMessage />
 							</FormItem>
 						)}
 					/>
