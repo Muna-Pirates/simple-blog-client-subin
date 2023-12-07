@@ -7,6 +7,7 @@ const CommentItem = ({
 	createdDate,
 	isCommentAuthor,
 	onClickEdit,
+	onClickDelete,
 }: ICommentItem) => {
 	return (
 		<div>
@@ -17,12 +18,15 @@ const CommentItem = ({
 					<div>
 						<button
 							className="text-gray-400 hover:text-gray-600 hover:underline px-2"
-							onClick={() => onClickEdit}
+							onClick={onClickEdit}
 						>
 							Edit
 						</button>
 
-						<AlertDialogTrigger className="text-gray-400 hover:text-gray-600 hover:underline px-2">
+						<AlertDialogTrigger
+							onClick={onClickDelete}
+							className="text-gray-400 hover:text-gray-600 hover:underline px-2"
+						>
 							Delete
 						</AlertDialogTrigger>
 					</div>

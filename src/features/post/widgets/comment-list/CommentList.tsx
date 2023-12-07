@@ -1,4 +1,4 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import CommentItem from "../../components/comment-item/CommentItem"
 import useComment from "../../service/useComment"
 import Spinner from "@/assets/spinner.svg"
@@ -14,13 +14,15 @@ import {
 } from "@/components/ui/alert-dialog"
 import client from "@/lib/client/apollo"
 import { USER_PROFILE } from "@/features/user/operations"
+import { LIST_COMMENTS } from "../../operations"
 
 interface ICommentListProps {
 	postId: number
 }
 const CommentList = ({ postId }: ICommentListProps) => {
-	const { listComments, listCommentsResult } = useComment()
+	const { listComments, listCommentsResult, deleteComment } = useComment()
 	const comments = listCommentsResult.data?.listComments
+	const [clickedCommentId, setClickedCommentId] = useState<number>()
 
 	const profile = client.readQuery({
 		query: USER_PROFILE,
@@ -28,7 +30,19 @@ const CommentList = ({ postId }: ICommentListProps) => {
 	const userID = profile?.viewUserProfile?.id
 
 	const handleClickEdit = () => {}
-	const handleClickDelete = () => {}
+	const handleClickDelete = (id: number) => {
+		setClickedCommentId(id)
+	}
+	const handleClickDeleteConfirm = (id: number | undefined) => {
+		if (id) {
+			deleteComment({
+				variables: {
+					commentId: id,
+				},
+				refetchQueries: [LIST_COMMENTS],
+			})
+		}
+	}
 
 	useEffect(() => {
 		if (postId) {
@@ -68,6 +82,7 @@ const CommentList = ({ postId }: ICommentListProps) => {
 							createdDate={formatYYMMDD(comment.createdAt)}
 							isCommentAuthor={userID === comment.author.id}
 							onClickEdit={handleClickEdit}
+							onClickDelete={() => handleClickDelete(parseInt(comment.id))}
 						/>
 					</li>
 				))}
@@ -83,7 +98,9 @@ const CommentList = ({ postId }: ICommentListProps) => {
 				</AlertDialogHeader>
 				<AlertDialogFooter>
 					<AlertDialogCancel>Cancel</AlertDialogCancel>
-					<AlertDialogAction onClick={handleClickDelete}>
+					<AlertDialogAction
+						onClick={() => handleClickDeleteConfirm(clickedCommentId)}
+					>
 						Delete
 					</AlertDialogAction>
 				</AlertDialogFooter>
