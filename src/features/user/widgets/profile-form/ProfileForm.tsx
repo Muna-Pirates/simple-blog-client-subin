@@ -38,7 +38,7 @@ type ProfileFormValues = z.infer<typeof formSchema>
 const ProfileForm = () => {
 	const {
 		profile,
-		userProfileResult,
+		profileResult,
 		updateUserProfile,
 		updateUserProfileResult,
 		deleteAccount,
@@ -53,7 +53,7 @@ const ProfileForm = () => {
 	const id = profile?.viewUserProfile?.id
 
 	const isLoading =
-		userProfileResult.loading ||
+		profileResult.loading ||
 		updateUserProfileResult.loading ||
 		deleteAccountResult.loading
 

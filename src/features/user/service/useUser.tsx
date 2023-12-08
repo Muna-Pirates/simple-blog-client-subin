@@ -10,7 +10,7 @@ const useUser = () => {
 		skip: !isLogin,
 	})
 
-	const userProfileResult = { ...rest }
+	const profileResult = { ...rest }
 
 	const [updateUserProfile, updateUserProfileResult] = useMutation(UPDATE_USER)
 
@@ -24,7 +24,7 @@ const useUser = () => {
 
 	return {
 		profile,
-		userProfileResult,
+		profileResult,
 		updateUserProfile,
 		updateUserProfileResult,
 		deleteAccount,

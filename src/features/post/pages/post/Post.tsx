@@ -18,7 +18,6 @@ const Post = () => {
 	const { viewPost, viewPostResult, deletePost } = usePost()
 
 	const { profile } = useUser()
-
 	const postId = Number(id)
 	const postInfo = viewPostResult.data?.viewPost
 	const isMyPost = Boolean(profile?.viewUserProfile?.id === postInfo?.author.id)

@@ -33,7 +33,7 @@ type WriteFormValues = z.infer<typeof formSchema>
 const WritePostForm = () => {
 	const { toast } = useToast()
 	const navigate = useNavigate()
-	const { id } = useParams()
+	const { id: postId } = useParams()
 	const location = useLocation()
 
 	const {
@@ -45,7 +45,7 @@ const WritePostForm = () => {
 		assignCategoryResult,
 	} = usePost()
 
-	const { profile } = useUser()
+	const { profile, profileResult } = useUser()
 
 	const isLoading = createPostResult.loading
 
@@ -161,6 +161,7 @@ const WritePostForm = () => {
 		}
 	}
 
+	// textarea 높이 계산
 	useEffect(() => {
 		if (textareaRef && textareaRef.current) {
 			textareaRef.current.style.height = "0px"
@@ -169,14 +170,15 @@ const WritePostForm = () => {
 		}
 	}, [watchTextarea])
 
-	// useEffect(() => {
-	// 	const authorId = location.state?.authorId
-	// 	const userId = profile?.viewUserProfile?.id
-	// 	console.log(authorId, userId)
-	// 	if (authorId !== userId) {
-	// 		navigate("/")
-	// 	}
-	// }, [profile, location])
+	// 내 글 수정이 아닌 경우 접근 제한
+	useEffect(() => {
+		const authorId = location.state?.authorId
+		const userId = profile?.viewUserProfile?.id
+
+		if (postId && !profileResult.loading && Boolean(authorId !== userId)) {
+			navigate("/")
+		}
+	}, [profile, location, profileResult, navigate, postId])
 
 	return (
 		<div>
