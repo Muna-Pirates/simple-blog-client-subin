@@ -19,6 +19,7 @@ import sessionStorage from "@/lib/storage/session"
 import { TOKEN } from "../../constants"
 import { LoginUserMutation } from "@/lib/graphql/graphql"
 import { ApolloError } from "@apollo/client"
+import { CustomGraphQLError } from "@/types/graphql"
 
 const formSchema = z.object({
 	email: z.string().email(),
@@ -51,10 +52,17 @@ const LoginForm = () => {
 
 	//🚧 임시 에러 핸들링
 	const onError = (error: ApolloError) => {
-		if (error.graphQLErrors[0].message) {
+		const serverError = error.graphQLErrors[0] as CustomGraphQLError
+		if (serverError.code) {
+			const errorMessage = String(
+				typeof serverError.code.message !== "string"
+					? serverError.code?.message?.[0] ?? ""
+					: serverError.code.message
+			)
+
 			form.setError("password", {
 				type: "validate",
-				message: error.graphQLErrors[0].message,
+				message: errorMessage,
 			})
 		} else {
 			toast({
