@@ -17,6 +17,10 @@ const blogRoutes: RouteObject[] = [
 		path: "write",
 		Component: WithAuth(<WritePost />, "user"),
 	},
+	{
+		path: "write/:id",
+		Component: WithAuth(<WritePost />, "user"),
+	},
 ]
 
 export default blogRoutes

@@ -4,6 +4,7 @@ import CommentUpdateForm from "../comment-update-form/CommentUpdateForm"
 import useComment from "../../service/useComment"
 import DeleteCommentDialog from "../../components/delete-comment-dialog/DeleteCommentDialog"
 import { LIST_COMMENTS } from "../../operations"
+import { Button } from "@/components/ui/button"
 
 interface ICommentItem {
 	id: number
@@ -48,18 +49,22 @@ const CommentItem = ({
 
 				{isMine && !isEditing && (
 					<div>
-						<button
-							className="text-gray-400 hover:text-gray-600 hover:underline px-2"
+						<Button
+							variant="ghost"
+							className="text-gray-400 px-2"
 							onClick={onClickEdit}
 						>
 							Edit
-						</button>
+						</Button>
 
-						<AlertDialogTrigger
-							onClick={onClickDelete}
-							className="text-gray-400 hover:text-gray-600 hover:underline px-2"
-						>
-							Delete
+						<AlertDialogTrigger asChild>
+							<Button
+								variant="ghost"
+								className="text-gray-400 px-2"
+								onClick={onClickDelete}
+							>
+								Delete
+							</Button>
 						</AlertDialogTrigger>
 					</div>
 				)}

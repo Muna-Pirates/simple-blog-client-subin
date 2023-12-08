@@ -19,7 +19,7 @@ import { useEffect, useRef } from "react"
 import { CreatePostMutation } from "@/lib/graphql/graphql"
 import { ApolloError } from "@apollo/client"
 import { LIST_POST } from "../../operations"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 
 const formSchema = z.object({
 	title: z.string().min(3).max(10),
@@ -32,6 +32,7 @@ type WriteFormValues = z.infer<typeof formSchema>
 const WritePostForm = () => {
 	const { toast } = useToast()
 	const navigate = useNavigate()
+	const { id } = useParams()
 
 	const {
 		createPost,
@@ -41,6 +42,7 @@ const WritePostForm = () => {
 		assignCategory,
 		assignCategoryResult,
 	} = usePost()
+
 	const isLoading = createPostResult.loading
 
 	const form = useForm<WriteFormValues>({
@@ -60,38 +62,18 @@ const WritePostForm = () => {
 		navigate("/")
 	}
 
+	const onErrorCreateCategory = (error: ApolloError) => {
+		form.setError("category", {
+			type: "validate",
+			message: error.graphQLErrors[0].message,
+		})
+	}
+
 	//🚧 임시 에러 핸들링
 	const onError = (error: ApolloError) => {
 		toast({
 			variant: "destructive",
 			title: "An Error Occurred",
-		})
-	}
-
-	const onCompleted = async (
-		data: CreatePostMutation,
-		categoryName: string
-	) => {
-		const postId = data.createPost.id
-
-		const categoryData = await createCategory({
-			variables: {
-				createCategoryInput: {
-					name: categoryName,
-				},
-			},
-		})
-
-		assignCategory({
-			variables: {
-				postId: parseInt(postId),
-				categoryId: parseInt(categoryData.data?.createCategory.id || ""),
-			},
-			onCompleted() {
-				form.reset()
-				navigate("/")
-			},
-			refetchQueries: [LIST_POST],
 		})
 	}
 
@@ -104,7 +86,7 @@ const WritePostForm = () => {
 		}
 	}
 
-	const onSubmit = async (values: WriteFormValues) => {
+	const handleCreatePost = (values: WriteFormValues, categoryId?: string) => {
 		createPost({
 			variables: {
 				createPostInput: {
@@ -112,9 +94,67 @@ const WritePostForm = () => {
 					content: values.content,
 				},
 			},
-			onCompleted: (data) => onCompleted(data, values.category),
+			onCompleted: async (data: CreatePostMutation) => {
+				const postId = data.createPost.id
+
+				if (categoryId) {
+					assignCategory({
+						variables: {
+							postId: parseInt(postId),
+							categoryId: parseInt(categoryId),
+						},
+						onCompleted() {
+							form.reset()
+							navigate("/")
+						},
+						onError,
+					})
+				} else {
+					form.reset()
+					navigate("/")
+				}
+			},
 			onError,
+			refetchQueries: [
+				{
+					query: LIST_POST,
+					variables: {
+						pagination: {
+							page: 1,
+							pageSize: 10,
+						},
+					},
+				},
+			],
 		})
+	}
+
+	const handleCreateCategory = (values: WriteFormValues) => {
+		createCategory({
+			variables: {
+				createCategoryInput: {
+					name: values.category,
+				},
+			},
+			onError: onErrorCreateCategory,
+			onCompleted: (data) => {
+				handleCreatePost(values, data.createCategory.id)
+			},
+		})
+	}
+
+	const onSubmit = async (values: WriteFormValues) => {
+		/**
+		 * category Input이 있으면 createCategory 먼저 호출
+		 * createPost 호출헌 후에
+		 * category Input이 있으면 assignCategory 호출
+		 */
+
+		if (values.category) {
+			handleCreateCategory(values)
+		} else {
+			handleCreatePost(values)
+		}
 	}
 
 	useEffect(() => {
