@@ -3,9 +3,9 @@ import ProfileForm from "../../widgets/profile-form/ProfileForm"
 import useUser from "../../service/useUser"
 
 const Profile = () => {
-	const { userProfile } = useUser()
+	const { profile } = useUser()
 
-	if (!userProfile?.viewUserProfile) return
+	if (!profile?.viewUserProfile) return
 
 	return (
 		<Center>

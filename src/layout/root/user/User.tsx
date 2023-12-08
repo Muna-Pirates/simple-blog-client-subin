@@ -14,8 +14,8 @@ import { useNavigate } from "react-router-dom"
 const User = () => {
 	const navigate = useNavigate()
 	const { logout } = useAuth()
-	const { userProfile } = useUser()
-	const name = userProfile?.viewUserProfile?.name || "user"
+	const { profile } = useUser()
+	const name = profile?.viewUserProfile?.name || "user"
 
 	const handleClickMenuProfile = () => {
 		navigate("/profile")

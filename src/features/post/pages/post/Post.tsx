@@ -7,28 +7,24 @@ import { Badge } from "@/components/ui/badge"
 import CommentForm from "../../widgets/comment-form/CommentForm"
 import CommentList from "../../widgets/comment-list/CommentList"
 import { Button } from "@/components/ui/button"
-import client from "@/lib/client/apollo"
-import { USER_PROFILE } from "@/features/user/operations"
 import { LIST_POST } from "../../operations"
 import { useToast } from "@/components/ui/use-toast"
+import useUser from "@/features/user/service/useUser"
 
 const Post = () => {
 	const { id } = useParams()
 	const { toast } = useToast()
 	const navigate = useNavigate()
-	const { viewPost, viewPostResult, deletePost, deletePostResult, getPosts } =
-		usePost()
+	const { viewPost, viewPostResult, deletePost } = usePost()
 
-	const profile = client.readQuery({
-		query: USER_PROFILE,
-	})
+	const { profile } = useUser()
 
 	const postId = Number(id)
 	const postInfo = viewPostResult.data?.viewPost
 	const isMyPost = Boolean(profile?.viewUserProfile?.id === postInfo?.author.id)
 
 	const handleClickEdit = () => {
-		navigate(`/write/${postId}`)
+		navigate(`/write/${postId}`, { state: { authorId: postInfo?.author.id } })
 	}
 
 	//🚧 임시 에러 핸들링

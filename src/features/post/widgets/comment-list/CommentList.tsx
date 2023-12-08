@@ -5,6 +5,7 @@ import { formatYYMMDD } from "@/lib/formatDate"
 import client from "@/lib/client/apollo"
 import { USER_PROFILE } from "@/features/user/operations"
 import CommentItem from "../comment-item/CommentItem"
+import useUser from "@/features/user/service/useUser"
 
 interface ICommentListProps {
 	postId: number
@@ -16,9 +17,8 @@ const CommentList = ({ postId }: ICommentListProps) => {
 	const [clickedEditCommentId, setEditClickedCommentId] = useState<number>()
 	const [clickedDeleteCommentId, setClickedDeleteCommentId] = useState<number>()
 
-	const profile = client.readQuery({
-		query: USER_PROFILE,
-	})
+	const { profile } = useUser()
+
 	const userID = profile?.viewUserProfile?.id
 
 	const handleClickEdit = (id: number) => {

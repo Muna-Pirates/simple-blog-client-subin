@@ -37,7 +37,7 @@ type ProfileFormValues = z.infer<typeof formSchema>
 
 const ProfileForm = () => {
 	const {
-		userProfile,
+		profile,
 		userProfileResult,
 		updateUserProfile,
 		updateUserProfileResult,
@@ -50,7 +50,7 @@ const ProfileForm = () => {
 
 	const [editing, setEditing] = useState(false)
 
-	const id = userProfile?.viewUserProfile?.id
+	const id = profile?.viewUserProfile?.id
 
 	const isLoading =
 		userProfileResult.loading ||
@@ -116,15 +116,15 @@ const ProfileForm = () => {
 	}
 
 	useEffect(() => {
-		if (userProfile?.viewUserProfile) {
+		if (profile?.viewUserProfile) {
 			const defaultValues = {
-				email: userProfile.viewUserProfile.email,
-				name: userProfile.viewUserProfile.name,
+				email: profile.viewUserProfile.email,
+				name: profile.viewUserProfile.name,
 			} as ProfileFormValues
 
 			form.reset(defaultValues)
 		}
-	}, [userProfile, form])
+	}, [profile, form])
 
 	return (
 		<div>
