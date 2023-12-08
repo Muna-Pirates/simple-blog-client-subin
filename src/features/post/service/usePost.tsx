@@ -3,6 +3,7 @@ import {
 	ASSIGN_CATEGORY,
 	CREATE_CATEGORY,
 	CREATE_POST,
+	DELETE_POST,
 	LIST_POST,
 	VIEW_POST,
 } from "../operations"
@@ -11,6 +12,8 @@ const usePost = () => {
 	const [getPosts, postsResult] = useLazyQuery(LIST_POST)
 
 	const [createPost, createPostResult] = useMutation(CREATE_POST)
+
+	const [deletePost, deletePostResult] = useMutation(DELETE_POST)
 
 	const [viewPost, viewPostResult] = useLazyQuery(VIEW_POST)
 
@@ -23,6 +26,8 @@ const usePost = () => {
 		postsResult,
 		createPost,
 		createPostResult,
+		deletePost,
+		deletePostResult,
 		viewPost,
 		viewPostResult,
 		createCategory,

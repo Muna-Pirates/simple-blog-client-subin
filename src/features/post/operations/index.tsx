@@ -17,7 +17,7 @@ export const LIST_POST = gql(`
           id
         }
         createdAt
-        categories {
+        category {
           id
           name
         }
@@ -27,11 +27,19 @@ export const LIST_POST = gql(`
 	`)
 
 export const CREATE_POST = gql(`
-mutation CreatePost($createPostInput: CreatePostInput!) {
-  createPost(createPostInput: $createPostInput) {
-    id
+  mutation CreatePost($createPostInput: CreatePostInput!) {
+    createPost(createPostInput: $createPostInput) {
+      id
+    }
   }
-}
+`)
+
+export const DELETE_POST = gql(`
+  mutation DeletePost($postId: Int!) {
+    deletePost(postId: $postId) {
+      id
+    }
+  }
 `)
 
 export const VIEW_POST = gql(`
@@ -46,7 +54,7 @@ query ViewPost($id: Int!) {
       email
     }
     createdAt
-    categories {
+    category {
       id
       name
     }
@@ -71,11 +79,11 @@ query ListComments($postId: Int!) {
 `)
 
 export const CREATE_COMMENT = gql(`
-mutation AddComment($createCommentInput: CreateCommentInput!) {
-  addComment(createCommentInput: $createCommentInput) {
-    id
+  mutation AddComment($createCommentInput: CreateCommentInput!) {
+    addComment(createCommentInput: $createCommentInput) {
+      id
+    }
   }
-}
 `)
 
 export const UPDATE_COMMENT = gql(`
@@ -87,11 +95,11 @@ export const UPDATE_COMMENT = gql(`
 `)
 
 export const DELETE_COMMENT = gql(`
-mutation DeleteComment($commentId: Int!) {
-  deleteComment(commentId: $commentId) {
-    id
+  mutation DeleteComment($commentId: Int!) {
+    deleteComment(commentId: $commentId) {
+      id
+    }
   }
-}
 `)
 
 /** CATEGORY OPERATION */
