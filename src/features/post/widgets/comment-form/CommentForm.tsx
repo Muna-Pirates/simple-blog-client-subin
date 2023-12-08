@@ -12,7 +12,7 @@ import Spinner from "@/assets/spinner.svg"
 import { LIST_COMMENTS } from "../../operations"
 
 const formSchema = z.object({
-	content: z.string(),
+	content: z.string().min(1),
 })
 
 type CommentFormValues = z.infer<typeof formSchema>
