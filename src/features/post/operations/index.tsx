@@ -62,6 +62,14 @@ query ViewPost($id: Int!) {
 }
 `)
 
+export const UPDATE_POST = gql(`
+  mutation UpdatePost($postId: Int!, $updateData: UpdatePostInput!) {
+    updatePost(postId: $postId, updateData: $updateData) {
+      id
+    }
+  }
+`)
+
 /** COMMENT OPERATION */
 export const LIST_COMMENTS = gql(`
 query ListComments($postId: Int!) {

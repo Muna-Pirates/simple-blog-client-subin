@@ -19,6 +19,7 @@ const documents = {
     "\n  mutation CreatePost($createPostInput: CreatePostInput!) {\n    createPost(createPostInput: $createPostInput) {\n      id\n    }\n  }\n": types.CreatePostDocument,
     "\n  mutation DeletePost($postId: Int!) {\n    deletePost(postId: $postId) {\n      id\n    }\n  }\n": types.DeletePostDocument,
     "\nquery ViewPost($id: Int!) {\n  viewPost(id: $id) {\n    id\n    title\n    content\n    author {\n      id\n      name\n      email\n    }\n    createdAt\n    category {\n      id\n      name\n    }\n  }\n}\n": types.ViewPostDocument,
+    "\n  mutation UpdatePost($postId: Int!, $updateData: UpdatePostInput!) {\n    updatePost(postId: $postId, updateData: $updateData) {\n      id\n    }\n  }\n": types.UpdatePostDocument,
     "\nquery ListComments($postId: Int!) {\n  listComments(postId: $postId) {      \n    id\n    content\n    author {\n      id\n      name\n      email\n    }\n    createdAt\n  }\n}\n": types.ListCommentsDocument,
     "\n  mutation AddComment($createCommentInput: CreateCommentInput!) {\n    addComment(createCommentInput: $createCommentInput) {\n      id\n    }\n  }\n": types.AddCommentDocument,
     "\n  mutation UpdateComment($updateCommentInput: UpdateCommentInput!) {\n    updateComment(updateCommentInput: $updateCommentInput) {\n      id\n    }\n  }\n": types.UpdateCommentDocument,
@@ -68,6 +69,10 @@ export function gql(source: "\n  mutation DeletePost($postId: Int!) {\n    delet
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(source: "\nquery ViewPost($id: Int!) {\n  viewPost(id: $id) {\n    id\n    title\n    content\n    author {\n      id\n      name\n      email\n    }\n    createdAt\n    category {\n      id\n      name\n    }\n  }\n}\n"): (typeof documents)["\nquery ViewPost($id: Int!) {\n  viewPost(id: $id) {\n    id\n    title\n    content\n    author {\n      id\n      name\n      email\n    }\n    createdAt\n    category {\n      id\n      name\n    }\n  }\n}\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  mutation UpdatePost($postId: Int!, $updateData: UpdatePostInput!) {\n    updatePost(postId: $postId, updateData: $updateData) {\n      id\n    }\n  }\n"): (typeof documents)["\n  mutation UpdatePost($postId: Int!, $updateData: UpdatePostInput!) {\n    updatePost(postId: $postId, updateData: $updateData) {\n      id\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

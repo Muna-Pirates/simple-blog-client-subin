@@ -1,26 +1,13 @@
-import { Button } from "@/components/ui/button"
-import {
-	Form,
-	FormControl,
-	FormField,
-	FormItem,
-	FormLabel,
-	FormMessage,
-} from "@/components/ui/form"
 import * as z from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { useToast } from "@/components/ui/use-toast"
-import { Textarea } from "@/components/ui/textarea"
-import Spinner from "@/assets/spinner.svg"
-import { Input } from "@/components/ui/input"
 import usePost from "../../service/usePost"
-import { useEffect, useRef } from "react"
 import { CreatePostMutation } from "@/lib/graphql/graphql"
 import { ApolloError } from "@apollo/client"
 import { LIST_POST } from "../../operations"
-import { useLocation, useNavigate, useParams } from "react-router-dom"
-import useUser from "@/features/user/service/useUser"
+import { useNavigate } from "react-router-dom"
+import PostForm from "../../components/post-form/PostForm"
 
 const formSchema = z.object({
 	title: z.string().min(3).max(10),
@@ -33,19 +20,9 @@ type WriteFormValues = z.infer<typeof formSchema>
 const WritePostForm = () => {
 	const { toast } = useToast()
 	const navigate = useNavigate()
-	const { id: postId } = useParams()
-	const location = useLocation()
 
-	const {
-		createPost,
-		createPostResult,
-		createCategory,
-		createCategoryResult,
-		assignCategory,
-		assignCategoryResult,
-	} = usePost()
-
-	const { profile, profileResult } = useUser()
+	const { createPost, createPostResult, createCategory, assignCategory } =
+		usePost()
 
 	const isLoading = createPostResult.loading
 
@@ -57,14 +34,6 @@ const WritePostForm = () => {
 			category: "",
 		},
 	})
-
-	const watchTextarea = form.watch("content")
-
-	const textareaRef = useRef<HTMLTextAreaElement>(null)
-
-	const handleClickCancel = () => {
-		navigate("/")
-	}
 
 	const onErrorCreateCategory = (error: ApolloError) => {
 		form.setError("category", {
@@ -79,15 +48,6 @@ const WritePostForm = () => {
 			variant: "destructive",
 			title: "An Error Occurred",
 		})
-	}
-
-	const preventEnterKeySubmission = (
-		e: React.KeyboardEvent<HTMLFormElement>
-	) => {
-		const target = e.target
-		if (e.key === "Enter" && target instanceof HTMLInputElement) {
-			e.preventDefault()
-		}
 	}
 
 	const handleCreatePost = (values: WriteFormValues, categoryId?: string) => {
@@ -133,136 +93,37 @@ const WritePostForm = () => {
 		})
 	}
 
-	const handleCreateCategory = (values: WriteFormValues) => {
-		createCategory({
-			variables: {
-				createCategoryInput: {
-					name: values.category,
-				},
-			},
-			onError: onErrorCreateCategory,
-			onCompleted: (data) => {
-				handleCreatePost(values, data.createCategory.id)
-			},
-		})
-	}
-
 	const onSubmit = async (values: WriteFormValues) => {
 		/**
 		 * category Input이 있으면 createCategory 먼저 호출
-		 * createPost 호출헌 후에
+		 * createPost 호출한 후에
 		 * category Input이 있으면 assignCategory 호출
 		 */
 
 		if (values.category) {
-			handleCreateCategory(values)
+			createCategory({
+				variables: {
+					createCategoryInput: {
+						name: values.category,
+					},
+				},
+				onError: onErrorCreateCategory,
+				onCompleted: (data) => {
+					handleCreatePost(values, data.createCategory.id)
+				},
+			})
 		} else {
 			handleCreatePost(values)
 		}
 	}
 
-	// textarea 높이 계산
-	useEffect(() => {
-		if (textareaRef && textareaRef.current) {
-			textareaRef.current.style.height = "0px"
-			const scrollHeight = textareaRef.current.scrollHeight
-			textareaRef.current.style.height = scrollHeight + "px"
-		}
-	}, [watchTextarea])
-
-	// 내 글 수정이 아닌 경우 접근 제한
-	useEffect(() => {
-		const authorId = location.state?.authorId
-		const userId = profile?.viewUserProfile?.id
-
-		if (postId && !profileResult.loading && Boolean(authorId !== userId)) {
-			navigate("/")
-		}
-	}, [profile, location, profileResult, navigate, postId])
-
 	return (
 		<div>
-			<Form {...form}>
-				<form
-					onKeyDown={preventEnterKeySubmission}
-					onSubmit={form.handleSubmit(onSubmit)}
-					className="flex flex-col items-end w-full gap-4"
-				>
-					<FormField
-						control={form.control}
-						name="title"
-						render={({ field }) => (
-							<FormItem className="w-full">
-								<FormLabel>Title</FormLabel>
-								<FormControl>
-									<Input
-										{...field}
-										className="w-full"
-										placeholder="write title"
-										disabled={isLoading}
-									/>
-								</FormControl>
-								<FormMessage />
-							</FormItem>
-						)}
-					/>
-
-					<FormField
-						control={form.control}
-						name="category"
-						render={({ field }) => (
-							<FormItem className="w-full">
-								<FormLabel>Category</FormLabel>
-								<FormControl>
-									<Input
-										{...field}
-										className="w-full"
-										placeholder="write category"
-										disabled={isLoading}
-									/>
-								</FormControl>
-								<FormMessage />
-							</FormItem>
-						)}
-					/>
-
-					<FormField
-						control={form.control}
-						name="content"
-						render={({ field }) => (
-							<FormItem className="w-full">
-								<FormLabel>Content</FormLabel>
-								<FormControl>
-									<Textarea
-										{...field}
-										className="w-full max-h-96"
-										placeholder="write content"
-										disabled={isLoading}
-										ref={textareaRef}
-									/>
-								</FormControl>
-								<FormMessage />
-							</FormItem>
-						)}
-					/>
-					<div className="flex gap-2">
-						<Button onClick={handleClickCancel} variant="outline">
-							Cancel
-						</Button>
-
-						<Button type="submit" disabled={isLoading}>
-							{isLoading && (
-								<img
-									src={Spinner}
-									className="mr-2 h-4 w-4 animate-spin"
-									alt="spinner"
-								/>
-							)}
-							Post
-						</Button>
-					</div>
-				</form>
-			</Form>
+			<PostForm
+				form={form}
+				isLoading={isLoading}
+				onSubmit={form.handleSubmit(onSubmit)}
+			/>
 		</div>
 	)
 }
