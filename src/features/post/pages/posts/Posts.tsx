@@ -1,14 +1,23 @@
-import { useEffect, useMemo } from "react"
+import { useEffect, useMemo, useState } from "react"
 import usePost from "../../service/usePost"
 import PostList from "../../widgets/post-list/PostList"
 import { formatYYMMDD } from "@/lib/formatDate"
 import { IPostItem } from "../../types"
+import useIntersectionObserver from "@/hooks/useIntersectionObserver"
+
+import { ListPostsQuery } from "@/lib/graphql/graphql"
 
 const Posts = () => {
-	const { getPosts, postsResult } = usePost()
+	const {
+		postResults: { data, fetchMore, loading },
+	} = usePost()
+
+	const pageSize = 20
+	const [page, setPage] = useState(1)
+	const [isReachingEnd, setIsReachingEnd] = useState(false)
 
 	const posts = useMemo((): IPostItem[] => {
-		const postsList = postsResult.data?.listPosts.posts
+		const postsList = data?.listPosts.posts
 
 		if (!postsList?.length) {
 			return []
@@ -25,18 +34,47 @@ const Posts = () => {
 					} as IPostItem)
 			)
 		}
-	}, [postsResult])
+	}, [data])
+
+	const { setTarget } = useIntersectionObserver({
+		rootMargin: "50px",
+		onIntersect: (entries) => {
+			if (data) {
+				const postsCount = data.listPosts.posts.length
+				const totalCount = data.listPosts.pagination.totalItems
+				const isEnd = Boolean(!postsCount || postsCount === totalCount)
+
+				if (entries[0].isIntersecting && !loading && !isEnd) {
+					setPage((prevPage) => prevPage + 1)
+				}
+				if (isEnd) {
+					setIsReachingEnd(true)
+				}
+			}
+		},
+	})
 
 	useEffect(() => {
-		getPosts({
-			variables: {
-				pagination: {
-					page: 1,
-					pageSize: 10,
+		if (page > 1 && !isReachingEnd) {
+			fetchMore({
+				variables: {
+					pagination: { page, pageSize },
 				},
-			},
-		})
-	}, [getPosts])
+				updateQuery(previousResult, { fetchMoreResult }) {
+					const prevPosts = previousResult.listPosts.posts
+					const newPosts = fetchMoreResult.listPosts.posts
+					if (!fetchMoreResult.listPosts.posts.length) {
+						return previousResult
+					} else {
+						fetchMoreResult.listPosts.posts = [...prevPosts, ...newPosts]
+						return {
+							...fetchMoreResult,
+						} as ListPostsQuery
+					}
+				},
+			})
+		}
+	}, [page, isReachingEnd, fetchMore])
 
 	if (!posts.length) return
 
@@ -44,6 +82,7 @@ const Posts = () => {
 		<div className="h-full w-full">
 			<section className="flex flex-col">
 				<PostList posts={posts} />
+				<div ref={setTarget} className="w-full h-1"></div>
 			</section>
 		</div>
 	)

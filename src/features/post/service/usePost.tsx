@@ -1,4 +1,4 @@
-import { useLazyQuery, useMutation } from "@apollo/client"
+import { useLazyQuery, useMutation, useQuery } from "@apollo/client"
 import {
 	ASSIGN_CATEGORY,
 	CREATE_CATEGORY,
@@ -10,7 +10,16 @@ import {
 } from "../operations"
 
 const usePost = () => {
-	const [getPosts, postsResult] = useLazyQuery(LIST_POST)
+	const postResults = useQuery(LIST_POST, {
+		variables: {
+			pagination: {
+				page: 1,
+				pageSize: 20,
+			},
+		},
+		fetchPolicy: "cache-and-network",
+		notifyOnNetworkStatusChange: true,
+	})
 
 	const [createPost, createPostResult] = useMutation(CREATE_POST)
 
@@ -25,8 +34,7 @@ const usePost = () => {
 	const [assignCategory, assignCategoryResult] = useMutation(ASSIGN_CATEGORY)
 
 	return {
-		getPosts,
-		postsResult,
+		postResults,
 		createPost,
 		createPostResult,
 		deletePost,

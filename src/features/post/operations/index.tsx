@@ -4,6 +4,11 @@ import { gql } from "@/lib/graphql"
 export const LIST_POST = gql(`
 	query ListPosts($pagination: PaginationInput!) {
 		listPosts(pagination: $pagination) {
+      pagination {
+        page
+        pageSize
+        totalItems
+      }
       posts {
         id
         title
