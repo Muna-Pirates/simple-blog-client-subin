@@ -5,8 +5,6 @@ import { formatYYMMDD } from "@/lib/formatDate"
 import { IPostItem } from "../../types"
 import useIntersectionObserver from "@/hooks/useIntersectionObserver"
 
-import { ListPostsQuery } from "@/lib/graphql/graphql"
-
 const Posts = () => {
 	const {
 		postResults: { data, fetchMore, loading },
@@ -69,7 +67,7 @@ const Posts = () => {
 						fetchMoreResult.listPosts.posts = [...prevPosts, ...newPosts]
 						return {
 							...fetchMoreResult,
-						} as ListPostsQuery
+						}
 					}
 				},
 			})
