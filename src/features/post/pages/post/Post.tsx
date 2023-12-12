@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge"
 import CommentForm from "../../widgets/comment-form/CommentForm"
 import CommentList from "../../widgets/comment-list/CommentList"
 import { Button } from "@/components/ui/button"
-import { LIST_POST } from "../../operations"
+import { VIEW_POST } from "../../operations"
 import { useToast } from "@/components/ui/use-toast"
 import useUser from "@/features/user/service/useUser"
 
@@ -46,12 +46,9 @@ const Post = () => {
 			onError,
 			refetchQueries: [
 				{
-					query: LIST_POST,
+					query: VIEW_POST,
 					variables: {
-						pagination: {
-							page: 1,
-							pageSize: 10,
-						},
+						id: postId,
 					},
 				},
 			],

@@ -5,7 +5,6 @@ import { useToast } from "@/components/ui/use-toast"
 import usePost from "../../service/usePost"
 import { CreatePostMutation } from "@/lib/graphql/graphql"
 import { ApolloError } from "@apollo/client"
-import { LIST_POST } from "../../operations"
 import { useNavigate } from "react-router-dom"
 import PostForm from "../../components/post-form/PostForm"
 
@@ -79,17 +78,6 @@ const WritePostForm = () => {
 				}
 			},
 			onError,
-			refetchQueries: [
-				{
-					query: LIST_POST,
-					variables: {
-						pagination: {
-							page: 1,
-							pageSize: 10,
-						},
-					},
-				},
-			],
 		})
 	}
 

@@ -5,13 +5,14 @@ import { formatYYMMDD } from "@/lib/formatDate"
 import { IPostItem } from "../../types"
 import useIntersectionObserver from "@/hooks/useIntersectionObserver"
 
+const PAGE_SIZE = 20
+
 const Posts = () => {
 	const {
 		getPosts,
 		postResults: { data, fetchMore, loading },
 	} = usePost()
 
-	const pageSize = 20
 	const [page, setPage] = useState(1)
 
 	const postsCount = data?.listPosts.posts.length
@@ -53,7 +54,7 @@ const Posts = () => {
 			variables: {
 				pagination: {
 					page: 1,
-					pageSize: 20,
+					pageSize: PAGE_SIZE,
 				},
 			},
 		})
@@ -63,7 +64,7 @@ const Posts = () => {
 		if (page > 1 && !isReachingEnd) {
 			fetchMore({
 				variables: {
-					pagination: { page, pageSize },
+					pagination: { page, pageSize: PAGE_SIZE },
 				},
 				updateQuery(previousResult, { fetchMoreResult }) {
 					const prevPosts = previousResult.listPosts.posts

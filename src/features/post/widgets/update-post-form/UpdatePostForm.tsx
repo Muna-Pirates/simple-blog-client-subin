@@ -6,7 +6,6 @@ import usePost from "../../service/usePost"
 import { useEffect } from "react"
 import { UpdatePostMutation } from "@/lib/graphql/graphql"
 import { ApolloError } from "@apollo/client"
-import { LIST_POST } from "../../operations"
 import { useLocation, useNavigate, useParams } from "react-router-dom"
 import useUser from "@/features/user/service/useUser"
 import PostForm from "../../components/post-form/PostForm"
@@ -92,17 +91,6 @@ const WritePostForm = () => {
 				}
 			},
 			onError,
-			refetchQueries: [
-				{
-					query: LIST_POST,
-					variables: {
-						pagination: {
-							page: 1,
-							pageSize: 10,
-						},
-					},
-				},
-			],
 		})
 	}
 
