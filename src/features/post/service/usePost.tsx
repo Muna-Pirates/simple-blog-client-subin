@@ -10,13 +10,7 @@ import {
 } from "../operations"
 
 const usePost = () => {
-	const postResults = useQuery(LIST_POST, {
-		variables: {
-			pagination: {
-				page: 1,
-				pageSize: 20,
-			},
-		},
+	const [getPosts, postResults] = useLazyQuery(LIST_POST, {
 		fetchPolicy: "cache-and-network",
 		notifyOnNetworkStatusChange: true,
 	})
@@ -34,6 +28,7 @@ const usePost = () => {
 	const [assignCategory, assignCategoryResult] = useMutation(ASSIGN_CATEGORY)
 
 	return {
+		getPosts,
 		postResults,
 		createPost,
 		createPostResult,

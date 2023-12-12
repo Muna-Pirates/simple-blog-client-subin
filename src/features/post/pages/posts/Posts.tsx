@@ -7,12 +7,16 @@ import useIntersectionObserver from "@/hooks/useIntersectionObserver"
 
 const Posts = () => {
 	const {
+		getPosts,
 		postResults: { data, fetchMore, loading },
 	} = usePost()
 
 	const pageSize = 20
 	const [page, setPage] = useState(1)
-	const [isReachingEnd, setIsReachingEnd] = useState(false)
+
+	const postsCount = data?.listPosts.posts.length
+	const totalCount = data?.listPosts.pagination.totalItems
+	const isReachingEnd = Boolean(!postsCount || postsCount === totalCount)
 
 	const posts = useMemo((): IPostItem[] => {
 		const postsList = data?.listPosts.posts
@@ -37,20 +41,23 @@ const Posts = () => {
 	const { setTarget } = useIntersectionObserver({
 		rootMargin: "50px",
 		onIntersect: (entries) => {
-			if (data) {
-				const postsCount = data.listPosts.posts.length
-				const totalCount = data.listPosts.pagination.totalItems
-				const isEnd = Boolean(!postsCount || postsCount === totalCount)
-
-				if (entries[0].isIntersecting && !loading && !isEnd) {
-					setPage((prevPage) => prevPage + 1)
-				}
-				if (isEnd) {
-					setIsReachingEnd(true)
-				}
+			if (entries[0].isIntersecting && !loading && !isReachingEnd) {
+				setPage((prevPage) => prevPage + 1)
 			}
 		},
 	})
+
+	//초기 데이터 쿼리
+	useEffect(() => {
+		getPosts({
+			variables: {
+				pagination: {
+					page: 1,
+					pageSize: 20,
+				},
+			},
+		})
+	}, [getPosts])
 
 	useEffect(() => {
 		if (page > 1 && !isReachingEnd) {
