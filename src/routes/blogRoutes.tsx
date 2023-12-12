@@ -2,6 +2,7 @@ import { RouteObject } from "react-router-dom"
 import Home from "@/features/post/pages/posts/Posts"
 import Post from "@/features/post/pages/post/Post"
 import WritePost from "@/features/post/pages/write/Write"
+import SearchPost from "@/features/post/pages/search/Search"
 import WithAuth from "@/features/auth/components/with-auth/WithAuth"
 
 const blogRoutes: RouteObject[] = [
@@ -20,6 +21,10 @@ const blogRoutes: RouteObject[] = [
 	{
 		path: "write/:id",
 		Component: WithAuth(<WritePost />, "user"),
+	},
+	{
+		path: "search",
+		Component: WithAuth(<SearchPost />),
 	},
 ]
 

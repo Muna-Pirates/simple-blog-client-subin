@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/card"
 import { IPostItem } from "@/features/post/types"
 
-const PostItem = ({
+const SearchItem = ({
 	id,
 	title,
 	authorName,
@@ -23,18 +23,18 @@ const PostItem = ({
 
 	return (
 		<Card
-			className="flex flex-col flex-grow-0 border-none shadow-md hover:shadow-lg w-80 hover:cursor-pointer"
+			className="border-none shadow-none flex flex-col hover:cursor-pointer w-full "
 			onClick={() => handleClickPost(id)}
 		>
-			<CardHeader className="border-b-2 border-b-gray-100">
-				<CardTitle className="overflow-hidden whitespace-normal text-ellipsis break-words line-clamp-1">
-					{title}
-				</CardTitle>
-				<CardDescription>
+			<CardHeader>
+				<CardDescription className="text-md mb-3">
 					by <strong>{authorName}</strong>
 				</CardDescription>
+				<CardTitle className="overflow-hidden whitespace-normal text-ellipsis break-words line-clamp-1 ">
+					{title}
+				</CardTitle>
 			</CardHeader>
-			<CardContent className="pt-6">
+			<CardContent className="pt-4">
 				<p
 					className="overflow-hidden whitespace-normal text-ellipsis break-words line-clamp-3"
 					style={{ height: 72 }}
@@ -42,7 +42,7 @@ const PostItem = ({
 					{content}
 				</p>
 			</CardContent>
-			<CardFooter className="flex flex-wrap gap-2 text-sm text-gray-400">
+			<CardFooter className="flex flex-wrap gap-2 text-sm text-gray-400 border-b-2 border-b-gray-100">
 				<p>{createdDate}</p>
 				<p>·</p>
 				<p>{commentsCount} comment</p>
@@ -51,4 +51,4 @@ const PostItem = ({
 	)
 }
 
-export default PostItem
+export default SearchItem

@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button"
 import useAuth from "@/features/auth/service/useAuth"
 import { Link, useNavigate } from "react-router-dom"
 import User from "../user/User"
+import { SearchOutlined } from "@ant-design/icons"
 
 const Header = () => {
 	const { isLogin } = useAuth()
@@ -10,6 +11,9 @@ const Header = () => {
 
 	const handleClickSignIn = () => {
 		navigate("/login")
+	}
+	const handleClickSearch = () => {
+		navigate("/search")
 	}
 
 	return (
@@ -22,6 +26,8 @@ const Header = () => {
 			</Link>
 
 			<div className="flex gap-4 items-center">
+				{/**Search Button */}
+				<SearchOutlined onClick={handleClickSearch} style={{ fontSize: 25 }} />
 				{
 					/**Login Button */
 					!isLogin && (
