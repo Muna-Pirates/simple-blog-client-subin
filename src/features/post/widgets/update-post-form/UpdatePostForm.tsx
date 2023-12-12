@@ -54,7 +54,7 @@ const WritePostForm = () => {
 	}
 
 	//🚧 임시 에러 핸들링
-	const onError = (error: ApolloError) => {
+	const onError = () => {
 		toast({
 			variant: "destructive",
 			title: "An Error Occurred",

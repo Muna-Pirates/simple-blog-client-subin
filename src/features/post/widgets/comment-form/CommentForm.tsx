@@ -9,7 +9,6 @@ import useAuth from "@/features/auth/service/useAuth"
 import { Textarea } from "@/components/ui/textarea"
 import useComment from "../../service/useComment"
 import Spinner from "@/assets/spinner.svg"
-import { LIST_COMMENTS } from "../../operations"
 
 const formSchema = z.object({
 	content: z.string().min(1),

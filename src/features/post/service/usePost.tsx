@@ -1,4 +1,4 @@
-import { useLazyQuery, useMutation, useQuery } from "@apollo/client"
+import { useLazyQuery, useMutation } from "@apollo/client"
 import {
 	ASSIGN_CATEGORY,
 	CREATE_CATEGORY,
