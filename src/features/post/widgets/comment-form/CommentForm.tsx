@@ -59,7 +59,6 @@ const CommentForm = ({ postId }: ICommentFormProps) => {
 					content: values.content,
 				},
 			},
-			refetchQueries: [LIST_COMMENTS],
 			onCompleted,
 			onError,
 		})

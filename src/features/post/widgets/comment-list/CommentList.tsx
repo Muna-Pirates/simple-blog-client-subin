@@ -2,10 +2,9 @@ import { useEffect, useState } from "react"
 import useComment from "../../service/useComment"
 import Spinner from "@/assets/spinner.svg"
 import { formatYYMMDD } from "@/lib/formatDate"
-import client from "@/lib/client/apollo"
-import { USER_PROFILE } from "@/features/user/operations"
 import CommentItem from "../comment-item/CommentItem"
 import useUser from "@/features/user/service/useUser"
+import { COMMENTS_SUBSCRIPTION } from "../../operations"
 
 interface ICommentListProps {
 	postId: number
@@ -31,6 +30,23 @@ const CommentList = ({ postId }: ICommentListProps) => {
 		setEditClickedCommentId(undefined)
 	}
 
+	const subscribeToNewComments = () => {
+		listCommentsResult.subscribeToMore({
+			document: COMMENTS_SUBSCRIPTION,
+			variables: {
+				postId,
+			},
+			updateQuery: (prev, { subscriptionData }) => {
+				if (!subscriptionData.data) return prev
+				const newCommentItem = subscriptionData.data.onCommentAdded
+
+				return Object.assign({}, prev, {
+					listComments: [...prev.listComments, newCommentItem],
+				})
+			},
+		})
+	}
+
 	useEffect(() => {
 		if (postId) {
 			listComments({
@@ -40,6 +56,8 @@ const CommentList = ({ postId }: ICommentListProps) => {
 			})
 		}
 	}, [postId, listComments])
+
+	useEffect(() => subscribeToNewComments(), [])
 
 	if (listCommentsResult.loading)
 		return (
