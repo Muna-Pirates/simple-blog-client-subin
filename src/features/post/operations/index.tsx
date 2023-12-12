@@ -131,3 +131,12 @@ export const ASSIGN_CATEGORY = gql(`
     }
   }
 `)
+
+export const COMMENTS_SUBSCRIPTION = gql(`
+  subscription OnCommentAdded($postId: Int!) {
+    onCommentAdded(postId: $postId) {
+      id
+      content
+    }
+  }
+`)

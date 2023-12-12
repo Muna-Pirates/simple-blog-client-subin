@@ -3,12 +3,17 @@ import {
   ApolloLink,
   createHttpLink,
   InMemoryCache,
+  split
 } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
-import { API_BASE_URL } from '../../config';
+import { API_BASE_URL, WS_BASE_URL } from '../../config';
 import { onError } from '@apollo/client/link/error';
 import sessionStorage from "../storage/session";
 import { TOKEN } from "@/features/auth/constants";
+import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
+import { createClient } from 'graphql-ws';
+import { getMainDefinition } from "@apollo/client/utilities";
+
 
 const httpLink = createHttpLink({
   uri: API_BASE_URL
@@ -36,10 +41,27 @@ const authLink = setContext((_, { headers }) => {
   }
 });
 
+const wsLink = new GraphQLWsLink(createClient({
+  url: WS_BASE_URL,
+}),
+);
+
+const splitLink = split(
+  ({ query }) => {
+    const definition = getMainDefinition(query);
+    return (
+      definition.kind === 'OperationDefinition' &&
+      definition.operation === 'subscription'
+    );
+  },
+  wsLink,
+  httpLink,
+);
+
 const link = ApolloLink.from([
   errorLink,
   authLink,
-  httpLink
+  splitLink
 ])
 
 const client = new ApolloClient({
