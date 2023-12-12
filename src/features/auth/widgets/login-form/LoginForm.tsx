@@ -55,9 +55,9 @@ const LoginForm = () => {
 		const serverError = error.graphQLErrors[0] as CustomGraphQLError
 		if (serverError.code) {
 			const errorMessage = String(
-				typeof serverError.code.message !== "string"
-					? serverError.code?.message?.[0] ?? ""
-					: serverError.code.message
+				typeof serverError.message !== "string"
+					? serverError?.message?.[0] ?? ""
+					: serverError.message
 			)
 
 			form.setError("password", {
