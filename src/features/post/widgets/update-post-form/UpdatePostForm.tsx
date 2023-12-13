@@ -47,7 +47,7 @@ const WritePostForm = () => {
 		},
 	})
 
-	const handleFindCategoryAndCreatePost = () => {
+	const handleFindCategoryAndUpdatePost = () => {
 		findCategory({
 			variables: {
 				name: form.getValues("category"),
@@ -63,7 +63,7 @@ const WritePostForm = () => {
 		const errorMessage = error.graphQLErrors[0].message
 
 		if (errorMessage.includes("exists")) {
-			handleFindCategoryAndCreatePost()
+			handleFindCategoryAndUpdatePost()
 		} else {
 			form.setError("category", {
 				type: "validate",

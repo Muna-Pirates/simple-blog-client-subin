@@ -22,10 +22,6 @@ export const LIST_POST = gql(`
           id
         }
         createdAt
-        category {
-          id
-          name
-        }
       }
 		}
 	}
@@ -73,6 +69,35 @@ export const UPDATE_POST = gql(`
       id
     }
   }
+`)
+
+export const SEARCH_POSTS = gql(`
+query SearchPosts($searchCriteria: PostSearchInput!,$pagination:PaginationInput!) {
+  searchPosts(searchCriteria: $searchCriteria, pagination:$pagination) {
+    pagination {
+        page
+        pageSize
+        totalItems
+      }
+      posts {
+        id
+        title
+        content
+        author {
+          id 
+          name
+          email
+        }
+        comments {
+          id
+        }
+        category {
+          name
+        }
+        createdAt
+      }
+  }
+}
 `)
 
 /** COMMENT OPERATION */

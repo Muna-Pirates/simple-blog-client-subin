@@ -7,3 +7,7 @@ export interface IPostItem {
 	createdDate: string
 	onClickPost?: (id: string) => void
 }
+
+export interface ISearchPostItem extends IPostItem {
+	categoryName?: string
+}

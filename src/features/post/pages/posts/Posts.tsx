@@ -10,13 +10,13 @@ const PAGE_SIZE = 20
 const Posts = () => {
 	const {
 		getPosts,
-		postResults: { data, fetchMore, loading },
+		postResult: { data, fetchMore, loading },
 	} = usePost()
 
 	const [page, setPage] = useState(1)
 
-	const postsCount = data?.listPosts.posts.length
-	const totalCount = data?.listPosts.pagination.totalItems
+	const postsCount = data?.listPosts.posts.length || 0
+	const totalCount = data?.listPosts.pagination.totalItems || 0
 	const isReachingEnd = Boolean(!postsCount || postsCount === totalCount)
 
 	const posts = useMemo((): IPostItem[] => {

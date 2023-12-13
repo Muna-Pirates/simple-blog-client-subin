@@ -6,12 +6,13 @@ import {
 	DELETE_POST,
 	FIND_CATEGORY,
 	LIST_POST,
+	SEARCH_POSTS,
 	UPDATE_POST,
 	VIEW_POST,
 } from "../operations"
 
 const usePost = () => {
-	const [getPosts, postResults] = useLazyQuery(LIST_POST, {
+	const [getPosts, postResult] = useLazyQuery(LIST_POST, {
 		fetchPolicy: "cache-and-network",
 		notifyOnNetworkStatusChange: true,
 	})
@@ -24,6 +25,11 @@ const usePost = () => {
 
 	const [updatePost, updatePostResult] = useMutation(UPDATE_POST)
 
+	const [searchPosts, searchPostsResult] = useLazyQuery(SEARCH_POSTS, {
+		fetchPolicy: "cache-and-network",
+		notifyOnNetworkStatusChange: true,
+	})
+
 	const [createCategory, createCategoryResult] = useMutation(CREATE_CATEGORY)
 
 	const [assignCategory, assignCategoryResult] = useMutation(ASSIGN_CATEGORY)
@@ -32,7 +38,7 @@ const usePost = () => {
 
 	return {
 		getPosts,
-		postResults,
+		postResult,
 		createPost,
 		createPostResult,
 		deletePost,
@@ -41,6 +47,8 @@ const usePost = () => {
 		viewPostResult,
 		updatePost,
 		updatePostResult,
+		searchPosts,
+		searchPostsResult,
 		createCategory,
 		createCategoryResult,
 		assignCategory,

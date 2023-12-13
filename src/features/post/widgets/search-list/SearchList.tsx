@@ -1,12 +1,12 @@
 import { useNavigate } from "react-router-dom"
-import { IPostItem } from "../../types"
+import { ISearchPostItem } from "../../types"
 import SearchItem from "../../components/search-item/SearchItem"
 
-interface IPostListProps {
-	posts: IPostItem[]
+interface ISearchListProps {
+	posts: ISearchPostItem[]
 }
 
-const SearchList = ({ posts }: IPostListProps) => {
+const SearchList = ({ posts }: ISearchListProps) => {
 	const navigate = useNavigate()
 
 	const handleClickPost = (id: string) => {
@@ -15,7 +15,7 @@ const SearchList = ({ posts }: IPostListProps) => {
 
 	return (
 		<ul className="flex flex-col gap-8 w-full">
-			{posts.map((post: IPostItem) => (
+			{posts.map((post: ISearchPostItem) => (
 				<SearchItem key={post.id} {...post} onClickPost={handleClickPost} />
 			))}
 		</ul>

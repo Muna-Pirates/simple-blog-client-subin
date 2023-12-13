@@ -6,7 +6,8 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card"
-import { IPostItem } from "@/features/post/types"
+import { ISearchPostItem } from "@/features/post/types"
+import { Badge } from "@/components/ui/badge"
 
 const SearchItem = ({
 	id,
@@ -15,8 +16,9 @@ const SearchItem = ({
 	commentsCount,
 	content,
 	createdDate,
+	categoryName,
 	onClickPost,
-}: IPostItem) => {
+}: ISearchPostItem) => {
 	const handleClickPost = (id: string) => {
 		onClickPost && id && onClickPost(id)
 	}
@@ -34,13 +36,19 @@ const SearchItem = ({
 					{title}
 				</CardTitle>
 			</CardHeader>
-			<CardContent className="pt-4">
+			<CardContent>
 				<p
-					className="overflow-hidden whitespace-normal text-ellipsis break-words line-clamp-3"
-					style={{ height: 72 }}
+					className="overflow-hidden whitespace-normal text-ellipsis break-words line-clamp-2"
+					style={{ height: 48 }}
 				>
 					{content}
 				</p>
+
+				{categoryName && (
+					<div className="mt-2">
+						<Badge className="bg-green-700 text-sm">{categoryName}</Badge>
+					</div>
+				)}
 			</CardContent>
 			<CardFooter className="flex flex-wrap gap-2 text-sm text-gray-400 border-b-2 border-b-gray-100">
 				<p>{createdDate}</p>
