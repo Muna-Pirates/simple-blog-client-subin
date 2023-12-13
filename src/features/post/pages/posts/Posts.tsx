@@ -86,7 +86,7 @@ const Posts = () => {
 
 	return (
 		<div className="h-full w-full">
-			<section className="flex flex-col">
+			<section className="flex flex-col mt-2 sm:mt-8">
 				<PostList posts={posts} />
 				<div ref={setTarget} className="w-full h-1"></div>
 			</section>
