@@ -4,6 +4,7 @@ import {
 	CREATE_CATEGORY,
 	CREATE_POST,
 	DELETE_POST,
+	FIND_CATEGORY,
 	LIST_POST,
 	UPDATE_POST,
 	VIEW_POST,
@@ -27,6 +28,8 @@ const usePost = () => {
 
 	const [assignCategory, assignCategoryResult] = useMutation(ASSIGN_CATEGORY)
 
+	const [findCategory, findCategoryResult] = useLazyQuery(FIND_CATEGORY)
+
 	return {
 		getPosts,
 		postResults,
@@ -42,6 +45,8 @@ const usePost = () => {
 		createCategoryResult,
 		assignCategory,
 		assignCategoryResult,
+		findCategory,
+		findCategoryResult,
 	}
 }
 

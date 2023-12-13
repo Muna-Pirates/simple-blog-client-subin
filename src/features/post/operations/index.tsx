@@ -77,18 +77,18 @@ export const UPDATE_POST = gql(`
 
 /** COMMENT OPERATION */
 export const LIST_COMMENTS = gql(`
-query ListComments($postId: Int!) {
-  listComments(postId: $postId) {      
-    id
-    content
-    author {
+  query ListComments($postId: Int!) {
+    listComments(postId: $postId) {      
       id
-      name
-      email
+      content
+      author {
+        id
+        name
+        email
+      }
+      createdAt
     }
-    createdAt
   }
-}
 `)
 
 export const CREATE_COMMENT = gql(`
@@ -115,6 +115,21 @@ export const DELETE_COMMENT = gql(`
   }
 `)
 
+export const COMMENTS_SUBSCRIPTION = gql(`
+  subscription OnCommentAdded($postId: Int!) {
+    onCommentAdded(postId: $postId) {
+      id
+      content
+      author {
+      id
+      name
+      email
+      }
+      createdAt
+    }
+  }
+`)
+
 /** CATEGORY OPERATION */
 export const CREATE_CATEGORY = gql(`
   mutation CreateCategory($createCategoryInput: CreateCategoryInput!) {
@@ -132,17 +147,10 @@ export const ASSIGN_CATEGORY = gql(`
   }
 `)
 
-export const COMMENTS_SUBSCRIPTION = gql(`
-  subscription OnCommentAdded($postId: Int!) {
-    onCommentAdded(postId: $postId) {
+export const FIND_CATEGORY = gql(`
+  query FindCategoryByName($name: String!) {
+    findCategoryByName(name: $name) {      
       id
-      content
-      author {
-      id
-      name
-      email
-      }
-      createdAt
     }
   }
 `)

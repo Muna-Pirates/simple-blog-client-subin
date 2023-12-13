@@ -31,6 +31,7 @@ const WritePostForm = () => {
 		viewPostResult,
 		updatePost,
 		updatePostResult,
+		findCategory,
 	} = usePost()
 
 	const { profile, profileResult } = useUser()
@@ -46,11 +47,29 @@ const WritePostForm = () => {
 		},
 	})
 
-	const onErrorCreateCategory = (error: ApolloError) => {
-		form.setError("category", {
-			type: "validate",
-			message: error.graphQLErrors[0].message,
+	const handleFindCategoryAndCreatePost = () => {
+		findCategory({
+			variables: {
+				name: form.getValues("category"),
+			},
+			onError,
+			onCompleted: (data) => {
+				handleUpdatePost(form.getValues(), data.findCategoryByName?.id)
+			},
 		})
+	}
+
+	const onErrorCreateCategory = (error: ApolloError) => {
+		const errorMessage = error.graphQLErrors[0].message
+
+		if (errorMessage.includes("exists")) {
+			handleFindCategoryAndCreatePost()
+		} else {
+			form.setError("category", {
+				type: "validate",
+				message: errorMessage,
+			})
+		}
 	}
 
 	//🚧 임시 에러 핸들링

@@ -20,8 +20,13 @@ const WritePostForm = () => {
 	const { toast } = useToast()
 	const navigate = useNavigate()
 
-	const { createPost, createPostResult, createCategory, assignCategory } =
-		usePost()
+	const {
+		createPost,
+		createPostResult,
+		createCategory,
+		assignCategory,
+		findCategory,
+	} = usePost()
 
 	const isLoading = createPostResult.loading
 
@@ -34,11 +39,29 @@ const WritePostForm = () => {
 		},
 	})
 
-	const onErrorCreateCategory = (error: ApolloError) => {
-		form.setError("category", {
-			type: "validate",
-			message: error.graphQLErrors[0].message,
+	const handleFindCategoryAndCreatePost = () => {
+		findCategory({
+			variables: {
+				name: form.getValues("category"),
+			},
+			onError,
+			onCompleted: (data) => {
+				handleCreatePost(form.getValues(), data.findCategoryByName?.id)
+			},
 		})
+	}
+
+	const onErrorCreateCategory = (error: ApolloError) => {
+		const errorMessage = error.graphQLErrors[0].message
+
+		if (errorMessage.includes("exists")) {
+			handleFindCategoryAndCreatePost()
+		} else {
+			form.setError("category", {
+				type: "validate",
+				message: errorMessage,
+			})
+		}
 	}
 
 	//🚧 임시 에러 핸들링
