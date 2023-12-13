@@ -4,7 +4,6 @@ import { useForm } from "react-hook-form"
 import { useToast } from "@/components/ui/use-toast"
 import usePost from "../../service/usePost"
 import { useEffect } from "react"
-import { UpdatePostMutation } from "@/lib/graphql/graphql"
 import { ApolloError } from "@apollo/client"
 import { useLocation, useNavigate, useParams } from "react-router-dom"
 import useUser from "@/features/user/service/useUser"
@@ -19,11 +18,13 @@ const formSchema = z.object({
 
 type WriteFormValues = z.infer<typeof formSchema>
 
-const WritePostForm = () => {
+const UpdatePostForm = () => {
 	const { toast } = useToast()
 	const navigate = useNavigate()
-	const { id: postId } = useParams()
+	const { id } = useParams()
 	const location = useLocation()
+
+	const postId = Number(id)
 
 	const {
 		createCategory,
@@ -91,19 +92,17 @@ const WritePostForm = () => {
 	const handleUpdatePost = (values: WriteFormValues, categoryId?: string) => {
 		updatePost({
 			variables: {
-				postId: parseInt(postId || ""),
+				postId,
 				updateData: {
 					title: values.title,
 					content: values.content,
 				},
 			},
-			onCompleted: async (data: UpdatePostMutation) => {
-				const postId = data.updatePost.id
-
+			onCompleted: async () => {
 				if (categoryId) {
 					assignCategory({
 						variables: {
-							postId: parseInt(postId),
+							postId,
 							categoryId: parseInt(categoryId),
 						},
 						onError,
@@ -171,7 +170,7 @@ const WritePostForm = () => {
 			if (postId) {
 				const result = await viewPost({
 					variables: {
-						id: parseInt(postId),
+						id: postId,
 					},
 				})
 
@@ -190,10 +189,10 @@ const WritePostForm = () => {
 				form={form}
 				isLoading={isLoading}
 				onSubmit={form.handleSubmit(onSubmit)}
-				postId={parseInt(postId || "")}
+				postId={postId}
 			/>
 		</div>
 	)
 }
 
-export default WritePostForm
+export default UpdatePostForm
