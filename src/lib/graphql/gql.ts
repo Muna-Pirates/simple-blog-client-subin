@@ -26,7 +26,7 @@ const documents = {
     "\n  mutation DeleteComment($commentId: Int!) {\n    deleteComment(commentId: $commentId) {\n      id\n    }\n  }\n": types.DeleteCommentDocument,
     "\n  mutation CreateCategory($createCategoryInput: CreateCategoryInput!) {\n    createCategory(createCategoryInput: $createCategoryInput) {\n      id\n    }\n  }\n": types.CreateCategoryDocument,
     "\n  mutation AssignCategoryToPost($postId: Int!, $categoryId: Int!) {\n    assignCategoryToPost(postId: $postId,categoryId: $categoryId) {\n      id\n    }\n  }\n": types.AssignCategoryToPostDocument,
-    "\n  subscription OnCommentAdded($postId: Int!) {\n    onCommentAdded(postId: $postId) {\n      id\n      content\n    }\n  }\n": types.OnCommentAddedDocument,
+    "\n  subscription OnCommentAdded($postId: Int!) {\n    onCommentAdded(postId: $postId) {\n      id\n      content\n      author {\n      id\n      name\n      email\n      }\n      createdAt\n    }\n  }\n": types.OnCommentAddedDocument,
     "\nquery ViewUserProfile {\n  viewUserProfile {\n    id\n    email\n    name\n    role {\n      id\n    }\n  }\n}\n": types.ViewUserProfileDocument,
     "\nmutation UpdateUserProfile($updateData: UpdateUserInput!) {\n  updateUserProfile(updateData: $updateData) {\n    id\n    email\n    name\n    role {\n      id\n    }\n  }\n}\n": types.UpdateUserProfileDocument,
     "\nmutation DeleteUser($id: Int!) {\n  deleteUser(id: $id) {\n    email\n  }\n}\n": types.DeleteUserDocument,
@@ -101,7 +101,7 @@ export function gql(source: "\n  mutation AssignCategoryToPost($postId: Int!, $c
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function gql(source: "\n  subscription OnCommentAdded($postId: Int!) {\n    onCommentAdded(postId: $postId) {\n      id\n      content\n    }\n  }\n"): (typeof documents)["\n  subscription OnCommentAdded($postId: Int!) {\n    onCommentAdded(postId: $postId) {\n      id\n      content\n    }\n  }\n"];
+export function gql(source: "\n  subscription OnCommentAdded($postId: Int!) {\n    onCommentAdded(postId: $postId) {\n      id\n      content\n      author {\n      id\n      name\n      email\n      }\n      createdAt\n    }\n  }\n"): (typeof documents)["\n  subscription OnCommentAdded($postId: Int!) {\n    onCommentAdded(postId: $postId) {\n      id\n      content\n      author {\n      id\n      name\n      email\n      }\n      createdAt\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

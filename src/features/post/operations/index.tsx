@@ -137,6 +137,12 @@ export const COMMENTS_SUBSCRIPTION = gql(`
     onCommentAdded(postId: $postId) {
       id
       content
+      author {
+      id
+      name
+      email
+      }
+      createdAt
     }
   }
 `)
