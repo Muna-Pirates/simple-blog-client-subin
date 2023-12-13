@@ -11,9 +11,9 @@ import useUser from "@/features/user/service/useUser"
 import PostForm from "../../components/post-form/PostForm"
 
 const formSchema = z.object({
-	title: z.string().min(3).max(10),
+	title: z.string().min(3).max(50),
 	category: z.string(),
-	content: z.string().min(10),
+	content: z.string().min(10).max(5000),
 })
 
 type WriteFormValues = z.infer<typeof formSchema>

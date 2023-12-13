@@ -11,7 +11,7 @@ import useComment from "../../service/useComment"
 import Spinner from "@/assets/spinner.svg"
 
 const formSchema = z.object({
-	content: z.string().min(1),
+	content: z.string().min(3),
 })
 
 type CommentFormValues = z.infer<typeof formSchema>
