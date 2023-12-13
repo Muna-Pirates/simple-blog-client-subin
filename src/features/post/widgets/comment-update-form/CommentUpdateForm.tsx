@@ -11,7 +11,7 @@ import { LIST_COMMENTS } from "../../operations"
 import { MouseEvent } from "react"
 
 const formSchema = z.object({
-	content: z.string().min(1),
+	content: z.string().min(3),
 })
 
 type CommentUpdateFormValues = z.infer<typeof formSchema>
