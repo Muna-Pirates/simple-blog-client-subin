@@ -1,9 +1,9 @@
 import { SearchOutlined } from "@ant-design/icons"
-import { useSearchParams } from "react-router-dom"
-import SearchList from "../../widgets/search-list/SearchList"
+// import { useSearchParams } from "react-router-dom"
+// import SearchList from "../../widgets/search-list/SearchList"
 
 const Search = () => {
-	const [searchParams, setSearchParams] = useSearchParams()
+	// const [searchParams, setSearchParams] = useSearchParams()
 
 	return (
 		<div className="w-full max-w-7xl h-full py-16 flex flex-col items-center ">
@@ -19,7 +19,7 @@ const Search = () => {
 				</div>
 
 				{/** SEARCH RESULT */}
-				<SearchList posts={posts} />
+				{/* <SearchList posts={posts} /> */}
 			</div>
 		</div>
 	)
