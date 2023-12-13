@@ -106,20 +106,17 @@ const UpdatePostForm = () => {
 							categoryId: parseInt(categoryId),
 						},
 						onError,
+						refetchQueries: [VIEW_POST],
 					})
 				}
-
-				form.reset()
-				navigate(`/post/${postId}`)
-			},
-			refetchQueries: [
-				{
-					query: VIEW_POST,
+				viewPost({
 					variables: {
 						id: postId,
 					},
-				},
-			],
+				})
+				form.reset()
+				navigate(`/post/${postId}`)
+			},
 			onError,
 		})
 	}
