@@ -1,7 +1,7 @@
 import { CodegenConfig } from '@graphql-codegen/cli';
 
 const config: CodegenConfig = {
-  schema: 'http://ec2-3-34-193-123.ap-northeast-2.compute.amazonaws.com:3000/graphql',
+  schema: "https://simple-blog.munawiki.dev/graphql",
   documents: ['src/**/*.{ts,tsx,graphql}'],
   generates: {
     './src/lib/graphql/': {

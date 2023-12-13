@@ -1,6 +1,5 @@
 schema: [
 	"http://localhost:3000/graphql",
-	"https://pirates.munawiki.dev/graphql",
-	"http://ec2-3-34-193-123.ap-northeast-2.compute.amazonaws.com:3000/graphql",
+	"https://simple-blog.munawiki.dev/graphql",
 ]
 documents: "src/**/*.{ts,tsx,graphql}"
