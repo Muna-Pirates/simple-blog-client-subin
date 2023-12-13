@@ -9,6 +9,7 @@ import { ApolloError } from "@apollo/client"
 import { useLocation, useNavigate, useParams } from "react-router-dom"
 import useUser from "@/features/user/service/useUser"
 import PostForm from "../../components/post-form/PostForm"
+import { VIEW_POST } from "../../operations"
 
 const formSchema = z.object({
 	title: z.string().min(3).max(50),
@@ -26,17 +27,24 @@ const WritePostForm = () => {
 
 	const {
 		createCategory,
+		createCategoryResult,
 		assignCategory,
+		assignCategoryResult,
 		viewPost,
 		viewPostResult,
 		updatePost,
 		updatePostResult,
 		findCategory,
+		findCategoryResult,
 	} = usePost()
 
 	const { profile, profileResult } = useUser()
 
-	const isLoading = updatePostResult.loading
+	const isLoading =
+		updatePostResult.loading ||
+		assignCategoryResult.loading ||
+		findCategoryResult.loading ||
+		createCategoryResult.loading
 
 	const form = useForm<WriteFormValues>({
 		resolver: zodResolver(formSchema),
@@ -98,17 +106,21 @@ const WritePostForm = () => {
 							postId: parseInt(postId),
 							categoryId: parseInt(categoryId),
 						},
-						onCompleted() {
-							form.reset()
-							navigate("/")
-						},
 						onError,
 					})
-				} else {
-					form.reset()
-					navigate("/")
 				}
+
+				form.reset()
+				navigate(`/post/${postId}`)
 			},
+			refetchQueries: [
+				{
+					query: VIEW_POST,
+					variables: {
+						id: postId,
+					},
+				},
+			],
 			onError,
 		})
 	}

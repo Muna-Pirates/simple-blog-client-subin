@@ -7,7 +7,6 @@ import { Badge } from "@/components/ui/badge"
 import CommentForm from "../../widgets/comment-form/CommentForm"
 import CommentList from "../../widgets/comment-list/CommentList"
 import { Button } from "@/components/ui/button"
-import { VIEW_POST } from "../../operations"
 import { useToast } from "@/components/ui/use-toast"
 import useUser from "@/features/user/service/useUser"
 
@@ -44,14 +43,6 @@ const Post = () => {
 			},
 			onCompleted: onCompletedDelete,
 			onError,
-			refetchQueries: [
-				{
-					query: VIEW_POST,
-					variables: {
-						id: postId,
-					},
-				},
-			],
 		})
 	}
 

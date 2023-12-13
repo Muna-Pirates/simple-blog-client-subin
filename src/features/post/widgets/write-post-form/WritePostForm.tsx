@@ -24,11 +24,18 @@ const WritePostForm = () => {
 		createPost,
 		createPostResult,
 		createCategory,
+		createCategoryResult,
 		assignCategory,
+		assignCategoryResult,
 		findCategory,
+		findCategoryResult,
 	} = usePost()
 
-	const isLoading = createPostResult.loading
+	const isLoading =
+		createPostResult.loading ||
+		assignCategoryResult.loading ||
+		findCategoryResult.loading ||
+		createCategoryResult.loading
 
 	const form = useForm<WriteFormValues>({
 		resolver: zodResolver(formSchema),
@@ -89,16 +96,12 @@ const WritePostForm = () => {
 							postId: parseInt(postId),
 							categoryId: parseInt(categoryId),
 						},
-						onCompleted() {
-							form.reset()
-							navigate("/")
-						},
 						onError,
 					})
-				} else {
-					form.reset()
-					navigate("/")
 				}
+
+				form.reset()
+				navigate("/")
 			},
 			onError,
 		})
