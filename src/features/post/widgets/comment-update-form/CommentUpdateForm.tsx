@@ -15,6 +15,7 @@ import useComment from "../../service/useComment"
 import Spinner from "@/assets/spinner.svg"
 import { LIST_COMMENTS } from "../../operations"
 import { MouseEvent } from "react"
+import { useParams } from "react-router-dom"
 
 const formSchema = z.object({
 	content: z.string().min(3),
@@ -33,6 +34,8 @@ const CommentUpdateForm = ({
 	content,
 	onClickCancel,
 }: ICommentUpdateFormProps) => {
+	const { id } = useParams()
+	const postId = Number(id)
 	const { toast } = useToast()
 	const { updateComment, updateCommentResult } = useComment()
 
@@ -71,7 +74,14 @@ const CommentUpdateForm = ({
 					content: values.content,
 				},
 			},
-			refetchQueries: [LIST_COMMENTS],
+			refetchQueries: [
+				{
+					query: LIST_COMMENTS,
+					variables: {
+						id: postId,
+					},
+				},
+			],
 			onCompleted,
 			onError,
 		})

@@ -178,7 +178,9 @@ const UpdatePostForm = () => {
 				})
 			}
 		})()
-	}, [postId, form, viewPost])
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [postId, form])
 
 	return (
 		<div>

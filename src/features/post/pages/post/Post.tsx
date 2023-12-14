@@ -54,7 +54,8 @@ const Post = () => {
 				},
 			})
 		}
-	}, [postId, viewPost])
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [postId])
 
 	if (viewPostResult.loading)
 		return (
