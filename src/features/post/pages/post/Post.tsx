@@ -124,7 +124,7 @@ const Post = () => {
 			<CommentForm postId={postId} />
 
 			{/** COMMENT LIST */}
-			<CommentList postId={postId} />
+			<CommentList postId={postId} viewPostResult={viewPostResult} />
 		</div>
 	)
 }

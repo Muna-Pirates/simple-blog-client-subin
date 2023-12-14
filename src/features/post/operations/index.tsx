@@ -54,6 +54,9 @@ query ViewPost($id: Int!) {
       name
       email
     }
+    comments {
+      ...CommentItem
+    }
     createdAt
     category {
       id
@@ -102,18 +105,13 @@ query SearchPosts($searchCriteria: PostSearchInput!,$pagination:PaginationInput!
 
 /** COMMENT OPERATION */
 export const LIST_COMMENTS = gql(`
-  query ListComments($postId: Int!) {
-    listComments(postId: $postId) {      
-      id
-      content
-      author {
-        id
-        name
-        email
-      }
-      createdAt
+query ListComments($id: Int!) {
+  viewPost(id: $id) {
+    comments {
+      ...CommentItem
     }
   }
+}
 `)
 
 export const CREATE_COMMENT = gql(`
@@ -143,14 +141,7 @@ export const DELETE_COMMENT = gql(`
 export const COMMENTS_SUBSCRIPTION = gql(`
   subscription OnCommentAdded($postId: Int!) {
     onCommentAdded(postId: $postId) {
-      id
-      content
-      author {
-      id
-      name
-      email
-      }
-      createdAt
+      ...CommentItem
     }
   }
 `)

@@ -1,24 +1,33 @@
 import { useEffect, useState } from "react"
-import useComment from "../../service/useComment"
 import Spinner from "@/assets/spinner.svg"
 import { formatYYMMDD } from "@/lib/formatDate"
 import CommentItem from "../comment-item/CommentItem"
 import useUser from "@/features/user/service/useUser"
 import { COMMENTS_SUBSCRIPTION } from "../../operations"
+import { QueryResult } from "@apollo/client"
+import { Exact, ViewPostQuery } from "@/lib/graphql/graphql"
+import { useFragment } from "@/lib/graphql"
+import { CommentFragment } from "../../fragments"
 
 interface ICommentListProps {
 	postId: number
+	viewPostResult: QueryResult<
+		ViewPostQuery,
+		Exact<{
+			id: number
+		}>
+	>
 }
-const CommentList = ({ postId }: ICommentListProps) => {
-	const { listComments, listCommentsResult } = useComment()
-	const comments = listCommentsResult.data?.listComments
-
+const CommentList = ({ postId, viewPostResult }: ICommentListProps) => {
 	const [clickedEditCommentId, setEditClickedCommentId] = useState<number>()
 	const [clickedDeleteCommentId, setClickedDeleteCommentId] = useState<number>()
 
 	const { profile } = useUser()
 
 	const userID = profile?.viewUserProfile?.id
+	const commentsData = viewPostResult.data?.viewPost.comments
+
+	const comments = useFragment(CommentFragment, commentsData)
 
 	const handleClickEdit = (id: number) => {
 		setEditClickedCommentId(id)
@@ -31,7 +40,7 @@ const CommentList = ({ postId }: ICommentListProps) => {
 	}
 
 	const subscribeToNewComments = () => {
-		listCommentsResult.subscribeToMore({
+		viewPostResult.subscribeToMore({
 			document: COMMENTS_SUBSCRIPTION,
 			variables: {
 				postId,
@@ -41,25 +50,17 @@ const CommentList = ({ postId }: ICommentListProps) => {
 				const newCommentItem = subscriptionData.data.onCommentAdded
 
 				return Object.assign({}, prev, {
-					listComments: [...prev.listComments, newCommentItem],
+					viewPost: {
+						comments: [...prev.viewPost.comments, newCommentItem],
+					},
 				})
 			},
 		})
 	}
 
-	useEffect(() => {
-		if (postId) {
-			listComments({
-				variables: {
-					postId,
-				},
-			})
-		}
-	}, [postId, listComments])
-
 	useEffect(() => subscribeToNewComments(), [])
 
-	if (listCommentsResult.loading)
+	if (viewPostResult.loading)
 		return (
 			<div>
 				<img
