@@ -45,7 +45,6 @@ const ProfileForm = () => {
 		deleteAccountResult,
 	} = useUser()
 	const { toast } = useToast()
-	const navigate = useNavigate()
 	const { logout } = useAuth()
 
 	const [editing, setEditing] = useState(false)
@@ -100,7 +99,6 @@ const ProfileForm = () => {
 
 	const onCompletedDeleteAccount = () => {
 		logout()
-		navigate("/")
 	}
 
 	const handleClickDeleteAccount = () => {

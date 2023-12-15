@@ -2,6 +2,7 @@ import { makeVar, useMutation, useReactiveVar } from "@apollo/client"
 import { TOKEN } from "../constants"
 import sessionStorage from "@/lib/storage/session"
 import { LOGIN_USER, REGISTER_USER } from "../operations"
+import client from "@/lib/client/apollo"
 
 export const isLoginVar = makeVar(Boolean(sessionStorage.getItem(TOKEN)))
 
@@ -15,8 +16,11 @@ const useAuth = () => {
 	const logout = () => {
 		isLoginVar(false)
 		sessionStorage.removeItem(TOKEN)
+
+		client.clearStore().then(() => {
+			window.location.reload()
+		})
 	}
-	/**LOGOUT END */
 
 	return { register, registerResult, login, loginResult, isLogin, logout }
 }

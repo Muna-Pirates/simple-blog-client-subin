@@ -4,9 +4,11 @@ import useAuth from "@/features/auth/service/useAuth"
 import { useEffect } from "react"
 
 const useUser = () => {
-	const { logout } = useAuth()
+	const { isLogin, logout } = useAuth()
 
-	const { data: profile, ...rest } = useQuery(USER_PROFILE)
+	const { data: profile, ...rest } = useQuery(USER_PROFILE, {
+		skip: !isLogin,
+	})
 
 	const profileResult = { ...rest }
 

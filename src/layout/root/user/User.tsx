@@ -27,7 +27,6 @@ const User = () => {
 
 	const handleClickMenuLogout = () => {
 		logout()
-		navigate("/")
 	}
 
 	return (

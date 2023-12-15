@@ -7,6 +7,7 @@ const WithAuth =
 	(Component: React.ReactElement, access: AccessType = "anyone") =>
 	() => {
 		const hasAuthToken = Boolean(sessionStorage.getItem(TOKEN))
+
 		if (access === "anyone") return Component
 		if (access === "guest") {
 			if (hasAuthToken) {
