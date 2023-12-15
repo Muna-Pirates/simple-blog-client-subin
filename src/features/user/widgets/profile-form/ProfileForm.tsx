@@ -24,7 +24,6 @@ import { Button } from "@/components/ui/button"
 import { MouseEvent, useEffect, useState } from "react"
 import useUser from "../../service/useUser"
 import { useToast } from "@/components/ui/use-toast"
-import { useNavigate } from "react-router-dom"
 import useAuth from "@/features/auth/service/useAuth"
 import { USER_PROFILE } from "../../operations"
 
