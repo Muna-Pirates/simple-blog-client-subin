@@ -40,6 +40,13 @@ Uses GraphQL for data fetching. Schema and queries:
 - **Schema**: `.graphqlrc` 
 - **Queries**: `src/lib/graphql/graphql.ts`
 
+Trigger codegen when there are changes in the specified GraphQL schemas
+
+```bash
+yarn watch
+```
+
+
 ### Styling
 
 Styled using Tailwind CSS and shadcn
@@ -78,13 +85,3 @@ Add your AWS credentials to your GitHub repository secrets:
 The deployment workflow is triggered with every push to the main branch:
 
 - Push your changes to the main branch to start the deployment process.
-
-#### Workflow Steps
-
-The GitHub Actions workflow performs the following:
-
-1. Checks out your code from the repository.
-2. Installs dependencies and builds the application.
-3. Configures AWS credentials using the provided repository secrets.
-4. Deploys the application to the specified AWS S3 bucket.
-5. Invalidates the CloudFront distribution to serve the latest version of the application.
