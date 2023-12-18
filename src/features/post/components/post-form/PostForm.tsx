@@ -6,6 +6,7 @@ import {
 	FormItem,
 	FormLabel,
 	FormMessage,
+	ServerErrorMessage,
 } from "@/components/ui/form"
 import { UseFormReturn } from "react-hook-form"
 import { Textarea } from "@/components/ui/textarea"
@@ -110,6 +111,9 @@ const PostForm = ({ form, onSubmit, isLoading, postId }: IPostForm) => {
 						</FormItem>
 					)}
 				/>
+
+				{form.formState.errors.root && <ServerErrorMessage />}
+
 				<div className="flex gap-2">
 					<Button onClick={handleClickCancel} variant="outline">
 						Cancel

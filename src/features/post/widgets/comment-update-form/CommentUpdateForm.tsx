@@ -58,7 +58,6 @@ const CommentUpdateForm = ({
 		onClickCancel()
 	}
 
-	//🚧 임시 에러 핸들링
 	const onError = () => {
 		toast({
 			variant: "destructive",

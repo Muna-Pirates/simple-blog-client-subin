@@ -26,6 +26,8 @@ import useUser from "../../service/useUser"
 import { useToast } from "@/components/ui/use-toast"
 import useAuth from "@/features/auth/service/useAuth"
 import { USER_PROFILE } from "../../operations"
+import { ApolloError } from "@apollo/client"
+import { CustomGraphQLError } from "@/types/graphql"
 
 const formSchema = z.object({
 	email: z.string().email(),
@@ -63,12 +65,25 @@ const ProfileForm = () => {
 		},
 	})
 
-	//🚧 임시 에러 핸들링
-	const onError = () => {
-		toast({
-			variant: "destructive",
-			title: "An Error Occurred",
-		})
+	const onError = (error: ApolloError) => {
+		const serverError = error.graphQLErrors[0] as CustomGraphQLError
+		if (serverError.message) {
+			const errorMessage = String(
+				typeof serverError.message !== "string"
+					? serverError?.message?.[0] ?? ""
+					: serverError.message
+			)
+
+			form.setError("root.serverError", {
+				type: String(serverError.statusCode),
+				message: errorMessage,
+			})
+		} else {
+			toast({
+				variant: "destructive",
+				title: "An Error Occurred",
+			})
+		}
 	}
 
 	const onSubmit = async (values: ProfileFormValues) => {

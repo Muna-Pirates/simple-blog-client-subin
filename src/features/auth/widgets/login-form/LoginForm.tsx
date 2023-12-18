@@ -6,6 +6,7 @@ import {
 	FormItem,
 	FormLabel,
 	FormMessage,
+	ServerErrorMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import Spinner from "@/assets/spinner.svg"
@@ -50,18 +51,17 @@ const LoginForm = () => {
 		navigate("/")
 	}
 
-	//🚧 임시 에러 핸들링
 	const onError = (error: ApolloError) => {
 		const serverError = error.graphQLErrors[0] as CustomGraphQLError
-		if (serverError.code) {
+		if (serverError.message) {
 			const errorMessage = String(
 				typeof serverError.message !== "string"
 					? serverError?.message?.[0] ?? ""
 					: serverError.message
 			)
 
-			form.setError("password", {
-				type: "validate",
+			form.setError("root.serverError", {
+				type: String(serverError.statusCode),
 				message: errorMessage,
 			})
 		} else {
@@ -128,6 +128,8 @@ const LoginForm = () => {
 							</FormItem>
 						)}
 					/>
+
+					{form.formState.errors.root && <ServerErrorMessage />}
 
 					<Button type="submit" disabled={isLoading} className="w-full">
 						{isLoading && (

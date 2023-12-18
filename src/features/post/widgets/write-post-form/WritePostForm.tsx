@@ -7,6 +7,7 @@ import { CreatePostMutation } from "@/lib/graphql/graphql"
 import { ApolloError } from "@apollo/client"
 import { useNavigate } from "react-router-dom"
 import PostForm from "../../components/post-form/PostForm"
+import { CustomGraphQLError } from "@/types/graphql"
 
 const formSchema = z.object({
 	title: z.string().min(3).max(50),
@@ -71,12 +72,25 @@ const WritePostForm = () => {
 		}
 	}
 
-	//🚧 임시 에러 핸들링
-	const onError = () => {
-		toast({
-			variant: "destructive",
-			title: "An Error Occurred",
-		})
+	const onError = (error: ApolloError) => {
+		const serverError = error.graphQLErrors[0] as CustomGraphQLError
+		if (serverError.message) {
+			const errorMessage = String(
+				typeof serverError.message !== "string"
+					? serverError?.message?.[0] ?? ""
+					: serverError.message
+			)
+
+			form.setError("root.serverError", {
+				type: String(serverError.statusCode),
+				message: errorMessage,
+			})
+		} else {
+			toast({
+				variant: "destructive",
+				title: "An Error Occurred",
+			})
+		}
 	}
 
 	const handleCreatePost = (values: WriteFormValues, categoryId?: string) => {

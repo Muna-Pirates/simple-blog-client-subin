@@ -13,6 +13,7 @@ import { TOKEN } from "@/features/auth/constants";
 import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
 import { createClient } from 'graphql-ws';
 import { getMainDefinition } from "@apollo/client/utilities";
+import { CustomGraphQLError } from "@/types/graphql";
 
 
 const httpLink = createHttpLink({
@@ -20,13 +21,23 @@ const httpLink = createHttpLink({
 });
 
 const errorLink = onError(({ graphQLErrors, networkError }) => {
-  if (graphQLErrors) {
-    const unauthorized = graphQLErrors.find(error => error.extensions?.statusCode === 401)
+  const customGraphQLErrors = graphQLErrors as CustomGraphQLError[]
 
-    if (unauthorized) location.replace('/login')
+  if (customGraphQLErrors.length) {
+    const unauthorizedError = customGraphQLErrors.find(error => error?.statusCode === 401)
+    const internalServerError = customGraphQLErrors.find(error => error?.statusCode === 500)
+
+    if (unauthorizedError) {
+      location.replace('/login')
+    }
+    if (internalServerError) {
+      console.warn('[Server error]')
+    }
   }
 
-  if (networkError) console.log(`[Network error]: ${networkError}`);
+  if (networkError) {
+    console.warn(`[Network error]: ${networkError}`);
+  }
 });
 
 

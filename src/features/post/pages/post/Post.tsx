@@ -32,7 +32,6 @@ const Post = () => {
 		navigate(`/write/${postId}`, { state: { authorId: postInfo?.author.id } })
 	}
 
-	//🚧 임시 에러 핸들링
 	const onError = () => {
 		toast({
 			variant: "destructive",

@@ -45,7 +45,6 @@ const CommentForm = ({ postId }: ICommentFormProps) => {
 		form.reset()
 	}
 
-	//🚧 임시 에러 핸들링
 	const onError = () => {
 		toast({
 			variant: "destructive",
