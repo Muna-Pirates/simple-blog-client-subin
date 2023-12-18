@@ -8,7 +8,6 @@ import { ApolloError } from "@apollo/client"
 import { useLocation, useNavigate, useParams } from "react-router-dom"
 import useUser from "@/features/user/service/useUser"
 import PostForm from "../../components/post-form/PostForm"
-import { VIEW_POST } from "../../operations"
 
 const formSchema = z.object({
 	title: z.string().min(3).max(50),
@@ -106,13 +105,13 @@ const UpdatePostForm = () => {
 							categoryId: parseInt(categoryId),
 						},
 						onError,
-						refetchQueries: [VIEW_POST],
 					})
 				}
 				viewPost({
 					variables: {
 						id: postId,
 					},
+					fetchPolicy: "cache-and-network",
 				})
 				form.reset()
 				navigate(`/post/${postId}`)
