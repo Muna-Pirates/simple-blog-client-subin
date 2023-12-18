@@ -18,7 +18,6 @@ import { useToast } from "@/components/ui/use-toast"
 import { useNavigate } from "react-router-dom"
 import { ApolloError } from "@apollo/client"
 import { CustomGraphQLError } from "@/types/graphql"
-import ErrorMessage from "@/components/ErrorMessage"
 
 const formSchema = z.object({
 	email: z.string().email(),
