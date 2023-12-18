@@ -8,6 +8,8 @@ import { ApolloError } from "@apollo/client"
 import { useLocation, useNavigate, useParams } from "react-router-dom"
 import useUser from "@/features/user/service/useUser"
 import PostForm from "../../components/post-form/PostForm"
+import { useFragment } from "@/lib/graphql"
+import { CategoryFragment, PostFragment } from "../../fragments"
 
 const formSchema = z.object({
 	title: z.string().min(3).max(50),
@@ -39,6 +41,13 @@ const UpdatePostForm = () => {
 	} = usePost()
 
 	const { profile, profileResult } = useUser()
+
+	// 🚧 fragment 테스트용도
+	const postInfo = useFragment(PostFragment, viewPostResult.data?.viewPost)
+	const postCategoryInfo = useFragment(
+		CategoryFragment,
+		viewPostResult.data?.viewPost.category
+	)
 
 	const isLoading =
 		updatePostResult.loading ||
@@ -130,7 +139,7 @@ const UpdatePostForm = () => {
 		 */
 
 		if (values.category) {
-			const prevCategoryName = viewPostResult.data?.viewPost.category?.name
+			const prevCategoryName = postCategoryInfo?.name
 			if (values.category === prevCategoryName) {
 				handleUpdatePost(values)
 			} else {
@@ -164,22 +173,26 @@ const UpdatePostForm = () => {
 	useEffect(() => {
 		;(async () => {
 			if (postId) {
-				const result = await viewPost({
+				viewPost({
 					variables: {
 						id: postId,
 					},
-				})
-
-				form.reset({
-					title: result.data?.viewPost.title,
-					category: result.data?.viewPost.category?.name ?? "",
-					content: result.data?.viewPost.content,
 				})
 			}
 		})()
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [postId, form])
+	}, [postId])
+
+	useEffect(() => {
+		if (postInfo) {
+			form.reset({
+				title: postInfo.title,
+				category: postCategoryInfo?.name ?? "",
+				content: postInfo.content,
+			})
+		}
+	}, [postInfo, postCategoryInfo, form])
 
 	return (
 		<div>

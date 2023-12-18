@@ -52,21 +52,12 @@ export const DELETE_POST = gql(`
 export const VIEW_POST = gql(`
 query ViewPost($id: Int!) {
   viewPost(id: $id) {
-    id
-    title
-    content
-    author {
-      id
-      name
-      email
+    ...PostItem
+    category {
+      ...CategoryItem
     }
     comments {
       ...CommentItem
-    }
-    createdAt
-    category {
-      id
-      name
     }
   }
 }

@@ -9,6 +9,8 @@ import CommentList from "../../widgets/comment-list/CommentList"
 import { Button } from "@/components/ui/button"
 import { useToast } from "@/components/ui/use-toast"
 import useUser from "@/features/user/service/useUser"
+import { useFragment } from "@/lib/graphql"
+import { CategoryFragment, PostFragment } from "../../fragments"
 
 const Post = () => {
 	const { id } = useParams()
@@ -18,9 +20,14 @@ const Post = () => {
 
 	const { profile } = useUser()
 	const postId = Number(id)
-	const postInfo = viewPostResult.data?.viewPost
-	const isMyPost = Boolean(profile?.viewUserProfile?.id === postInfo?.author.id)
+	// 🚧 fragment 테스트용도
+	const postInfo = useFragment(PostFragment, viewPostResult.data?.viewPost)
+	const postCategoryInfo = useFragment(
+		CategoryFragment,
+		viewPostResult.data?.viewPost.category
+	)
 
+	const isMyPost = Boolean(profile?.viewUserProfile?.id === postInfo?.author.id)
 	const handleClickEdit = () => {
 		navigate(`/write/${postId}`, { state: { authorId: postInfo?.author.id } })
 	}
@@ -108,10 +115,10 @@ const Post = () => {
 					)}
 				</div>
 
-				{postInfo.category && (
+				{postCategoryInfo?.id && (
 					<div className="mt-4">
 						<Badge className="bg-green-700 text-sm">
-							{postInfo.category.name}
+							{postCategoryInfo.name}
 						</Badge>
 					</div>
 				)}

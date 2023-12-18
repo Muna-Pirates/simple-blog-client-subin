@@ -17,6 +17,10 @@ const documents = {
     types.RegisterUserDocument,
   "\nmutation LoginUser($credentials: LoginInput!) {\n  loginUser(credentials: $credentials) {\n    token\n    user {\n      id\n      email\n      name\n      role {\n        id\n      }\n    }\n  }\n}\n":
     types.LoginUserDocument,
+  "\n  fragment PostItem on Post {\n    id\n    title\n    content\n    author {\n      id\n      name\n      email\n    }\n    createdAt\n  }\n":
+    types.PostItemFragmentDoc,
+  "\n  fragment CategoryItem on Category {\n      id\n      name\n  }\n":
+    types.CategoryItemFragmentDoc,
   "\n  fragment CommentItem on Comment {\n    id\n    content\n    author {\n      id\n      name\n      email\n    }\n    createdAt\n  }\n":
     types.CommentItemFragmentDoc,
   "\n\tquery ListPosts($pagination: PaginationInput!) {\n\t\tlistPosts(pagination: $pagination) {\n      pagination {\n        page\n        pageSize\n        totalItems\n      }\n      posts {\n        id\n        title\n        content\n        author {\n          id \n          name\n          email\n        }\n        comments {\n          id\n        }\n        createdAt\n      }\n\t\t}\n\t}\n\t":
@@ -25,7 +29,7 @@ const documents = {
     types.CreatePostDocument,
   "\n  mutation DeletePost($postId: Int!) {\n    deletePost(postId: $postId) {\n      id\n      title\n      content\n      authorId\n      categoryId\n      createdAt\n      updatedAt\n    }\n  }\n":
     types.DeletePostDocument,
-  "\nquery ViewPost($id: Int!) {\n  viewPost(id: $id) {\n    id\n    title\n    content\n    author {\n      id\n      name\n      email\n    }\n    comments {\n      ...CommentItem\n    }\n    createdAt\n    category {\n      id\n      name\n    }\n  }\n}\n":
+  "\nquery ViewPost($id: Int!) {\n  viewPost(id: $id) {\n    ...PostItem\n    category {\n      ...CategoryItem\n    }\n    comments {\n      ...CommentItem\n    }\n  }\n}\n":
     types.ViewPostDocument,
   "\n  mutation UpdatePost($postId: Int!, $updateData: UpdatePostInput!) {\n    updatePost(postId: $postId, updateData: $updateData) {\n      id\n    }\n  }\n":
     types.UpdatePostDocument,
@@ -85,6 +89,18 @@ export function gql(
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(
+  source: "\n  fragment PostItem on Post {\n    id\n    title\n    content\n    author {\n      id\n      name\n      email\n    }\n    createdAt\n  }\n",
+): (typeof documents)["\n  fragment PostItem on Post {\n    id\n    title\n    content\n    author {\n      id\n      name\n      email\n    }\n    createdAt\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(
+  source: "\n  fragment CategoryItem on Category {\n      id\n      name\n  }\n",
+): (typeof documents)["\n  fragment CategoryItem on Category {\n      id\n      name\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(
   source: "\n  fragment CommentItem on Comment {\n    id\n    content\n    author {\n      id\n      name\n      email\n    }\n    createdAt\n  }\n",
 ): (typeof documents)["\n  fragment CommentItem on Comment {\n    id\n    content\n    author {\n      id\n      name\n      email\n    }\n    createdAt\n  }\n"];
 /**
@@ -109,8 +125,8 @@ export function gql(
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(
-  source: "\nquery ViewPost($id: Int!) {\n  viewPost(id: $id) {\n    id\n    title\n    content\n    author {\n      id\n      name\n      email\n    }\n    comments {\n      ...CommentItem\n    }\n    createdAt\n    category {\n      id\n      name\n    }\n  }\n}\n",
-): (typeof documents)["\nquery ViewPost($id: Int!) {\n  viewPost(id: $id) {\n    id\n    title\n    content\n    author {\n      id\n      name\n      email\n    }\n    comments {\n      ...CommentItem\n    }\n    createdAt\n    category {\n      id\n      name\n    }\n  }\n}\n"];
+  source: "\nquery ViewPost($id: Int!) {\n  viewPost(id: $id) {\n    ...PostItem\n    category {\n      ...CategoryItem\n    }\n    comments {\n      ...CommentItem\n    }\n  }\n}\n",
+): (typeof documents)["\nquery ViewPost($id: Int!) {\n  viewPost(id: $id) {\n    ...PostItem\n    category {\n      ...CategoryItem\n    }\n    comments {\n      ...CommentItem\n    }\n  }\n}\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
