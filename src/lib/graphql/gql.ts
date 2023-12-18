@@ -23,7 +23,7 @@ const documents = {
     types.ListPostsDocument,
   "\n  mutation CreatePost($createPostInput: CreatePostInput!) {\n    createPost(createPostInput: $createPostInput) {\n      id\n    }\n  }\n":
     types.CreatePostDocument,
-  "\n  mutation DeletePost($postId: Int!) {\n    deletePost(postId: $postId) {\n      id\n    }\n  }\n":
+  "\n  mutation DeletePost($postId: Int!) {\n    deletePost(postId: $postId) {\n      id\n      title\n      content\n      authorId\n      categoryId\n      createdAt\n      updatedAt\n    }\n  }\n":
     types.DeletePostDocument,
   "\nquery ViewPost($id: Int!) {\n  viewPost(id: $id) {\n    id\n    title\n    content\n    author {\n      id\n      name\n      email\n    }\n    comments {\n      ...CommentItem\n    }\n    createdAt\n    category {\n      id\n      name\n    }\n  }\n}\n":
     types.ViewPostDocument,
@@ -103,8 +103,8 @@ export function gql(
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(
-  source: "\n  mutation DeletePost($postId: Int!) {\n    deletePost(postId: $postId) {\n      id\n    }\n  }\n",
-): (typeof documents)["\n  mutation DeletePost($postId: Int!) {\n    deletePost(postId: $postId) {\n      id\n    }\n  }\n"];
+  source: "\n  mutation DeletePost($postId: Int!) {\n    deletePost(postId: $postId) {\n      id\n      title\n      content\n      authorId\n      categoryId\n      createdAt\n      updatedAt\n    }\n  }\n",
+): (typeof documents)["\n  mutation DeletePost($postId: Int!) {\n    deletePost(postId: $postId) {\n      id\n      title\n      content\n      authorId\n      categoryId\n      createdAt\n      updatedAt\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

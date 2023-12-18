@@ -2,7 +2,7 @@ import { useNavigate, useParams } from "react-router-dom"
 import usePost from "../../service/usePost"
 import { useEffect } from "react"
 import Spinner from "@/assets/spinner.svg"
-import { formatYYMMDD } from "@/lib/formatDate"
+import { formatYYMMDDHHMMSS } from "@/lib/formatDate"
 import { Badge } from "@/components/ui/badge"
 import CommentForm from "../../widgets/comment-form/CommentForm"
 import CommentList from "../../widgets/comment-list/CommentList"
@@ -78,13 +78,13 @@ const Post = () => {
 			<div className="mb-12">
 				<h1 className="text-5xl font-bold mb-8">{postInfo.title}</h1>
 				<div className="flex justify-between">
-					<h2 className="text-xl flex gap-2">
+					<h2 className="text-xl flex gap-2 items-center">
 						<span className="font-semibold">
 							{postInfo.author.name || postInfo.author.email}
 						</span>
 						<span>·</span>
-						<span className="text-lg text-gray-600">
-							{formatYYMMDD(postInfo.createdAt)}
+						<span className="text-base text-gray-500">
+							{formatYYMMDDHHMMSS(postInfo.createdAt)}
 						</span>
 					</h2>
 

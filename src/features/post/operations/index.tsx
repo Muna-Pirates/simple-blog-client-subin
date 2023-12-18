@@ -39,6 +39,12 @@ export const DELETE_POST = gql(`
   mutation DeletePost($postId: Int!) {
     deletePost(postId: $postId) {
       id
+      title
+      content
+      authorId
+      categoryId
+      createdAt
+      updatedAt
     }
   }
 `)

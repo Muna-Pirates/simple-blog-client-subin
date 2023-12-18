@@ -376,7 +376,16 @@ export type DeletePostMutationVariables = Exact<{
 
 export type DeletePostMutation = {
   __typename?: "Mutation";
-  deletePost: { __typename?: "Post"; id: string };
+  deletePost: {
+    __typename?: "Post";
+    id: string;
+    title: string;
+    content: string;
+    authorId: number;
+    categoryId?: number | null;
+    createdAt: any;
+    updatedAt: any;
+  };
 };
 
 export type ViewPostQueryVariables = Exact<{
@@ -955,6 +964,12 @@ export const DeletePostDocument = {
               kind: "SelectionSet",
               selections: [
                 { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "title" } },
+                { kind: "Field", name: { kind: "Name", value: "content" } },
+                { kind: "Field", name: { kind: "Name", value: "authorId" } },
+                { kind: "Field", name: { kind: "Name", value: "categoryId" } },
+                { kind: "Field", name: { kind: "Name", value: "createdAt" } },
+                { kind: "Field", name: { kind: "Name", value: "updatedAt" } },
               ],
             },
           },
