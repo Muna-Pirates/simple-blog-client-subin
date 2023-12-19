@@ -3,7 +3,7 @@ import Spinner from "@/assets/spinner.svg"
 import { formatYYMMDD } from "@/lib/formatDate"
 import CommentItem from "../comment-item/CommentItem"
 import useUser from "@/features/user/service/useUser"
-import { COMMENTS_SUBSCRIPTION } from "../../operations"
+import { ADD_COMMENT_SUBSCRIPTION } from "../../operations"
 import { QueryResult } from "@apollo/client"
 import { Exact, ViewPostQuery } from "@/lib/graphql/graphql"
 import { useFragment } from "@/lib/graphql"
@@ -41,7 +41,7 @@ const CommentList = ({ postId, viewPostResult }: ICommentListProps) => {
 
 	const subscribeToNewComments = () => {
 		viewPostResult.subscribeToMore({
-			document: COMMENTS_SUBSCRIPTION,
+			document: ADD_COMMENT_SUBSCRIPTION,
 			variables: {
 				postId,
 			},

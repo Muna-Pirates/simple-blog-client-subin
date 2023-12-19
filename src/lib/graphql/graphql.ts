@@ -472,22 +472,6 @@ export type SearchPostsQuery = {
   };
 };
 
-export type ListCommentsQueryVariables = Exact<{
-  id: Scalars["Int"]["input"];
-}>;
-
-export type ListCommentsQuery = {
-  __typename?: "Query";
-  viewPost: {
-    __typename?: "Post";
-    comments: Array<
-      { __typename?: "Comment" } & {
-        " $fragmentRefs"?: { CommentItemFragment: CommentItemFragment };
-      }
-    >;
-  };
-};
-
 export type AddCommentMutationVariables = Exact<{
   createCommentInput: CreateCommentInput;
 }>;
@@ -1418,91 +1402,6 @@ export const SearchPostsDocument = {
     },
   ],
 } as unknown as DocumentNode<SearchPostsQuery, SearchPostsQueryVariables>;
-export const ListCommentsDocument = {
-  kind: "Document",
-  definitions: [
-    {
-      kind: "OperationDefinition",
-      operation: "query",
-      name: { kind: "Name", value: "ListComments" },
-      variableDefinitions: [
-        {
-          kind: "VariableDefinition",
-          variable: { kind: "Variable", name: { kind: "Name", value: "id" } },
-          type: {
-            kind: "NonNullType",
-            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
-          },
-        },
-      ],
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
-          {
-            kind: "Field",
-            name: { kind: "Name", value: "viewPost" },
-            arguments: [
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "id" },
-                value: {
-                  kind: "Variable",
-                  name: { kind: "Name", value: "id" },
-                },
-              },
-            ],
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                {
-                  kind: "Field",
-                  name: { kind: "Name", value: "comments" },
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      {
-                        kind: "FragmentSpread",
-                        name: { kind: "Name", value: "CommentItem" },
-                      },
-                    ],
-                  },
-                },
-              ],
-            },
-          },
-        ],
-      },
-    },
-    {
-      kind: "FragmentDefinition",
-      name: { kind: "Name", value: "CommentItem" },
-      typeCondition: {
-        kind: "NamedType",
-        name: { kind: "Name", value: "Comment" },
-      },
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
-          { kind: "Field", name: { kind: "Name", value: "id" } },
-          { kind: "Field", name: { kind: "Name", value: "content" } },
-          {
-            kind: "Field",
-            name: { kind: "Name", value: "author" },
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                { kind: "Field", name: { kind: "Name", value: "id" } },
-                { kind: "Field", name: { kind: "Name", value: "name" } },
-                { kind: "Field", name: { kind: "Name", value: "email" } },
-              ],
-            },
-          },
-          { kind: "Field", name: { kind: "Name", value: "createdAt" } },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<ListCommentsQuery, ListCommentsQueryVariables>;
 export const AddCommentDocument = {
   kind: "Document",
   definitions: [

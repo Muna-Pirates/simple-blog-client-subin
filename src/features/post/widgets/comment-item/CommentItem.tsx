@@ -3,9 +3,8 @@ import { AlertDialogTrigger } from "@/components/ui/alert-dialog"
 import CommentUpdateForm from "../comment-update-form/CommentUpdateForm"
 import useComment from "../../service/useComment"
 import DeleteCommentDialog from "../../components/delete-comment-dialog/DeleteCommentDialog"
-import { LIST_COMMENTS } from "../../operations"
+import { VIEW_POST } from "../../operations"
 import { Button } from "@/components/ui/button"
-import { useParams } from "react-router-dom"
 
 interface ICommentItem {
 	id: number
@@ -33,22 +32,13 @@ const CommentItem = ({
 	onClickCancel,
 }: ICommentItem) => {
 	const { deleteComment } = useComment()
-	const { id: postIdParam } = useParams()
-	const postId = Number(postIdParam)
 
 	const handleClickDeleteConfirm = () => {
 		deleteComment({
 			variables: {
 				commentId: id,
 			},
-			refetchQueries: [
-				{
-					query: LIST_COMMENTS,
-					variables: {
-						id: postId,
-					},
-				},
-			],
+			refetchQueries: [VIEW_POST],
 		})
 	}
 

@@ -101,16 +101,6 @@ query SearchPosts($searchCriteria: PostSearchInput!,$pagination:PaginationInput!
 `)
 
 /** COMMENT OPERATION */
-export const LIST_COMMENTS = gql(`
-query ListComments($id: Int!) {
-  viewPost(id: $id) {
-    comments {
-      ...CommentItem
-    }
-  }
-}
-`)
-
 export const CREATE_COMMENT = gql(`
   mutation AddComment($createCommentInput: CreateCommentInput!) {
     addComment(createCommentInput: $createCommentInput) {
@@ -135,7 +125,7 @@ export const DELETE_COMMENT = gql(`
   }
 `)
 
-export const COMMENTS_SUBSCRIPTION = gql(`
+export const ADD_COMMENT_SUBSCRIPTION = gql(`
   subscription OnCommentAdded($postId: Int!) {
     onCommentAdded(postId: $postId) {
       ...CommentItem
