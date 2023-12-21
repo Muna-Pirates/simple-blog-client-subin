@@ -13,7 +13,6 @@ import { useToast } from "@/components/ui/use-toast"
 import { Textarea } from "@/components/ui/textarea"
 import useComment from "../../service/useComment"
 import Spinner from "@/assets/spinner.svg"
-import { VIEW_POST } from "../../operations"
 import { MouseEvent } from "react"
 
 const formSchema = z.object({
@@ -70,7 +69,6 @@ const CommentUpdateForm = ({
 					content: values.content,
 				},
 			},
-			refetchQueries: [VIEW_POST],
 			onCompleted,
 			onError,
 		})

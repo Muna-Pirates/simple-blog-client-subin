@@ -11,6 +11,7 @@ import PostForm from "../../components/post-form/PostForm"
 import { useFragment } from "@/lib/graphql"
 import { CategoryFragment, PostFragment } from "../../fragments"
 import { CustomGraphQLError } from "@/types/graphql"
+import client from "@/lib/client/apollo"
 
 const formSchema = z.object({
 	title: z.string().min(3).max(50),
@@ -120,9 +121,9 @@ const UpdatePostForm = () => {
 					content: values.content,
 				},
 			},
-			onCompleted: async () => {
+			onCompleted: async (data) => {
 				if (categoryId) {
-					assignCategory({
+					await assignCategory({
 						variables: {
 							postId,
 							categoryId: parseInt(categoryId),
@@ -130,11 +131,17 @@ const UpdatePostForm = () => {
 						onError,
 					})
 				}
-				viewPost({
-					variables: {
-						id: postId,
+
+				client.cache.modify({
+					id: `Post:${postId}`,
+					fields: {
+						title() {
+							return data.updatePost.title
+						},
+						content() {
+							return data.updatePost.content
+						},
 					},
-					fetchPolicy: "cache-and-network",
 				})
 				form.reset()
 				navigate(`/post/${postId}`)

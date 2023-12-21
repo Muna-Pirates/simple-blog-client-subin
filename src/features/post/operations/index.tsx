@@ -67,6 +67,11 @@ export const UPDATE_POST = gql(`
   mutation UpdatePost($postId: Int!, $updateData: UpdatePostInput!) {
     updatePost(postId: $postId, updateData: $updateData) {
       id
+      title
+      content
+      category {
+        ...CategoryItem
+      }
     }
   }
 `)
@@ -104,7 +109,7 @@ query SearchPosts($searchCriteria: PostSearchInput!,$pagination:PaginationInput!
 export const CREATE_COMMENT = gql(`
   mutation AddComment($createCommentInput: CreateCommentInput!) {
     addComment(createCommentInput: $createCommentInput) {
-      id
+      ...CommentItem
     }
   }
 `)
@@ -112,7 +117,7 @@ export const CREATE_COMMENT = gql(`
 export const UPDATE_COMMENT = gql(`
   mutation UpdateComment($updateCommentInput: UpdateCommentInput!) {
     updateComment(updateCommentInput: $updateCommentInput) {
-      id
+      ...CommentItem
     }
   }
 `)
@@ -146,13 +151,16 @@ export const ASSIGN_CATEGORY = gql(`
   mutation AssignCategoryToPost($postId: Int!, $categoryId: Int!) {
     assignCategoryToPost(postId: $postId,categoryId: $categoryId) {
       id
+      category {
+        ...CategoryItem
+      }
     }
   }
 `)
 
 export const FIND_CATEGORY = gql(`
   query FindCategoryByName($name: String!) {
-    findCategoryByName(name: $name) {      
+    findCategoryByName(name: $name) {     
       id
     }
   }

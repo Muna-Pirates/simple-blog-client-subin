@@ -436,7 +436,17 @@ export type UpdatePostMutationVariables = Exact<{
 
 export type UpdatePostMutation = {
   __typename?: "Mutation";
-  updatePost: { __typename?: "Post"; id: string };
+  updatePost: {
+    __typename?: "Post";
+    id: string;
+    title: string;
+    content: string;
+    category?:
+      | ({ __typename?: "Category" } & {
+          " $fragmentRefs"?: { CategoryItemFragment: CategoryItemFragment };
+        })
+      | null;
+  };
 };
 
 export type SearchPostsQueryVariables = Exact<{
@@ -478,7 +488,9 @@ export type AddCommentMutationVariables = Exact<{
 
 export type AddCommentMutation = {
   __typename?: "Mutation";
-  addComment: { __typename?: "Comment"; id: string };
+  addComment: { __typename?: "Comment" } & {
+    " $fragmentRefs"?: { CommentItemFragment: CommentItemFragment };
+  };
 };
 
 export type UpdateCommentMutationVariables = Exact<{
@@ -487,7 +499,9 @@ export type UpdateCommentMutationVariables = Exact<{
 
 export type UpdateCommentMutation = {
   __typename?: "Mutation";
-  updateComment: { __typename?: "Comment"; id: string };
+  updateComment: { __typename?: "Comment" } & {
+    " $fragmentRefs"?: { CommentItemFragment: CommentItemFragment };
+  };
 };
 
 export type DeleteCommentMutationVariables = Exact<{
@@ -526,7 +540,15 @@ export type AssignCategoryToPostMutationVariables = Exact<{
 
 export type AssignCategoryToPostMutation = {
   __typename?: "Mutation";
-  assignCategoryToPost: { __typename?: "Post"; id: string };
+  assignCategoryToPost: {
+    __typename?: "Post";
+    id: string;
+    category?:
+      | ({ __typename?: "Category" } & {
+          " $fragmentRefs"?: { CategoryItemFragment: CategoryItemFragment };
+        })
+      | null;
+  };
 };
 
 export type FindCategoryByNameQueryVariables = Exact<{
@@ -1238,9 +1260,39 @@ export const UpdatePostDocument = {
               kind: "SelectionSet",
               selections: [
                 { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "title" } },
+                { kind: "Field", name: { kind: "Name", value: "content" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "category" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "FragmentSpread",
+                        name: { kind: "Name", value: "CategoryItem" },
+                      },
+                    ],
+                  },
+                },
               ],
             },
           },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "CategoryItem" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "Category" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          { kind: "Field", name: { kind: "Name", value: "name" } },
         ],
       },
     },
@@ -1444,10 +1496,41 @@ export const AddCommentDocument = {
             selectionSet: {
               kind: "SelectionSet",
               selections: [
-                { kind: "Field", name: { kind: "Name", value: "id" } },
+                {
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "CommentItem" },
+                },
               ],
             },
           },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "CommentItem" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "Comment" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          { kind: "Field", name: { kind: "Name", value: "content" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "author" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "name" } },
+                { kind: "Field", name: { kind: "Name", value: "email" } },
+              ],
+            },
+          },
+          { kind: "Field", name: { kind: "Name", value: "createdAt" } },
         ],
       },
     },
@@ -1495,10 +1578,41 @@ export const UpdateCommentDocument = {
             selectionSet: {
               kind: "SelectionSet",
               selections: [
-                { kind: "Field", name: { kind: "Name", value: "id" } },
+                {
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "CommentItem" },
+                },
               ],
             },
           },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "CommentItem" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "Comment" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          { kind: "Field", name: { kind: "Name", value: "content" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "author" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "name" } },
+                { kind: "Field", name: { kind: "Name", value: "email" } },
+              ],
+            },
+          },
+          { kind: "Field", name: { kind: "Name", value: "createdAt" } },
         ],
       },
     },
@@ -1753,9 +1867,37 @@ export const AssignCategoryToPostDocument = {
               kind: "SelectionSet",
               selections: [
                 { kind: "Field", name: { kind: "Name", value: "id" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "category" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "FragmentSpread",
+                        name: { kind: "Name", value: "CategoryItem" },
+                      },
+                    ],
+                  },
+                },
               ],
             },
           },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "CategoryItem" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "Category" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          { kind: "Field", name: { kind: "Name", value: "name" } },
         ],
       },
     },

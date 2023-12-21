@@ -3,7 +3,6 @@ import { AlertDialogTrigger } from "@/components/ui/alert-dialog"
 import CommentUpdateForm from "../comment-update-form/CommentUpdateForm"
 import useComment from "../../service/useComment"
 import DeleteCommentDialog from "../../components/delete-comment-dialog/DeleteCommentDialog"
-import { VIEW_POST } from "../../operations"
 import { Button } from "@/components/ui/button"
 import client from "@/lib/client/apollo"
 
