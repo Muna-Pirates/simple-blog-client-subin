@@ -5,6 +5,7 @@ import useComment from "../../service/useComment"
 import DeleteCommentDialog from "../../components/delete-comment-dialog/DeleteCommentDialog"
 import { VIEW_POST } from "../../operations"
 import { Button } from "@/components/ui/button"
+import client from "@/lib/client/apollo"
 
 interface ICommentItem {
 	id: number
@@ -38,7 +39,9 @@ const CommentItem = ({
 			variables: {
 				commentId: id,
 			},
-			refetchQueries: [VIEW_POST],
+			onCompleted() {
+				client.cache.evict({ id: `Comment:${id}` })
+			},
 		})
 	}
 
