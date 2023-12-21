@@ -133,7 +133,7 @@ const UpdatePostForm = () => {
 				}
 
 				client.cache.modify({
-					id: `Post:${postId}`,
+					id: client.cache.identify(data.updatePost),
 					fields: {
 						title() {
 							return data.updatePost.title
