@@ -5,7 +5,7 @@ This is a blog application built using React, TypeScript, and Vite. It features 
 
 ## Getting Started
 
-### Clone the Repository and Install Dependencies
+##### Clone the Repository and Install Dependencies
 
 ```bash
 git clone <repository-url>
@@ -13,7 +13,7 @@ cd <repository-name>
 yarn
 ```
 
-## Running the Application
+##### Running the Application
 
 Start the application with:
 
