@@ -20,7 +20,7 @@ const Post = () => {
 
 	const { profile } = useUser()
 	const postId = Number(id)
-	// 🚧 fragment 테스트용도
+
 	const postInfo = useFragment(PostFragment, viewPostResult.data?.viewPost)
 	const postCategoryInfo = useFragment(
 		CategoryFragment,

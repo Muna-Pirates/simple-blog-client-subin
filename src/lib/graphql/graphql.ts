@@ -396,15 +396,8 @@ export type DeletePostMutationVariables = Exact<{
 
 export type DeletePostMutation = {
   __typename?: "Mutation";
-  deletePost: {
-    __typename?: "Post";
-    id: string;
-    title: string;
-    content: string;
-    authorId: number;
-    categoryId?: number | null;
-    createdAt: any;
-    updatedAt: any;
+  deletePost: { __typename?: "Post" } & {
+    " $fragmentRefs"?: { PostItemFragment: PostItemFragment };
   };
 };
 
@@ -438,15 +431,12 @@ export type UpdatePostMutation = {
   __typename?: "Mutation";
   updatePost: {
     __typename?: "Post";
-    id: string;
-    title: string;
-    content: string;
     category?:
       | ({ __typename?: "Category" } & {
           " $fragmentRefs"?: { CategoryItemFragment: CategoryItemFragment };
         })
       | null;
-  };
+  } & { " $fragmentRefs"?: { PostItemFragment: PostItemFragment } };
 };
 
 export type SearchPostsQueryVariables = Exact<{
@@ -1037,16 +1027,42 @@ export const DeletePostDocument = {
             selectionSet: {
               kind: "SelectionSet",
               selections: [
-                { kind: "Field", name: { kind: "Name", value: "id" } },
-                { kind: "Field", name: { kind: "Name", value: "title" } },
-                { kind: "Field", name: { kind: "Name", value: "content" } },
-                { kind: "Field", name: { kind: "Name", value: "authorId" } },
-                { kind: "Field", name: { kind: "Name", value: "categoryId" } },
-                { kind: "Field", name: { kind: "Name", value: "createdAt" } },
-                { kind: "Field", name: { kind: "Name", value: "updatedAt" } },
+                {
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "PostItem" },
+                },
               ],
             },
           },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "PostItem" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "Post" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          { kind: "Field", name: { kind: "Name", value: "title" } },
+          { kind: "Field", name: { kind: "Name", value: "content" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "author" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "name" } },
+                { kind: "Field", name: { kind: "Name", value: "email" } },
+              ],
+            },
+          },
+          { kind: "Field", name: { kind: "Name", value: "createdAt" } },
         ],
       },
     },
@@ -1259,9 +1275,10 @@ export const UpdatePostDocument = {
             selectionSet: {
               kind: "SelectionSet",
               selections: [
-                { kind: "Field", name: { kind: "Name", value: "id" } },
-                { kind: "Field", name: { kind: "Name", value: "title" } },
-                { kind: "Field", name: { kind: "Name", value: "content" } },
+                {
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "PostItem" },
+                },
                 {
                   kind: "Field",
                   name: { kind: "Name", value: "category" },
@@ -1278,6 +1295,35 @@ export const UpdatePostDocument = {
               ],
             },
           },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "PostItem" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "Post" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          { kind: "Field", name: { kind: "Name", value: "title" } },
+          { kind: "Field", name: { kind: "Name", value: "content" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "author" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "name" } },
+                { kind: "Field", name: { kind: "Name", value: "email" } },
+              ],
+            },
+          },
+          { kind: "Field", name: { kind: "Name", value: "createdAt" } },
         ],
       },
     },

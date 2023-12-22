@@ -38,13 +38,7 @@ export const CREATE_POST = gql(`
 export const DELETE_POST = gql(`
   mutation DeletePost($postId: Int!) {
     deletePost(postId: $postId) {
-      id
-      title
-      content
-      authorId
-      categoryId
-      createdAt
-      updatedAt
+      ...PostItem
     }
   }
 `)
@@ -66,9 +60,7 @@ query ViewPost($id: Int!) {
 export const UPDATE_POST = gql(`
   mutation UpdatePost($postId: Int!, $updateData: UpdatePostInput!) {
     updatePost(postId: $postId, updateData: $updateData) {
-      id
-      title
-      content
+      ...PostItem
       category {
         ...CategoryItem
       }

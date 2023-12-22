@@ -27,11 +27,11 @@ const documents = {
     types.ListPostsDocument,
   "\n  mutation CreatePost($createPostInput: CreatePostInput!) {\n    createPost(createPostInput: $createPostInput) {\n      id\n    }\n  }\n":
     types.CreatePostDocument,
-  "\n  mutation DeletePost($postId: Int!) {\n    deletePost(postId: $postId) {\n      id\n      title\n      content\n      authorId\n      categoryId\n      createdAt\n      updatedAt\n    }\n  }\n":
+  "\n  mutation DeletePost($postId: Int!) {\n    deletePost(postId: $postId) {\n      ...PostItem\n    }\n  }\n":
     types.DeletePostDocument,
   "\nquery ViewPost($id: Int!) {\n  viewPost(id: $id) {\n    ...PostItem\n    category {\n      ...CategoryItem\n    }\n    comments {\n      ...CommentItem\n    }\n  }\n}\n":
     types.ViewPostDocument,
-  "\n  mutation UpdatePost($postId: Int!, $updateData: UpdatePostInput!) {\n    updatePost(postId: $postId, updateData: $updateData) {\n      id\n      title\n      content\n      category {\n        ...CategoryItem\n      }\n    }\n  }\n":
+  "\n  mutation UpdatePost($postId: Int!, $updateData: UpdatePostInput!) {\n    updatePost(postId: $postId, updateData: $updateData) {\n      ...PostItem\n      category {\n        ...CategoryItem\n      }\n    }\n  }\n":
     types.UpdatePostDocument,
   "\nquery SearchPosts($searchCriteria: PostSearchInput!,$pagination:PaginationInput!) {\n  searchPosts(searchCriteria: $searchCriteria, pagination:$pagination) {\n    pagination {\n        page\n        pageSize\n        totalItems\n      }\n      posts {\n        id\n        title\n        content\n        author {\n          id \n          name\n          email\n        }\n        comments {\n          id\n        }\n        category {\n          name\n        }\n        createdAt\n      }\n  }\n}\n":
     types.SearchPostsDocument,
@@ -117,8 +117,8 @@ export function gql(
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(
-  source: "\n  mutation DeletePost($postId: Int!) {\n    deletePost(postId: $postId) {\n      id\n      title\n      content\n      authorId\n      categoryId\n      createdAt\n      updatedAt\n    }\n  }\n",
-): (typeof documents)["\n  mutation DeletePost($postId: Int!) {\n    deletePost(postId: $postId) {\n      id\n      title\n      content\n      authorId\n      categoryId\n      createdAt\n      updatedAt\n    }\n  }\n"];
+  source: "\n  mutation DeletePost($postId: Int!) {\n    deletePost(postId: $postId) {\n      ...PostItem\n    }\n  }\n",
+): (typeof documents)["\n  mutation DeletePost($postId: Int!) {\n    deletePost(postId: $postId) {\n      ...PostItem\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -129,8 +129,8 @@ export function gql(
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(
-  source: "\n  mutation UpdatePost($postId: Int!, $updateData: UpdatePostInput!) {\n    updatePost(postId: $postId, updateData: $updateData) {\n      id\n      title\n      content\n      category {\n        ...CategoryItem\n      }\n    }\n  }\n",
-): (typeof documents)["\n  mutation UpdatePost($postId: Int!, $updateData: UpdatePostInput!) {\n    updatePost(postId: $postId, updateData: $updateData) {\n      id\n      title\n      content\n      category {\n        ...CategoryItem\n      }\n    }\n  }\n"];
+  source: "\n  mutation UpdatePost($postId: Int!, $updateData: UpdatePostInput!) {\n    updatePost(postId: $postId, updateData: $updateData) {\n      ...PostItem\n      category {\n        ...CategoryItem\n      }\n    }\n  }\n",
+): (typeof documents)["\n  mutation UpdatePost($postId: Int!, $updateData: UpdatePostInput!) {\n    updatePost(postId: $postId, updateData: $updateData) {\n      ...PostItem\n      category {\n        ...CategoryItem\n      }\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

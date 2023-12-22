@@ -11,7 +11,6 @@ import PostForm from "../../components/post-form/PostForm"
 import { useFragment } from "@/lib/graphql"
 import { CategoryFragment, PostFragment } from "../../fragments"
 import { CustomGraphQLError } from "@/types/graphql"
-import client from "@/lib/client/apollo"
 
 const formSchema = z.object({
 	title: z.string().min(3).max(50),
@@ -44,7 +43,6 @@ const UpdatePostForm = () => {
 
 	const { profile, profileResult } = useUser()
 
-	// 🚧 fragment 테스트용도
 	const postInfo = useFragment(PostFragment, viewPostResult.data?.viewPost)
 	const postCategoryInfo = useFragment(
 		CategoryFragment,
@@ -121,7 +119,7 @@ const UpdatePostForm = () => {
 					content: values.content,
 				},
 			},
-			onCompleted: async (data) => {
+			onCompleted: async () => {
 				if (categoryId) {
 					await assignCategory({
 						variables: {
@@ -132,17 +130,6 @@ const UpdatePostForm = () => {
 					})
 				}
 
-				client.cache.modify({
-					id: client.cache.identify(data.updatePost),
-					fields: {
-						title() {
-							return data.updatePost.title
-						},
-						content() {
-							return data.updatePost.content
-						},
-					},
-				})
 				form.reset()
 				navigate(`/post/${postId}`)
 			},
