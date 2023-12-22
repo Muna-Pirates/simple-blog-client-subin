@@ -25,10 +25,7 @@ const usePost = () => {
 
 	const [updatePost, updatePostResult] = useMutation(UPDATE_POST)
 
-	const [searchPosts, searchPostsResult] = useLazyQuery(SEARCH_POSTS, {
-		fetchPolicy: "cache-and-network",
-		notifyOnNetworkStatusChange: true,
-	})
+	const [searchPosts, searchPostsResult] = useLazyQuery(SEARCH_POSTS)
 
 	const [createCategory, createCategoryResult] = useMutation(CREATE_CATEGORY)
 
