@@ -4,7 +4,7 @@ import { useEffect } from "react"
 import Spinner from "@/assets/spinner.svg"
 import { formatYYMMDDHHMMSS } from "@/lib/formatDate"
 import { Badge } from "@/components/ui/badge"
-import CommentForm from "../../widgets/comment-form/CommentForm"
+import WriteCommentForm from "../../widgets/write-comment-form/WriteCommentForm"
 import CommentList from "../../widgets/comment-list/CommentList"
 import { Button } from "@/components/ui/button"
 import { useToast } from "@/components/ui/use-toast"
@@ -130,7 +130,7 @@ const Post = () => {
 			<hr className="border-y-1 border-gray-200 dark:border-gray-700 my-10" />
 
 			{/** COMMENT */}
-			<CommentForm postId={postId} />
+			<WriteCommentForm postId={postId} />
 
 			{/** COMMENT LIST */}
 			<CommentList postId={postId} viewPostResult={viewPostResult} />

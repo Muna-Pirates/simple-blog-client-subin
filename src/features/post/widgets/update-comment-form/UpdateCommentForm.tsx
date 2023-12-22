@@ -10,39 +10,48 @@ import * as z from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { useToast } from "@/components/ui/use-toast"
-import { useNavigate } from "react-router-dom"
-import useAuth from "@/features/auth/service/useAuth"
 import { Textarea } from "@/components/ui/textarea"
 import useComment from "../../service/useComment"
 import Spinner from "@/assets/spinner.svg"
+import { MouseEvent } from "react"
 
 const formSchema = z.object({
 	content: z.string().min(3),
 })
 
-type CommentFormValues = z.infer<typeof formSchema>
+type UpdateCommentFormValues = z.infer<typeof formSchema>
 
-interface ICommentFormProps {
-	postId: number
+interface IUpdateCommentFormProps {
+	commentId: number
+	content: string
+	onClickCancel: () => void
 }
 
-const CommentForm = ({ postId }: ICommentFormProps) => {
-	const { isLogin } = useAuth()
+const UpdateCommentForm = ({
+	commentId,
+	content,
+	onClickCancel,
+}: IUpdateCommentFormProps) => {
 	const { toast } = useToast()
-	const navigate = useNavigate()
-	const { createComment, createCommentResult } = useComment()
+	const { updateComment, updateCommentResult } = useComment()
 
-	const isLoading = createCommentResult.loading
+	const isLoading = updateCommentResult.loading
 
-	const form = useForm<CommentFormValues>({
+	const form = useForm<UpdateCommentFormValues>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
-			content: "",
+			content,
 		},
 	})
 
+	const handleClickCancel = (e: MouseEvent) => {
+		e.preventDefault()
+		onClickCancel()
+	}
+
 	const onCompleted = () => {
 		form.reset()
+		onClickCancel()
 	}
 
 	const onError = () => {
@@ -52,14 +61,11 @@ const CommentForm = ({ postId }: ICommentFormProps) => {
 		})
 	}
 
-	const onSubmit = async (values: CommentFormValues) => {
-		if (!isLogin) {
-			return navigate("/login")
-		}
-		createComment({
+	const onSubmit = async (values: UpdateCommentFormValues) => {
+		updateComment({
 			variables: {
-				createCommentInput: {
-					postId,
+				updateCommentInput: {
+					id: commentId,
 					content: values.content,
 				},
 			},
@@ -92,21 +98,26 @@ const CommentForm = ({ postId }: ICommentFormProps) => {
 							</FormItem>
 						)}
 					/>
+					<div className="flex gap-2">
+						<Button onClick={handleClickCancel} variant="outline">
+							Cancel
+						</Button>
 
-					<Button type="submit" disabled={isLoading}>
-						{isLoading && (
-							<img
-								src={Spinner}
-								className="mr-2 h-4 w-4 animate-spin"
-								alt="spinner"
-							/>
-						)}
-						Post Comment
-					</Button>
+						<Button type="submit" disabled={isLoading}>
+							{isLoading && (
+								<img
+									src={Spinner}
+									className="mr-2 h-4 w-4 animate-spin"
+									alt="spinner"
+								/>
+							)}
+							Update Comment
+						</Button>
+					</div>
 				</form>
 			</Form>
 		</div>
 	)
 }
 
-export default CommentForm
+export default UpdateCommentForm

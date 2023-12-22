@@ -1,6 +1,6 @@
 import { AlertDialogTrigger } from "@/components/ui/alert-dialog"
 
-import CommentUpdateForm from "../comment-update-form/CommentUpdateForm"
+import UpdateCommentForm from "../update-comment-form/UpdateCommentForm"
 import useComment from "../../service/useComment"
 import DeleteCommentDialog from "../../components/delete-comment-dialog/DeleteCommentDialog"
 import { Button } from "@/components/ui/button"
@@ -76,7 +76,7 @@ const CommentItem = ({
 			{!isEditing && <p className="py-2">{content}</p>}
 
 			{isEditing && (
-				<CommentUpdateForm
+				<UpdateCommentForm
 					commentId={id}
 					content={content}
 					onClickCancel={onClickCancel}
