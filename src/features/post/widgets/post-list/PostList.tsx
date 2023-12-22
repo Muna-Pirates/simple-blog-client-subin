@@ -14,7 +14,7 @@ const PostList = ({ posts }: IPostListProps) => {
 	}
 
 	return (
-		<ul className="flex flex-row flex-wrap gap-8">
+		<ul className="flex flex-row flex-wrap gap-4">
 			{posts.map((post: IPostItem) => (
 				<PostItem key={post.id} {...post} onClickPost={handleClickPost} />
 			))}
