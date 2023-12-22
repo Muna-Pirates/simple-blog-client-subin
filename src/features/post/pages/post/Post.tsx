@@ -82,14 +82,16 @@ const Post = () => {
 		<div className="w-full max-w-7xl h-full py-16">
 			{/** HEADER */}
 			<div className="mb-12">
-				<h1 className="text-5xl font-bold mb-8">{postInfo.title}</h1>
+				<h1 className="text-3xl sm:text-5xl font-bold mb-8">
+					{postInfo.title}
+				</h1>
 				<div className="flex justify-between">
 					<h2 className="text-xl flex gap-2 items-center">
 						<span className="font-semibold">
 							{postInfo.author.name || postInfo.author.email}
 						</span>
 						<span>·</span>
-						<span className="text-base text-gray-500">
+						<span className="text-base text-gray-500 dark:text-white">
 							{formatYYMMDDHHMMSS(postInfo.createdAt)}
 						</span>
 					</h2>
@@ -116,7 +118,7 @@ const Post = () => {
 
 				{postCategoryInfo?.id && (
 					<div className="mt-4">
-						<Badge className="bg-green-700 text-sm">
+						<Badge className="bg-green-700 text-sm dark:bg-gray-800 dark:text-green-300">
 							{postCategoryInfo.name}
 						</Badge>
 					</div>
@@ -125,7 +127,7 @@ const Post = () => {
 
 			{/** CONTENT */}
 			<div>{postInfo.content}</div>
-			<hr className="border-y-1 border-gray-200 my-10" />
+			<hr className="border-y-1 border-gray-200 dark:border-gray-700 my-10" />
 
 			{/** COMMENT */}
 			<CommentForm postId={postId} />

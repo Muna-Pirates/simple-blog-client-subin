@@ -4,6 +4,7 @@ import useAuth from "@/features/auth/service/useAuth"
 import { Link, useNavigate } from "react-router-dom"
 import User from "../user/User"
 import { SearchOutlined } from "@ant-design/icons"
+import ThemeMode from "../theme-mode/ThemeMode"
 
 const Header = () => {
 	const { isLogin } = useAuth()
@@ -25,13 +26,22 @@ const Header = () => {
 				</div>
 			</Link>
 
-			<div className="flex gap-4 items-center">
+			<div className="flex items-center">
+				{
+					/**Theme Toggle Button */
+					<ThemeMode />
+				}
 				{/**Search Button */}
-				<SearchOutlined onClick={handleClickSearch} style={{ fontSize: 25 }} />
+				<Button variant="ghost" size="icon" onClick={handleClickSearch}>
+					<SearchOutlined style={{ fontSize: 25 }} />
+				</Button>
 				{
 					/**Login Button */
 					!isLogin && (
-						<Button className="bg-blue-800" onClick={handleClickSignIn}>
+						<Button
+							className=" bg-blue-600 dark:bg-white ml-2"
+							onClick={handleClickSignIn}
+						>
 							Sign in
 						</Button>
 					)

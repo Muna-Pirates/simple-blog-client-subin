@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import Spinner from "@/assets/spinner.svg"
 import { formatYYMMDD } from "@/lib/formatDate"
 import CommentItem from "../comment-item/CommentItem"
@@ -83,23 +83,23 @@ const CommentList = ({ postId, viewPostResult }: ICommentListProps) => {
 					const authorName = author.name || author.email.split("@")[0]
 
 					return (
-						<li
-							key={comment.id}
-							className="border-b-2 last:border-b-0 border-gray-100 py-4"
-						>
-							<CommentItem
-								id={commentId}
-								authorName={authorName}
-								content={content}
-								createdDate={formatYYMMDD(createdAt)}
-								isMine={userID === author.id}
-								isEditing={Boolean(clickedEditCommentId === commentId)}
-								isDeleting={Boolean(clickedDeleteCommentId === commentId)}
-								onClickEdit={() => handleClickEdit(commentId)}
-								onClickDelete={() => handleClickDelete(commentId)}
-								onClickCancel={handleClickCancel}
-							/>
-						</li>
+						<React.Fragment key={comment.id}>
+							<li key={comment.id} className="py-4">
+								<CommentItem
+									id={commentId}
+									authorName={authorName}
+									content={content}
+									createdDate={formatYYMMDD(createdAt)}
+									isMine={userID === author.id}
+									isEditing={Boolean(clickedEditCommentId === commentId)}
+									isDeleting={Boolean(clickedDeleteCommentId === commentId)}
+									onClickEdit={() => handleClickEdit(commentId)}
+									onClickDelete={() => handleClickDelete(commentId)}
+									onClickCancel={handleClickCancel}
+								/>
+							</li>
+							<hr className="border-y-1 border-gray-200 dark:border-gray-700 last:border-y-0" />
+						</React.Fragment>
 					)
 				})}
 			</ul>

@@ -32,7 +32,7 @@ const User = () => {
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger asChild>
-				<button>
+				<button className="ml-2">
 					<Avatar>
 						<AvatarImage src="https://github.com/shadcn.png" />
 						<AvatarFallback>{name}</AvatarFallback>
