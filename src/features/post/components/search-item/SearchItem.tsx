@@ -32,7 +32,7 @@ const SearchItem = ({
 				<CardDescription className="text-md mb-3">
 					by <strong>{authorName}</strong>
 				</CardDescription>
-				<CardTitle className="overflow-hidden whitespace-normal text-ellipsis break-words line-clamp-1 ">
+				<CardTitle className="overflow-hidden whitespace-normal text-ellipsis break-words line-clamp-1">
 					{title}
 				</CardTitle>
 			</CardHeader>
@@ -50,11 +50,12 @@ const SearchItem = ({
 					</div>
 				)}
 			</CardContent>
-			<CardFooter className="flex flex-wrap gap-2 text-sm text-gray-400 border-b-2 border-b-gray-100">
+			<CardFooter className="flex flex-wrap gap-2 text-sm text-gray-400">
 				<p>{createdDate}</p>
 				<p>·</p>
 				<p>{commentsCount} comment</p>
 			</CardFooter>
+			<hr className="border-y-1 border-gray-200 dark:border-gray-700" />
 		</Card>
 	)
 }

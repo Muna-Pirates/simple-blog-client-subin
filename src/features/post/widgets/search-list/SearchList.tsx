@@ -14,7 +14,7 @@ const SearchList = ({ posts }: ISearchListProps) => {
 	}
 
 	return (
-		<ul className="flex flex-col gap-8 w-full">
+		<ul className="flex flex-col w-full">
 			{posts.map((post: ISearchPostItem) => (
 				<SearchItem key={post.id} {...post} onClickPost={handleClickPost} />
 			))}
