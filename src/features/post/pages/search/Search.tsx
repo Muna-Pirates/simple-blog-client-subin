@@ -1,27 +1,23 @@
-import { useDebounce } from "@/hooks/useDebounce"
 import useIntersectionObserver from "@/hooks/useIntersectionObserver"
-import { SearchOutlined } from "@ant-design/icons"
-import { ChangeEvent, useEffect, useMemo, useState } from "react"
+import { useCallback, useEffect, useMemo, useState } from "react"
 import { useSearchParams } from "react-router-dom"
 import usePost from "../../service/usePost"
 import { ISearchPostItem } from "../../types"
 import { formatYYMMDD } from "@/lib/formatDate"
 import SearchList from "../../widgets/search-list/SearchList"
-import { Input } from "@/components/ui/input"
+import SearchInput from "../../widgets/search-input/SearchInput"
 
 const PAGE_SIZE = 10
 
 const Search = () => {
-	const [_, setSearchParams] = useSearchParams()
-
-	const [value, setValue] = useState("")
-	const debouncedValue = useDebounce<string>(value, 500)
+	const [searchParams] = useSearchParams()
 	const [page, setPage] = useState(1)
 	const {
 		searchPosts,
 		searchPostsResult: { data, fetchMore, loading },
 	} = usePost()
 
+	const searchValue = searchParams.get("q") ?? ""
 	const postsCount = data?.searchPosts.posts.length || 0
 	const totalCount = data?.searchPosts.pagination.totalItems || 0
 	const isReachingEnd = Boolean(!postsCount || postsCount === totalCount)
@@ -47,16 +43,8 @@ const Search = () => {
 		}
 	}, [data])
 
-	const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-		setValue(event.target.value)
-	}
-
-	useEffect(() => {
-		setSearchParams({
-			q: debouncedValue,
-		})
-
-		if (debouncedValue.length) {
+	const handleSearchPosts = useCallback(
+		(value: string) => {
 			searchPosts({
 				variables: {
 					pagination: {
@@ -64,15 +52,15 @@ const Search = () => {
 						pageSize: PAGE_SIZE,
 					},
 					searchCriteria: {
-						title: debouncedValue,
-						content: debouncedValue,
+						title: value,
+						content: value,
 					},
 				},
 			})
-		}
-
+		},
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [debouncedValue])
+		[]
+	)
 
 	const { setTarget } = useIntersectionObserver({
 		rootMargin: "50px",
@@ -109,22 +97,15 @@ const Search = () => {
 		<div className="w-full max-w-7xl h-full py-16 flex flex-col items-center ">
 			<div className="w-full sm:w-3/4  ">
 				{/** SEARCH INPUT */}
-				<div className="border-2 border-gray-400 flex items-center gap-4 p-4 mb-4">
-					<SearchOutlined style={{ fontSize: 30 }} />
-					<Input
-						placeholder="Search..."
-						className="text-lg w-full placeholder:text-lg border-0 focus-visible:shadow-none"
-						onChange={handleChange}
-					/>
-				</div>
+				<SearchInput handleSearchPosts={handleSearchPosts} />
 
 				{/** SEARCH RESULT */}
 				<section className="flex flex-col">
-					{Boolean(!!debouncedValue.length && totalCount === 0) && (
+					{Boolean(!!searchValue.length && totalCount === 0) && (
 						<div className="mb-8 font-semibold">No results</div>
 					)}
 
-					{Boolean(!!debouncedValue.length && totalCount > 0) && (
+					{Boolean(!!searchValue.length && totalCount > 0) && (
 						<div>
 							<div className="mb-8 font-semibold">{totalCount} results</div>
 							<SearchList posts={posts} />
