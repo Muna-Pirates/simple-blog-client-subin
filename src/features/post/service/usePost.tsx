@@ -4,6 +4,7 @@ import {
 	CREATE_CATEGORY,
 	CREATE_POST,
 	DELETE_POST,
+	FILTER_POSTS_BY_CATEGORY,
 	FIND_CATEGORY,
 	LIST_POST,
 	SEARCH_POSTS,
@@ -27,6 +28,10 @@ const usePost = () => {
 
 	const [searchPosts, searchPostsResult] = useLazyQuery(SEARCH_POSTS)
 
+	const [filterPostsByCategory, filterPostsByCategoryResult] = useLazyQuery(
+		FILTER_POSTS_BY_CATEGORY
+	)
+
 	const [createCategory, createCategoryResult] = useMutation(CREATE_CATEGORY)
 
 	const [assignCategory, assignCategoryResult] = useMutation(ASSIGN_CATEGORY)
@@ -46,6 +51,8 @@ const usePost = () => {
 		updatePostResult,
 		searchPosts,
 		searchPostsResult,
+		filterPostsByCategory,
+		filterPostsByCategoryResult,
 		createCategory,
 		createCategoryResult,
 		assignCategory,

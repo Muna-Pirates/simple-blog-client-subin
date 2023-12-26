@@ -97,6 +97,28 @@ query SearchPosts($searchCriteria: PostSearchInput!,$pagination:PaginationInput!
 }
 `)
 
+export const FILTER_POSTS_BY_CATEGORY = gql(`
+	query FilterPostsByCategory($categoryId: Int!) {
+		filterPostsByCategory(categoryId: $categoryId) {
+        id
+        title
+        content
+        author {
+          id 
+          name
+          email
+        }
+        comments {
+          id
+        }
+        category {
+          name
+        }
+        createdAt
+		}
+	}
+`)
+
 /** COMMENT OPERATION */
 export const CREATE_COMMENT = gql(`
   mutation AddComment($createCommentInput: CreateCommentInput!) {

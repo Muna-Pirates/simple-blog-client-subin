@@ -472,6 +472,29 @@ export type SearchPostsQuery = {
   };
 };
 
+export type FilterPostsByCategoryQueryVariables = Exact<{
+  categoryId: Scalars["Int"]["input"];
+}>;
+
+export type FilterPostsByCategoryQuery = {
+  __typename?: "Query";
+  filterPostsByCategory: Array<{
+    __typename?: "Post";
+    id: string;
+    title: string;
+    content: string;
+    createdAt: any;
+    author: {
+      __typename?: "User";
+      id: number;
+      name?: string | null;
+      email: string;
+    };
+    comments: Array<{ __typename?: "Comment"; id: string }>;
+    category?: { __typename?: "Category"; name: string } | null;
+  }>;
+};
+
 export type AddCommentMutationVariables = Exact<{
   createCommentInput: CreateCommentInput;
 }>;
@@ -1500,6 +1523,92 @@ export const SearchPostsDocument = {
     },
   ],
 } as unknown as DocumentNode<SearchPostsQuery, SearchPostsQueryVariables>;
+export const FilterPostsByCategoryDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "FilterPostsByCategory" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "categoryId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "filterPostsByCategory" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "categoryId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "categoryId" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "title" } },
+                { kind: "Field", name: { kind: "Name", value: "content" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "author" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                      { kind: "Field", name: { kind: "Name", value: "email" } },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "comments" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "category" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                    ],
+                  },
+                },
+                { kind: "Field", name: { kind: "Name", value: "createdAt" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  FilterPostsByCategoryQuery,
+  FilterPostsByCategoryQueryVariables
+>;
 export const AddCommentDocument = {
   kind: "Document",
   definitions: [

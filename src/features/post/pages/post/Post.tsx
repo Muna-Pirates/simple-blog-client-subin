@@ -42,6 +42,7 @@ const Post = () => {
 	const onCompletedDelete = async () => {
 		navigate("/")
 	}
+
 	const handleClickDelete = () => {
 		deletePost({
 			variables: {
@@ -50,6 +51,11 @@ const Post = () => {
 			onCompleted: onCompletedDelete,
 			onError,
 		})
+	}
+
+	const handleClickBadge = () => {
+		const categoryId = postCategoryInfo?.id
+		if (categoryId) navigate(`/filter?by=category&id=${categoryId}`)
 	}
 
 	useEffect(() => {
@@ -118,7 +124,10 @@ const Post = () => {
 
 				{postCategoryInfo?.id && (
 					<div className="mt-4">
-						<Badge className="bg-green-700 text-sm dark:bg-gray-800 dark:text-green-300">
+						<Badge
+							className="bg-green-700 text-sm dark:bg-gray-800 dark:text-green-300 hover:cursor-pointer"
+							onClick={handleClickBadge}
+						>
 							{postCategoryInfo.name}
 						</Badge>
 					</div>
