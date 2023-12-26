@@ -7,6 +7,7 @@ import usePost from "../../service/usePost"
 import { ISearchPostItem } from "../../types"
 import { formatYYMMDD } from "@/lib/formatDate"
 import SearchList from "../../widgets/search-list/SearchList"
+import { Input } from "@/components/ui/input"
 
 const PAGE_SIZE = 10
 
@@ -41,7 +42,7 @@ const Search = () => {
 						commentsCount: comments?.length ?? 0,
 						categoryName: category ? category?.name : "",
 						createdDate: formatYYMMDD(createdAt),
-					} as ISearchPostItem)
+					}) as ISearchPostItem
 			)
 		}
 	}, [data])
@@ -110,20 +111,25 @@ const Search = () => {
 				{/** SEARCH INPUT */}
 				<div className="border-2 border-gray-400 flex items-center gap-4 p-4 mb-4">
 					<SearchOutlined style={{ fontSize: 30 }} />
-					<input
-						type="text"
+					<Input
 						placeholder="Search..."
-						className="text-lg w-full focus-visible:outline-none placeholder:text-lg"
+						className="text-lg w-full placeholder:text-lg border-0 focus-visible:shadow-none"
 						onChange={handleChange}
 					/>
 				</div>
 
 				{/** SEARCH RESULT */}
 				<section className="flex flex-col">
-					{Boolean(!!debouncedValue.length && totalCount > 0) && (
-						<div className="mb-8 font-semibold">{totalCount} results</div>
+					{Boolean(!!debouncedValue.length && totalCount === 0) && (
+						<div className="mb-8 font-semibold">No results</div>
 					)}
-					{!!debouncedValue.length && <SearchList posts={posts} />}
+
+					{Boolean(!!debouncedValue.length && totalCount > 0) && (
+						<div>
+							<div className="mb-8 font-semibold">{totalCount} results</div>
+							<SearchList posts={posts} />
+						</div>
+					)}
 					<div ref={setTarget} className="w-full h-1"></div>
 				</section>
 			</div>

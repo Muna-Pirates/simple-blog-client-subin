@@ -53,7 +53,7 @@ Styled using Tailwind CSS and shadcn
 
 ## Testing
 
-No tests currently included. Can be added using Jest and React Testing Library.
+No tests currently included. Can be added using Vitest and React Testing Library.
 
 ## Deployment
 
