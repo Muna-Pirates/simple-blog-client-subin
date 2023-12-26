@@ -115,7 +115,7 @@ const WritePostForm = () => {
 				}
 
 				form.reset()
-				navigate("/")
+				navigate(`/post/${postId}`)
 			},
 			onError,
 		})
